@@ -13,10 +13,10 @@ const LoginScreen = () => {
     console.log('src',require('../../assets/img/logo.png'))
   return (
     <View style={styles.container}>
-       <Box flex style={styles.logo}><Image  source={require('../../assets/img/logo.png')} width={60} height={60}/></Box>
+       <Box flex style={styles.logo}><Image  source={require('../../assets/img/logo.png')} width={20} height={20}/></Box>
     <Box center>
     <NumericKeyword valueText={valueText} setValueText={setValueText}/>
-        <Button size='lg' title={'Entrar'} />
+       
     </Box>
     </View>
   )
