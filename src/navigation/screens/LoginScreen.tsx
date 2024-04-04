@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View} from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 
 import { Button} from '@rneui/themed';
 
@@ -8,9 +8,9 @@ import NumericKeyword from '../../components/common/NumericKeyword';
 import { materialTheme } from '../../constants';
 
 
-const LoginScreen = () => {
+const LoginScreen:FC = () => {
     const [valueText, setValueText] = React.useState("");
-    console.log('src',require('../../assets/img/logo.png'))
+ 
   return (
     <View style={styles.container}>
        <Box flex style={styles.logo}><Image  source={require('../../assets/img/logo.png')} width={20} height={20}/></Box>
