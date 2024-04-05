@@ -11,6 +11,7 @@ export default class OrderContainer extends Component {
       <ScrollView>
        <CategoryComponent/>
        <DishesComponent/>
+       <CustomersContainer/>
       </ScrollView>
     )
   }

@@ -73,6 +73,7 @@ export default DishesComponent
 
 const styles=StyleSheet.create({
     container:{
-        flexWrap:'wrap'
+        flexWrap:'wrap',
+        justifyContent:'space-between'
     }
 })

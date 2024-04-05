@@ -39,11 +39,11 @@ export default DishItem
 
 const styles = StyleSheet.create({
 container:{
-    margin:materialTheme.sizes.BASE,
-    width:100,
-    height:100,
-    maxWidth:100,
-    minWidth:100,
+    margin:materialTheme.sizes.BASE/2,
+    width:90,
+    height:90,
+    maxWidth:90,
+    minWidth:90,
     backgroundColor:materialTheme.colors.primary_light,
     flex:1,
     justifyContent:'flex-end',
