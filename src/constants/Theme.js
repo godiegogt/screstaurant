@@ -9,7 +9,7 @@ export default {
     primary: '#FFAf00',
     primary_light: '#FFcf6e',
     primary_dark: '#09988B',
-    secondary: '#f46957',
+    secondary: '#3299FE',
     secondary_light: '#315DB3',
     secondary_dark: '#01153D',
     LABEL: '#FE2472',

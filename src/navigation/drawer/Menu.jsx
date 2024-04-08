@@ -12,11 +12,12 @@ import Text from '../../components/common/TextComponent'
 import DrawerItem from '../../components/drawer/DrawerItem';
 
 import { materialTheme as theme } from "../../constants";
-
+import { useDispatch } from 'react-redux';
 
 
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { appVersion } from "../../constants/variables";
+import { logOut } from "../../features/configurations/configurationSlide";
 
 
 export default function CustomDrawerContent({
@@ -29,7 +30,7 @@ export default function CustomDrawerContent({
 }) {
 
   const insets = useSafeArea();
-
+const dispatch=useDispatch();
   const screens = [
    {
        screen:'HomeStack',
@@ -79,10 +80,10 @@ export default function CustomDrawerContent({
 
      
       <Block flex={0.3} style={{ paddingLeft: 7, paddingRight: 14 }}>
-      <TouchableOpacity onPress={()=>{}}>
+      <TouchableOpacity onPress={()=>{dispatch(logOut())}}>
         <DrawerItem
           title="Salir"
-          screen='SigninScreen'
+          screen='RoomsScreen'
           navigation={navigation}
           focused={state.index === 5 ? true : false}
         />

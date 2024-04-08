@@ -21,7 +21,7 @@ export default function MenuButton({navigation}) {
                 <Icon
                     name="bars"
                     size={25}
-                    color='#888'
+                    color='#fff'
                 />
             </TouchableOpacity>
         </View>

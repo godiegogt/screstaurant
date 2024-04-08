@@ -60,7 +60,7 @@ export class DishesComponent extends Component {
         <Container title={'Platillos'}>
             <Text h2 bold>Platillos</Text>
          <Box row flex style={styles.container}>
-         {dishes.map(item=><DishItem item={item} />)  }
+         {dishes.map(item=><DishItem key={item.id} item={item} />)  }
          </Box>
       
            

@@ -7,10 +7,11 @@ import { materialTheme } from '../../constants'
 
 interface INumericKeyword{
     valueText:string,
-    setValueText:(value:string)=>void
+    setValueText:(value:string)=>void,
+    login:()=>void
 }
 
-const NumericKeyword:FC<INumericKeyword> = ({valueText,setValueText}) => {
+const NumericKeyword:FC<INumericKeyword> = ({valueText,setValueText,login}) => {
 
    
 
@@ -43,7 +44,7 @@ setValueText(valueText+number);
             <NumberButton onPress={changeValue} title='0'/>
             <NumberButton onPress={changeValue} title='<'/>
             </Box>
-            <Button size='lg' title={'Entrar'} />
+            <Button size='lg' title={'Entrar'} onPress={login}/>
         </Box>
     )
 }

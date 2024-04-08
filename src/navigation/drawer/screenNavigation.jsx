@@ -3,7 +3,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
 import CustomDrawerContent from './Menu';
 
@@ -27,12 +27,15 @@ function HomeStack(props) {
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
         headerRight: () => <MenuButton navigation={navigation} />,
+      headerStyle:{backgroundColor:'#3299FE',alignContent:'center'},
+      headerBackTitleStyle:'#fff',
+      headerTitleStyle:{color:'#fff',textAlign:'center'},
         presentation: 'card',
         headerMode: 'screen'
       })}
     >
       <Stack.Screen
-        options={{ title: 'Salones' }}
+        options={{ title: 'Reservaciones' }}
         name="RoomsScreen"
         component={RoomsScreen}
       />
@@ -237,10 +240,10 @@ export function DrawerStack(props) {
 }
 
 
-
+import { useSelector, useDispatch } from 'react-redux'
 export default function Navigation(params) {
 //   const user = useSelector(state => state.user)
-
+const isAuth = useSelector(state => state.configuration.isAuth)
 
 // const errormessage=useSelector(state=>state.configurations.errormessage);
 // const dispatch=useDispatch();
@@ -263,7 +266,7 @@ export default function Navigation(params) {
           headerShown: false
         }}>
         {
-          (false)
+          (!isAuth)
             ? <Stack.Screen options={{ headerShown: false }} name="LoginStack" component={SigninStack} />
             :
             <Stack.Screen name="DrawerStack" component={DrawerStack} />
