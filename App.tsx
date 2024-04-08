@@ -16,15 +16,21 @@ import { rneuiTheme as theme } from './src/constants/'
 
 import Navigation from './src/navigation/drawer/screenNavigation';
 
+import store from './src/app/store'
+import { Provider } from 'react-redux'
+
 function App(): React.JSX.Element {
 
 
   return (
+  <Provider store={store}>
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
       <Navigation/>
       </ThemeProvider>
     </SafeAreaProvider>
+
+  </Provider>
   );
 }
 
