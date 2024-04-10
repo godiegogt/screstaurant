@@ -1,30 +1,29 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View,Text } from 'react-native'
 import React, { FC } from 'react'
 
-import {Text} from '../common'
 import { materialTheme } from '../../constants'
-import { useNavigation } from '@react-navigation/native'
+
 
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 const  CustomerItem = ({item,pickCustomer,customerSelected}) => {
-const {navigate}=  useNavigation();
+
 
 
 const pickRoom2=()=>{
     pickCustomer(item.title);
-    navigate('OrderScreen')
+    // navigate('OrderScreen')
 }
 
   return (
-    <TouchableOpacity style={[styles.container,item.title==customerSelected&&styles.selected]} onPress={pickRoom2}>
+    <TouchableOpacity style={styles.container} onPress={pickRoom2}>
         <Icon
-              size={50}
+              size={30}
               name="user"
               solid
-              color={item.title==customerSelected? materialTheme.colors.primary:materialTheme.colors.primary_light}
+              color={item.title==customerSelected?materialTheme.colors.primary:materialTheme.colors.primary_light}
             />
-      <Text h3 bold  style={{textAlign:'center',color:materialTheme.colors.primary}}>{item.title}</Text>
+      <Text style={styles.text}>{item.title}</Text>
     </TouchableOpacity>
   )
 }
@@ -33,17 +32,25 @@ export default CustomerItem
 
 export const styles = StyleSheet.create({
   container:{
-    width:50,
-    height:50,
-    backgroundColor:'transparent',
-    margin:materialTheme.sizes.BASE,
+    
+   
+    marginHorizontal:10,
     // borderWidth:3,
     // borderColor:materialTheme.colors.primary
+    
+    alignItems:'center'
+   
   },
   selected:{
-    // backgroundColor:materialTheme.colors.primary_light
+   backgroundColor:materialTheme.colors.primary_light
   },
   text:{
+    textAlign:'center',color:'#000',
+    fontSize:12,
+    position:'absolute',
+    zIndex:10000,
+    color:'#fff'
+    
     
   }
 })
