@@ -27,7 +27,7 @@ function HomeStack(props) {
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
         headerRight: () => <MenuButton navigation={navigation} />,
-      headerStyle:{backgroundColor:'#3299FE',alignContent:'center'},
+      headerStyle:{backgroundColor:'#3299FE'},
       headerBackTitleStyle:'#fff',
       headerTitleStyle:{color:'#fff',textAlign:'center'},
         presentation: 'card',
@@ -185,7 +185,7 @@ export function DrawerStack(props) {
             paddingHorizontal: 12,
             // paddingVertical: 4,
             justifyContent: "center",
-            alignContent: "center",
+          
             // alignItems: 'center',
             overflow: "hidden"
           },

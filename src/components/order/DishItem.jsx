@@ -39,15 +39,16 @@ export default DishItem
 
 const styles = StyleSheet.create({
 container:{
-    margin:materialTheme.sizes.BASE/2,
-    width:90,
-    height:90,
-    maxWidth:90,
-    minWidth:90,
-    backgroundColor:materialTheme.colors.primary_light,
+    margin:materialTheme.sizes.BASE/6,
+    width:70,
+    height:70,
+    maxWidth:70,
+    minWidth:70,
+    backgroundColor:materialTheme.colors.primary,
     flex:1,
     justifyContent:'flex-end',
-    borderRadius:materialTheme.sizes.BASE/2
+    borderRadius:materialTheme.sizes.BASE/2,
+    justifyContent:'center'
     
 },
 image: {
@@ -66,7 +67,7 @@ image: {
     flex:1,
     textAlign:'center',
     paddingBottom:10,
-    fontSize:materialTheme.sizes.BASE*1.2
+    fontSize:12
     
   }
 })

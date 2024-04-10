@@ -3,6 +3,8 @@ import { View, StyleSheet } from 'react-native'
 import PropTypes from 'prop-types'
 import { Container, Text } from '../common'
 import TableItem from './TableItem'
+import { Card } from '@rneui/themed'
+import PageNavigator from '../common/PageNavigator'
 
 const tables=[
   {
@@ -77,24 +79,22 @@ const tables=[
   }
 ]
 
-export class TableContainer extends Component {
-
-
-
-
-  render() {
+const TablesComponent=()=> {
+  
     return (
-      < >
-          <Text h2 bold>Mesas</Text> 
+      <Card>
+          <Card.Title>Mesas</Card.Title>
+          <Card.Divider />
+          <PageNavigator/>
           <View style={styles.container}>
           {
         tables.map(table=><TableItem key={table.title} item={table}/>)
        }
           </View>
      
-      </>
+      </Card>
     )
-  }
+  
 }
 
 
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
 
 
 
-export default TableContainer
+export default TablesComponent

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Container from '../../components/common/Container';
 import RoomsContainer from '../../components/rooms/RoomsContainer';
-import TableContainer from '../../components/tables/TableContainer';
+import TablesComponent from '../../components/tables/TablesComponent';
 import CustomersContainer from '../../components/customers/CustomersContainer';
 
 export default class RoomsScreen extends Component {
@@ -13,10 +13,9 @@ export default class RoomsScreen extends Component {
   render() {
     return (
     
-       <Container title={'Bienvenido!'} >
-        <RoomsContainer/>
-        <TableContainer/>
-        <CustomersContainer/>
+       <Container >
+        <TablesComponent/>
+        {/* <CustomersContainer/> */}
       </Container>
      
     )

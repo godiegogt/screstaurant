@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import PropTypes from 'prop-types'
 import { Container, Text } from '../common'
 import CustomerItem from './CustomerItem'
+import { materialTheme } from '../../constants'
 
 const tables=[
   {
@@ -43,15 +44,15 @@ export class CustomersContainer extends Component<{},CustomersContainerState> {
 
   render() {
     return (
-      < >
-          <Text h2 bold>Comensal</Text> 
+      <View style={styles.container}>
+         
           <View style={styles.container}>
           {
         tables.map(item=><CustomerItem key={item.title} item={item} pickCustomer={this.pickCustomer} customerSelected={this.state.customerSelected}/>)
        }
           </View>
      
-      </>
+      </View>
     )
   }
 }
@@ -63,7 +64,9 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'row',
     flexWrap:'wrap',
-    justifyContent:'space-around',
+    justifyContent:'flex-end',
+    marginVertical:materialTheme.sizes.BASE/3
+   
     
 
     }

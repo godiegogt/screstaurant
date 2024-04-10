@@ -39,9 +39,14 @@ export default {
     grey_light: '#f7f7f7',
     grey_dark: '#555',
     //Backgrounds
-    back_ground_screen: '#fdfdfd',
+    back_ground_screen: '#F1F1F1',
     rowShadowColorPrimary:'#fae6e6',
-    back_ground_color:'#f7dccb'
+    back_ground_color:'#f7dccb',
+
+       //ORDER TABLE
+      
+       ORDER_BORDER_COLOR:'#dfdfdf',
+      
   },
   sizes: {
     block_shadow_radius: 2,
@@ -118,6 +123,9 @@ export default {
     NAVBAR_RIGHT_HEIGHT: height * 0.07,
     NAVBAR_RIGHT_MARGIN: BASE,
 
+    //Pagination Component
+    PAGICOM_BORDER_WIDTH:1,
+
     // Checkbox
     CHECKBOX_WIDTH: 20,
     CHECKBOX_HEIGHT: 20,
@@ -133,6 +141,11 @@ export default {
 
     //Screen
     padding_screen: BASE,
+
+    //ORDER TABLE
+    ORDER_BORDER_WIDTH:0.5,
+    ORDER_BORDER_RADIUS:3,
+    ORDER_TR_HEIGHT:30
   },
   font: {
     font_family: 'Arial',

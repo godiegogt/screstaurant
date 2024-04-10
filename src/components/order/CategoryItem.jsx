@@ -1,5 +1,6 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import Icon from "react-native-vector-icons/FontAwesome5";
 import { Image, Tile } from '@rneui/themed'
 
 import { materialTheme } from '../../constants'
@@ -23,13 +24,22 @@ const CategoryItem = ({item}) => {
     //       width={200}
     //     />
     <TouchableOpacity style={styles.container}>
-        <Text style={styles.text}>{item.name}</Text>
-         <Image
+       
+         {/* <Image
             source={{ uri: 'https://i.pinimg.com/736x/c6/dc/94/c6dc940457e1a8e6fc55082fd10dd04c.jpg' }}
             containerStyle={styles.image}
             PlaceholderContent={<ActivityIndicator />}
             
-          />
+          /> */}
+          <View>
+          <Icon
+              size={50}
+              name={item.icon}
+              solid
+              color={'#fff'}
+            />
+          </View>
+             <Text style={styles.text}>{item.name}</Text>
     </TouchableOpacity>
    
   )
@@ -39,13 +49,14 @@ export default CategoryItem
 
 const styles = StyleSheet.create({
 container:{
-    margin:materialTheme.sizes.BASE,
-    width:100,
-    height:100,
-    backgroundColor:materialTheme.colors.primary_light,
+    margin:materialTheme.sizes.BASE/2,
+    width:80,
+    height:80,
+    backgroundColor:materialTheme.colors.primary,
     flex:1,
-    justifyContent:'flex-end',
-    borderRadius:materialTheme.sizes.BASE/2
+    borderRadius:materialTheme.sizes.BASE/2,
+    justifyContent:'center',
+    alignItems:'center'
     
 },
 image: {
@@ -54,17 +65,19 @@ image: {
     flex: 1,
     opacity:0.1
   },
+  icon:{
+
+  },
   text:{
-    position:'absolute',
-    zIndex:1000,
    
    
     fontWeight:'bold',
     alignSelf:'center',
-    flex:1,
+ 
     textAlign:'center',
     paddingBottom:10,
-    fontSize:materialTheme.sizes.BASE*1.2
+    fontSize:12,
+    color:'#fff'
     
   }
 })

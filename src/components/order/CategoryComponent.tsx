@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FlatList, View } from 'react-native'
 import { Container } from '../common'
 import CustomersContainer from '../customers/CustomersContainer'
-import {Text} from '../common'
+import {TextComponent as Text} from '../common'
 import CategoryItem from './CategoryItem'
 
 const categories=[
@@ -26,7 +26,7 @@ name:'Bebidas'
 export class CategoryComponent extends Component {
   render() {
     return (
-        <Container title={'Categorías'}>
+        <Container >
             <Text h2 bold>Categorías</Text>
            
             <FlatList
