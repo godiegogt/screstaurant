@@ -3,7 +3,7 @@ import React from 'react'
 import Text from './TextComponent'
 import { materialTheme } from '../../constants'
 
-const Container = ({title,children}) => {
+const Container = ({children}) => {
   return (
     <ScrollView style={styles.container}>
     
@@ -19,7 +19,7 @@ export default Container
 const styles = StyleSheet.create({
     container:{
       flex:1,
-      backgroundColor:'#fff',
-      paddingHorizontal:materialTheme.sizes.padding_screen/2,
+      backgroundColor:materialTheme.colors.back_ground_screen,
+      padding:materialTheme.sizes.padding_screen/2,
     }
 })
