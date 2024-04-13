@@ -1,11 +1,23 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, Tile } from '@rneui/themed'
 
 import { materialTheme } from '../../constants'
 
+import Modal from './OrderVariationModal'
+
 const DishItem = ({item}) => {
-  
+  const [isVisible, setIsVisible] = useState(false);
+
+const changeOrder=()=>{
+  setIsVisible(false)
+}
+
+const openModal=()=>{
+  setIsVisible(true)
+}
+
+
   return (
     
     //   <Tile
@@ -22,7 +34,7 @@ const DishItem = ({item}) => {
     //       activeOpacity={2}
     //       width={200}
     //     />
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={openModal}>
         <Text style={styles.text}>{item.name}</Text>
          <Image
             source={{ uri: 'https://i.pinimg.com/736x/c6/dc/94/c6dc940457e1a8e6fc55082fd10dd04c.jpg' }}
@@ -30,6 +42,7 @@ const DishItem = ({item}) => {
             PlaceholderContent={<ActivityIndicator />}
             
           />
+          <Modal isVisible={isVisible} changeOrder={changeOrder}/>
     </TouchableOpacity>
    
   )

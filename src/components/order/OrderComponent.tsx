@@ -1,7 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet,  TouchableOpacity, View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { materialTheme } from '../../constants'
 import { BottomSheet, ListItem } from '@rneui/themed'
+import { Alert, Text } from '../common'
 
 const products = [
   {
@@ -23,19 +24,20 @@ const products = [
 
 const OrderComponent = () => {
 
-
+const [errormessage, setErrormessage] = useState('Autenticación exitosa!')
 
   return (
     <View style={styles.container}>
+      <Alert message={errormessage} setMessage={setErrormessage} type='success'/>
       <>
       <View style={[styles.tr, styles.headerTr]}>
-        <Text>Mesa No. 01</Text>
-        <Text>Orden No. 00127</Text>
+        <Text bold>Mesa No. 01</Text>
+        <Text bold>Orden No. 00127</Text>
       </View>
       <View style={[styles.tr, styles.headerTr]}>
-        <Text>#</Text>
-        <Text>Detalle</Text>
-        <Text>Precio</Text>
+        <Text bold>#</Text>
+        <Text bold>Detalle</Text>
+        <Text bold>Precio</Text>
       </View>
       </>
      
@@ -44,11 +46,8 @@ const OrderComponent = () => {
         products.map(({ amount, price, detail }, key) => <OrderItem key={key} amount={amount} detail={detail} price={price} />)
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
-        <Text>Total</Text>
-        <Text>Q {products.reduce(
-          (accumulator, currentValue) => accumulator + currentValue.price,
-          0,
-        ).toFixed(2)}</Text>
+        <Text bold>Total</Text>
+        <Text bold>{'Q '+products.reduce((accumulator, currentValue) => accumulator + currentValue.price,0,).toFixed(2)}</Text>
       </View>
     </View>
   )
@@ -75,13 +74,13 @@ const OrderItem: FC<IOrderItem> = (item) => {
 
   return <TouchableOpacity style={[styles.tr, styles.itemTr]} onPress={() => { setIsVisible(!isVisible) }}>
     <View style={[styles.tr, styles.itemTrAmount]}>
-      <Text>{item.amount}</Text>
+      <Text>{item.amount.toString()}</Text>
     </View>
     <View style={[styles.tr, styles.itemTrDetail]}>
       <Text>{item.detail}</Text>
     </View>
     <View style={[styles.tr, styles.itemTrPrice]}>
-      <Text numberOfLines={3} style={{ textAlign: 'right' }}>Q {item.price}</Text>
+      <Text  styles={{ textAlign: 'right' }}>{'Q '+item.price.toString()}</Text>
     </View>
     <BottomSheet modalProps={{}} isVisible={isVisible}>
       {list.map((l, i) => (

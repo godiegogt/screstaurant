@@ -1,19 +1,49 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Button } from '@rneui/themed'
+import React, { useState } from 'react'
+import { BottomSheet, Button, ListItem } from '@rneui/themed'
 import { materialTheme } from '../../constants'
 
 const OrderButtonsSection = () => {
+  const [isVisible, setIsVisible] = useState(false)
+  const list = [
+    { title: 'Pre-cuenta' ,
+    onPress: () => setIsVisible(false),},
+    { title: 'Cambiar orden de comensal',
+    onPress: () => setIsVisible(false), },
+    { title: 'Facturar' ,
+    onPress: () => setIsVisible(false),},
+    { title: 'Descuentos' ,
+    onPress: () => setIsVisible(false),},
+    {
+      title: 'Cancel',
+      containerStyle: { backgroundColor: 'red' },
+      titleStyle: { color: 'white' },
+      onPress: () => setIsVisible(false),
+    },
+  ];
   return (
     <View style={styles.OrderButtonsSection}>
       <View style={styles.buttonContainer}>
       <Button title="Enviar Orden"  />
       </View>
       <View style={styles.buttonContainer}>
-      <Button title="Otras opciones"  />
+      <Button title="Otras opciones"  onPress={()=>{setIsVisible(true)}}/>
       </View>
-      
       <Button title="Salir"  />
+
+      <BottomSheet modalProps={{}} isVisible={isVisible}>
+      {list.map((l, i) => (
+        <ListItem
+          key={i}
+          containerStyle={l.containerStyle}
+          onPress={l.onPress}
+        >
+          <ListItem.Content>
+            <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      ))}
+    </BottomSheet>
     </View>
   )
 }

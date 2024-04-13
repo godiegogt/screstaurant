@@ -23,7 +23,7 @@ setValueText(valueText+number);
     return (
         <Box style={styles.container}>
             <Box>
-                <Input textAlign='center' keyboardType='decimal-pad' value={valueText}  onChangeText={(text)=>{setValueText(text)}} inputStyle={{borderColor:materialTheme.colors.muted,borderWidth:1}}/>
+                <Input secureTextEntry textAlign='center' keyboardType='decimal-pad' value={valueText}  onChangeText={(text)=>{setValueText(text)}} inputStyle={{borderColor:materialTheme.colors.muted,borderWidth:1}}/>
             </Box>
             <Box flex row middle >
                 <NumberButton onPress={changeValue} title='1'/>
