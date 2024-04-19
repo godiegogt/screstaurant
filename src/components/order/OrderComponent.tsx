@@ -63,7 +63,7 @@ const {getOrdersByReservation}=useReservation()
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Total</Text>
-        <Text bold>{'Q '+products.reduce((accumulator, currentValue) => accumulator + currentValue.price,0,).toFixed(2)}</Text>
+        <Text bold>{'Q '+ordrs.reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,).toFixed(2)}</Text>
       </View>
     </View>
   )
