@@ -2,11 +2,14 @@ import { ScrollView, StyleSheet,  View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { ButtonGroup, Dialog, Divider } from '@rneui/themed'
 import { Alert, Text } from '../common'
+import { IDish } from '../../interfaces/IOrder'
+import { addOrder } from '../../features/reservation/reservationSlice'
 
 
 interface IOrderVariationModal{
     isVisible:boolean,
-    changeOrder:()=>void
+    toggleModal:()=>void
+    addOrder:()=>void
 }
 
 const variations=[
@@ -17,9 +20,9 @@ const variations=[
     {title:'¿Tortilla o pan?',options:['Tortilla','Pan']},
     {title:'¿Bebida?',options:['Jamaica','Cocacola','Café']}]
 
-const OrderVariationModal:FC<IOrderVariationModal> = ({isVisible,changeOrder}) => {
+const OrderVariationModal:FC<IOrderVariationModal> = ({isVisible,toggleModal,addOrder}) => {
   return (
-    <Dialog isVisible={isVisible} onBackdropPress={changeOrder}>
+    <Dialog isVisible={isVisible} onBackdropPress={toggleModal}>
       
     <ScrollView><Text h4 bold>Seleccione preferencias:</Text>
      <Divider/>
@@ -28,11 +31,11 @@ const OrderVariationModal:FC<IOrderVariationModal> = ({isVisible,changeOrder}) =
         type='solid'
           title="AGREGAR"
           onPress={() => {
-            console.log(`Option ${isVisible} was selected!`);
-            changeOrder();
+           
+            addOrder();
           }}
         />
-        <Dialog.Button title="CANCELAR" onPress={changeOrder} />
+        <Dialog.Button title="CANCELAR" onPress={toggleModal} />
       </Dialog.Actions></ScrollView>
     </Dialog>
   )

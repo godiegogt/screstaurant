@@ -1,8 +1,13 @@
 import { StyleSheet,  TouchableOpacity, View } from 'react-native'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { materialTheme } from '../../constants'
 import { BottomSheet, ListItem } from '@rneui/themed'
 import { Alert, Text } from '../common'
+import { useDispatch, useSelector } from 'react-redux'
+import { IRootState } from '../../app/store'
+import { useReservation } from '../../hooks'
+import { IOrder } from '../../interfaces'
+import { deleteOrder } from '../../features/reservation/reservationSlice'
 
 const products = [
   {
@@ -23,12 +28,23 @@ const products = [
 ]
 
 const OrderComponent = () => {
+const [ordrs, setOrdrs] = useState<IOrder[]>([]);
+const reservations=useSelector((state:IRootState)=>state.reservations)
+useEffect(() => {
+  loadOrders()
+}, [reservations])
 
-const [errormessage, setErrormessage] = useState('Autenticación exitosa!')
+const loadOrders=()=>{
+  const orders=getOrdersByReservation();
+  orders!=undefined&&setOrdrs(orders);
+  console.log('¿',orders)
+}
+
+const {getOrdersByReservation}=useReservation()
 
   return (
     <View style={styles.container}>
-      <Alert message={errormessage} setMessage={setErrormessage} type='success'/>
+     
       <>
       <View style={[styles.tr, styles.headerTr]}>
         <Text bold>Mesa No. 01</Text>
@@ -43,7 +59,7 @@ const [errormessage, setErrormessage] = useState('Autenticación exitosa!')
      
      
       {
-        products.map(({ amount, price, detail }, key) => <OrderItem key={key} amount={amount} detail={detail} price={price} />)
+        ordrs.map((item, key) => <OrderItem key={key} item={item} />)
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Total</Text>
@@ -53,16 +69,21 @@ const [errormessage, setErrormessage] = useState('Autenticación exitosa!')
   )
 }
 
-interface IOrderItem {
-  amount: number | string,
-  detail: string,
-  price: number|string
+interface IOrderItem{
+  item:IOrder
 }
 
-const OrderItem: FC<IOrderItem> = (item) => {
-  const [isVisible, setIsVisible] = useState(false)
+const OrderItem: FC<IOrderItem> = ({item}) => {
+  const [isVisible, setIsVisible] = useState(false);
+ const {deleteOrder} = useReservation();
+
+
+  const _deleteOrder=()=>{
+deleteOrder(item)
+setIsVisible(!isVisible)
+  }
   const list = [
-    { title: 'Eliminar', onPress: () => setIsVisible(false), },
+    { title: 'Eliminar', onPress: ()=>_deleteOrder() },
     { title: 'Cambiar de comensal', onPress: () => setIsVisible(false), },
     {
       title: 'Cancel',
@@ -74,13 +95,13 @@ const OrderItem: FC<IOrderItem> = (item) => {
 
   return <TouchableOpacity style={[styles.tr, styles.itemTr]} onPress={() => { setIsVisible(!isVisible) }}>
     <View style={[styles.tr, styles.itemTrAmount]}>
-      <Text>{item.amount.toString()}</Text>
+      <Text>{item.dish.amount?.toString()}</Text>
     </View>
     <View style={[styles.tr, styles.itemTrDetail]}>
-      <Text>{item.detail}</Text>
+      <Text>{item.dish.name}</Text>
     </View>
     <View style={[styles.tr, styles.itemTrPrice]}>
-      <Text  styles={{ textAlign: 'right' }}>{'Q '+item.price.toString()}</Text>
+      <Text  styles={{ textAlign: 'right' }}>{'Q '+item.dish.price.toString()}</Text>
     </View>
     <BottomSheet modalProps={{}} isVisible={isVisible}>
       {list.map((l, i) => (

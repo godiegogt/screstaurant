@@ -6,7 +6,7 @@ import TableContainer from '../../components/tables/TablesComponent'
 export class TablesScreen extends Component {
   render() {
     return (
-      <Container title={'Seleccionar una mesa'}>
+      <Container >
        <TableContainer/>
       </Container>
     )

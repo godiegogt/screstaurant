@@ -240,7 +240,7 @@ export function DrawerStack(props) {
 }
 
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 export default function Navigation(params) {
 //   const user = useSelector(state => state.user)
 const isAuth = useSelector(state => state.configuration.isAuth)

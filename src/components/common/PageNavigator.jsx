@@ -3,14 +3,18 @@ import React, { useState } from 'react'
 import Box from './Box'
 import { Button,Text } from '@rneui/themed'
 import { materialTheme } from '../../constants'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectRoom } from '../../features/reservation/reservationSlice'
 
 const PageNavigator = () => {
-    const [room, setRoom] = useState(0);
-
-  const changeRoom=(symbol:string)=>{
+  const dispatch=useDispatch();
+  
+ const room=useSelector(state  => state.reservations.selectors.room);
+  const changeRoom=(symbol)=>{
     let newRoom=room
     symbol=='+'?newRoom++:room>0&&newRoom--;
-    setRoom(newRoom)
+    //setRoom(newRoom);
+    dispatch(selectRoom(newRoom));
   }  
 
 

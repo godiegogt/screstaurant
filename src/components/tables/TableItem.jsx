@@ -3,11 +3,14 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { materialTheme } from '../../constants'
 import { Text } from '../common'
+import { useDispatch } from 'react-redux'
+import { selectTable } from '../../features/reservation/reservationSlice'
 
 const TableItem = ({item}) => {
   const {navigate}=  useNavigation();
+ const dispatch= useDispatch();
   return (
-    <TouchableOpacity style={styles.container} onPress={()=>{navigate('OrderScreen')}}>
+    <TouchableOpacity style={styles.container} onPress={()=>{dispatch(selectTable(Number(item.title)));navigate('OrderScreen')}}>
         <Text style={styles.title} >{item.title}</Text>
      <Image  source={require('../../assets/img/mesa-de-cena.png')} width={20} height={20}/>
     </TouchableOpacity>

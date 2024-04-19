@@ -1,14 +1,17 @@
 import { configureStore} from "@reduxjs/toolkit";
-import configReducer from "../features/configurations/configurationSlide";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { persistReducer, persistStore,persistCombineReducers } from 'redux-persist';
 import thunk from 'redux-thunk';
 
+import configReducer from "../features/configurations/configurationSlide";
+import reservationReducer from "../features/reservation/reservationSlice";
 
 const rootReducer = { 
-  configuration:configReducer
+  configuration:configReducer,
+  reservations:reservationReducer
  }
+
+
 
 const persistConfig = {
   key: 'root',
@@ -17,10 +20,13 @@ const persistConfig = {
 
 const persistedReducer = persistCombineReducers(persistConfig, rootReducer)
 
+
 export const store = configureStore({
   reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== 'production',
-  middleware: thunk
+  // middleware: thunk
 })
+
+export type IRootState = ReturnType<typeof store.getState>
 
 export const persistor = persistStore(store)
