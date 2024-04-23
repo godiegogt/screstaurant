@@ -1,7 +1,5 @@
 import React, { Component, FC, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import PropTypes from 'prop-types'
-import { Container, Text } from '../common'
 import CustomerItem from './CustomerItem'
 import { materialTheme } from '../../constants'
 import { useDispatch, useSelector } from 'react-redux'

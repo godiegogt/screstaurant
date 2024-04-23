@@ -54,7 +54,7 @@ export class DishesComponent extends Component {
    
   render() {
 
-    console.log('dishes',dishes)
+   
 
     return (
         <Container title={'Platillos'}>

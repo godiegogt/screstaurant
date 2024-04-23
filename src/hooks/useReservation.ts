@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../app/store'
 import IOrder, { IDish } from '../interfaces/IOrder'
 import { IReservation } from '../interfaces'
-import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder } from '../features/reservation/reservationSlice'
+import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer} from '../features/reservation/reservationSlice'
 import { generateuuid } from '../utils/idgenerator'
 
 
@@ -15,7 +15,7 @@ const useReservation = () => {
 
         let reservation = reservations.find(item => item.room == selectors.room && item.table == selectors.table);
 
-        console.log('reservation found',reservation);
+       
         
        
         if (reservation == undefined) {
@@ -73,11 +73,27 @@ return order
 
 }
 
+const changeOfCustomer=(order:IOrder,newCustomerId:number)=>{
+   const order2:IOrder={
+UUID:order.UUID,
+dish:order.dish,
+customer:newCustomerId,
+reservation_UUID:order.reservation_UUID,
+state:order.state
+   }
+//    console.log('item',order2);
+//    console.log('Rservations',reservations[0].orders[0])
+
+   dispatch(changeCustomer(order2)) 
+
+}
+
     return (
         {
             addOrder,
             getOrdersByReservation,
-            deleteOrder
+            deleteOrder,
+            changeOfCustomer
         }
     )
 }

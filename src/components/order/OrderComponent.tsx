@@ -7,7 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import { useReservation } from '../../hooks'
 import { IOrder } from '../../interfaces'
-import { deleteOrder } from '../../features/reservation/reservationSlice'
+
+
+import ChangeCustomerModal from './ChangeCustomerModal'
 
 const products = [
   {
@@ -37,7 +39,7 @@ useEffect(() => {
 const loadOrders=()=>{
   const orders=getOrdersByReservation();
   orders!=undefined&&setOrdrs(orders);
-  console.log('¿',orders)
+
 }
 
 const {getOrdersByReservation}=useReservation()
@@ -52,6 +54,7 @@ const {getOrdersByReservation}=useReservation()
       </View>
       <View style={[styles.tr, styles.headerTr]}>
         <Text bold>#</Text>
+        <Text bold styles={{textAlign:'left'}}>0</Text>
         <Text bold>Detalle</Text>
         <Text bold>Precio</Text>
       </View>
@@ -75,16 +78,30 @@ interface IOrderItem{
 
 const OrderItem: FC<IOrderItem> = ({item}) => {
   const [isVisible, setIsVisible] = useState(false);
- const {deleteOrder} = useReservation();
+  const [isVisibleChangeCustomerModal, setIsVisibleChangeCustomerModal] = useState(false);
+  const [newCustomer, setNewCustomer] = useState('')
+ const {deleteOrder,changeOfCustomer} = useReservation();
+
 
 
   const _deleteOrder=()=>{
 deleteOrder(item)
 setIsVisible(!isVisible)
   }
+
+
+  const changeCustomer=(CustomerId:string)=>{
+    setIsVisibleChangeCustomerModal(!isVisibleChangeCustomerModal);
+    // item.customer=Number(CustomerId);
+    // console.log('order',item);
+    // console.log('new customer: ',CustomerId);
+    // console.log('item',item)
+    changeOfCustomer(item,Number(CustomerId))
+  }
+
   const list = [
     { title: 'Eliminar', onPress: ()=>_deleteOrder() },
-    { title: 'Cambiar de comensal', onPress: () => setIsVisible(false), },
+    { title: 'Cambiar de comensal', onPress: () => { setIsVisible(false), setIsVisibleChangeCustomerModal(true)}, },
     {
       title: 'Cancel',
       containerStyle: { backgroundColor: materialTheme.colors.error },
@@ -93,9 +110,13 @@ setIsVisible(!isVisible)
     },
   ];
 
-  return <TouchableOpacity style={[styles.tr, styles.itemTr]} onPress={() => { setIsVisible(!isVisible) }}>
+  return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state=='new'&&styles.pendingOrder]} onPress={() => { setIsVisible(!isVisible) }}>
+    <ChangeCustomerModal changeCustomer={changeCustomer} isVisible={isVisibleChangeCustomerModal} order={item} toggleModal={()=>setIsVisibleChangeCustomerModal(!setIsVisibleChangeCustomerModal)}/>
     <View style={[styles.tr, styles.itemTrAmount]}>
       <Text>{item.dish.amount?.toString()}</Text>
+    </View>
+    <View style={[styles.tr, styles.itemTrAmount]}>
+      <Text>{item.customer.toString()}</Text>
     </View>
     <View style={[styles.tr, styles.itemTrDetail]}>
       <Text>{item.dish.name}</Text>
@@ -142,7 +163,7 @@ const styles = StyleSheet.create({
     padding: 5
   },
   itemTr: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   itemTrAmount: {
     width: '10%',
@@ -156,5 +177,8 @@ const styles = StyleSheet.create({
     width: '30%',
     flex: 1,
     justifyContent: 'flex-end'
+  },
+  pendingOrder:{
+    backgroundColor:materialTheme.colors.primary_light
   }
 })

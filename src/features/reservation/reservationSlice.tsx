@@ -11,7 +11,7 @@ export const reservationSlide = createSlice({
   reducers: {
 
     selectRoom: (state, action: PayloadAction<number>) => {
-      console.log(action.payload)
+
       state.selectors.room = action.payload;
     },
     selectTable: (state, action: PayloadAction<number>) => {
@@ -41,13 +41,28 @@ export const reservationSlide = createSlice({
 
       if (reservation != undefined && reservation.orders != undefined) {
         const orders: IOrder[] = reservation.orders.filter(item => item.UUID != action.payload.UUID);
-      reservation.orders=orders;
+        reservation.orders = orders;
       }
 
 
+    },
+    changeCustomer: (state, action: PayloadAction<IOrder>) => {
+      //console.log('State: ',state.reservations.find(item=>item.UUID==action.payload.reservation_UUID)?.orders.filter(item=>item.UUID!=action.payload.UUID).push(action.payload));
 
-      state.reservations.find(item => item.UUID == action.payload.reservation_UUID)?.orders.filter(item => item.UUID != action.payload.UUID);
-      console.log('1', state.reservations.find(item => item.UUID == action.payload.reservation_UUID)?.orders.filter(item => item.UUID != action.payload.UUID))
+      // const reservation = state.reservations.find(item => item.UUID == action.payload.reservation_UUID);
+
+      // if (reservation != undefined && reservation.orders != undefined) {
+      //   let orders: IOrder[] = reservation.orders.filter(item => item.UUID != action.payload.UUID);
+      //   orders = [...orders, action.payload]
+      //   console.log('orders: ',orders)
+      //   reservation.orders = orders;
+      // }
+
+      const order = state.reservations.find(item => item.UUID == action.payload.reservation_UUID)?.orders.find(item => item.UUID == action.payload.UUID);
+     if(order){
+    order.customer=action.payload.customer;
+     }
+     
     },
     addDish: (state, action: PayloadAction<IDIshR>) => {
 
@@ -68,7 +83,7 @@ export const reservationSlide = createSlice({
   },
 })
 
-export const { addReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer } = reservationSlide.actions
+export const { addReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer } = reservationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
