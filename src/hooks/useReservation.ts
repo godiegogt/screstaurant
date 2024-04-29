@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../app/store'
 import IOrder, { IDish } from '../interfaces/IOrder'
 import { IReservation } from '../interfaces'
-import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer} from '../features/reservation/reservationSlice'
+import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer, updateOrder} from '../features/reservation/reservationSlice'
 import { generateuuid } from '../utils/idgenerator'
+import axiosClient from '../utils/axiosClient'
 
 
 const useReservation = () => {
@@ -35,7 +36,7 @@ const useReservation = () => {
                 reservation_UUID:reservation.UUID
 
             }
-            order.dish.amount=0;
+            order.dish.amount=1;
             reservation.orders.push(order)
 
             //Add reservation to state
@@ -52,6 +53,7 @@ const useReservation = () => {
                 reservation_UUID:reservation.UUID
 
             }
+            order.dish.amount=1;
 
            
 
@@ -88,12 +90,37 @@ state:order.state
 
 }
 
+const updateOrders=(orders:IOrder[])=>{
+
+dispatch(updateOrder(orders))
+
+}
+
+const sendReservation= async ()=>{
+try {
+    const orders=reservations.find(item=>item.table==selectors.table&&item.room==selectors.room)?.orders.filter(item=>item.state=='new') as IOrder[];
+    const response=  await axiosClient.post('/sendorder',orders) as IOrder[];
+    console.log('response',response);
+    const orders2=reservations.find(item=>item.table==selectors.table&&item.room==selectors.room)?.orders.filter(item=>item.state!='new').concat(response);
+    updateOrders(orders2 as IOrder[])
+
+   
+    
+ 
+    
+} catch (error) {
+    console.log(axiosClient.getUri())
+}
+}
+
     return (
         {
             addOrder,
             getOrdersByReservation,
             deleteOrder,
-            changeOfCustomer
+            changeOfCustomer,
+            sendReservation,
+            updateOrders
         }
     )
 }

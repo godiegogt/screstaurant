@@ -2,14 +2,16 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { BottomSheet, Button, ListItem } from '@rneui/themed'
 import { materialTheme } from '../../constants'
+import { useReservation } from '../../hooks'
 
 const OrderButtonsSection = () => {
+ const reservationhook= useReservation()
   const [isVisible, setIsVisible] = useState(false)
   const list = [
     { title: 'Pre-cuenta' ,
     onPress: () => setIsVisible(false),},
-    { title: 'Cambiar orden de comensal',
-    onPress: () => setIsVisible(false), },
+    // { title: 'Cambiar orden de comensal',
+    // onPress: () => setIsVisible(false), },
     { title: 'Facturar' ,
     onPress: () => setIsVisible(false),},
     { title: 'Descuentos' ,
@@ -21,10 +23,15 @@ const OrderButtonsSection = () => {
       onPress: () => setIsVisible(false),
     },
   ];
+
+const _sendReservation=()=>{
+  reservationhook.sendReservation();
+}
+
   return (
     <View style={styles.OrderButtonsSection}>
       <View style={styles.buttonContainer}>
-      <Button title="Enviar Orden"  />
+      <Button title="Enviar Orden"  onPress={_sendReservation}/>
       </View>
       <View style={styles.buttonContainer}>
       <Button title="Otras opciones"  onPress={()=>{setIsVisible(true)}}/>

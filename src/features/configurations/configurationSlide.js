@@ -4,6 +4,7 @@ export const configurationSlide = createSlice({
   name: 'configuration',
   initialState: {
     isAuth: false,
+    token:''
   },
   reducers: {
     login: (state) => {
@@ -11,14 +12,16 @@ export const configurationSlide = createSlice({
       // doesn't actually mutate the state because it uses the immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.isAuth =true
+      state.isAuth =true,
+      state.token='asd234ad234'
     },
     logOut: (state) => {
         // Redux Toolkit allows us to write "mutating" logic in reducers. It
         // doesn't actually mutate the state because it uses the immer library,
         // which detects changes to a "draft state" and produces a brand new
         // immutable state based off those changes
-        state.isAuth =false
+        state.isAuth =false,
+        state.token=''
       },
 
   

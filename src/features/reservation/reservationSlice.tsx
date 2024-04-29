@@ -27,6 +27,13 @@ export const reservationSlide = createSlice({
 
       state.reservations = [...state.reservations, action.payload]
     },
+    updateOrder: (state, action: PayloadAction<IOrder[]>) => {
+let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reservation_UUID);
+      if(reservation){
+        reservation.orders=action.payload;
+      }
+    },
+    
     deleteReservation: (state, action: PayloadAction<number>) => {
 
       state.reservations = state.reservations.filter(item => item.UUID != action.payload)
@@ -83,7 +90,7 @@ export const reservationSlide = createSlice({
   },
 })
 
-export const { addReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer } = reservationSlide.actions
+export const { addReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer,updateOrder } = reservationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

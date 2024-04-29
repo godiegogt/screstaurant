@@ -54,7 +54,7 @@ const {getOrdersByReservation}=useReservation()
       </View>
       <View style={[styles.tr, styles.headerTr]}>
         <Text bold>#</Text>
-        <Text bold styles={{textAlign:'left'}}>0</Text>
+       
         <Text bold>Detalle</Text>
         <Text bold>Precio</Text>
       </View>
@@ -112,9 +112,9 @@ setIsVisible(!isVisible)
 
   return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state=='new'&&styles.pendingOrder]} onPress={() => { setIsVisible(!isVisible) }}>
     <ChangeCustomerModal changeCustomer={changeCustomer} isVisible={isVisibleChangeCustomerModal} order={item} toggleModal={()=>setIsVisibleChangeCustomerModal(!setIsVisibleChangeCustomerModal)}/>
-    <View style={[styles.tr, styles.itemTrAmount]}>
+    {/* <View style={[styles.tr, styles.itemTrAmount]}>
       <Text>{item.dish.amount?.toString()}</Text>
-    </View>
+    </View> */}
     <View style={[styles.tr, styles.itemTrAmount]}>
       <Text>{item.customer.toString()}</Text>
     </View>
