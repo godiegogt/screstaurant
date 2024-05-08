@@ -10,7 +10,7 @@ export interface IDish{
     id:string
     name:string,
     price:number,
-    amount:number
+    amount?:number
     state?:string
     variations?:Array<IModifiers>
 }

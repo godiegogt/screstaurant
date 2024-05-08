@@ -11,6 +11,7 @@ import { Card } from '@rneui/themed'
 import CustomersContainer from '../customers/CustomersContainer'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
+import { IArticles } from '../../interfaces/services'
 
 const dishes=[
     {
@@ -67,7 +68,11 @@ price:45.45}
 
 ]
 
-const DishesSection =()=> {
+type DishesSectionProps={
+    articles:IArticles[]
+}
+
+const DishesSection =({articles}:DishesSectionProps)=> {
    
  const reservations = useSelector((state:IRootState) => state.reservations.reservations)
 
@@ -79,7 +84,7 @@ const DishesSection =()=> {
                 <CustomersContainer/>
             </View>
          <Box row flex style={styles.container}>
-         {dishes.map(item=><DishItem  key={item.id} item={item} />)  }
+         {articles.map(item=><DishItem  key={item.id} item={item} />)  }
          </Box>
       
            

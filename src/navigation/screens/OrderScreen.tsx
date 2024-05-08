@@ -13,17 +13,63 @@ import OrderContainer from '../../components/order/OrderContainer'
 import CategorySection from '../../components/order/CategorySection'
 import DishesSection from '../../components/order/DishesSection'
 import OrderSection from '../../components/order/OrderSection'
+import axiosClient from '../../utils/axiosClient';
+import { ICategory,IArticles } from '../../interfaces/services';
+import { IDish } from '../../interfaces/IOrder';
 
-export default class OrderScreen extends Component {
+type propsOrder={
 
+}
+
+type stateOrder={
+  categories:ICategory[],
+  articles:IDish[]
+categoryId:string
+}
+
+export default class OrderScreen extends Component<propsOrder,stateOrder> {
+constructor(props:propsOrder){
+  super(props);
+  this.state={
+    categories:[],
+    articles:[],
+    categoryId:"0"
+  }
+}
 
   componentDidMount() {
     lor(this);
+    this.loadCategories();
   }
 
-  componentWillUnmount() {
-
+  componentDidUpdate(prevProps:propsOrder, prevState:stateOrder) {
+    if (
+      prevState.categoryId!=this.state.categoryId
+    ) {
+     this.loadArticles(prevState.categoryId);
+    }
   }
+
+  loadCategories(){
+    axiosClient.get('/getCategories').then(res=>{
+      this.setState({categories:(res as unknown) as ICategory[]});
+      this.state.categories.length>0&&this.changeCategory(this.state.categories[0].id);
+      console.log(res)
+     })
+  }
+
+  loadArticles(id:string){
+    axiosClient.get('/getArticles').then(res=>{
+      this.setState({articles:(res as unknown) as IArticles[]});
+     
+      console.log(res)
+     })
+  }
+
+  changeCategory(id:string){
+    this.setState({categoryId:id});
+  }
+
   render() {
 
 
@@ -47,8 +93,8 @@ export default class OrderScreen extends Component {
         <View style={styles.container}>
          
           <View style={styles.section}>
-            <CategorySection />
-            <DishesSection />
+            <CategorySection categories={this.state.categories} changeCategory={this.changeCategory}/>
+            <DishesSection articles={this.state.articles}/>
           </View>
 
           <View style={styles.section}>

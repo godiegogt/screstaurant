@@ -10,7 +10,7 @@ import CustomDrawerContent from './Menu';
 //Import customer components
 import MenuButton from '../../components/drawer/MenuButton'
 
-import {RoomsScreen,LoginScreen,TablesScreen,OrderScreen } from '../screens'
+import {RoomsScreen,LoginScreen,TablesScreen,OrderScreen,BillScreen } from '../screens'
 
 import { materialTheme } from "../../constants/";
 
@@ -49,6 +49,11 @@ function HomeStack(props) {
         options={{ title: 'Mesas' }}
         name="TablesScreen"
         component={TablesScreen}
+      />
+        <Stack.Screen
+        options={{ title: 'Cuenta' }}
+        name="BillScreen"
+        component={BillScreen}
       />
     </Stack.Navigator>
   );

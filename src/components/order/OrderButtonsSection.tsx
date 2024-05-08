@@ -3,8 +3,10 @@ import React, { useState } from 'react'
 import { BottomSheet, Button, ListItem } from '@rneui/themed'
 import { materialTheme } from '../../constants'
 import { useReservation } from '../../hooks'
+import { useNavigation } from '@react-navigation/native'
 
 const OrderButtonsSection = () => {
+  const {navigate}=  useNavigation();
  const reservationhook= useReservation()
   const [isVisible, setIsVisible] = useState(false)
   const list = [
@@ -13,7 +15,7 @@ const OrderButtonsSection = () => {
     // { title: 'Cambiar orden de comensal',
     // onPress: () => setIsVisible(false), },
     { title: 'Facturar' ,
-    onPress: () => setIsVisible(false),},
+    onPress: () => {setIsVisible(false);navigate('BillScreen')}},
     { title: 'Descuentos' ,
     onPress: () => setIsVisible(false),},
     {
