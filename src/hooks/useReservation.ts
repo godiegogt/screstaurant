@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../app/store'
 import IOrder, { IDish } from '../interfaces/IOrder'
 import { IReservation } from '../interfaces'
-import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer, updateOrder} from '../features/reservation/reservationSlice'
+import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer, updateOrder,updatePaymentType as updatePayment} from '../features/reservation/reservationSlice'
 import { generateuuid } from '../utils/idgenerator'
 import axiosClient from '../utils/axiosClient'
 
@@ -10,6 +10,11 @@ import axiosClient from '../utils/axiosClient'
 const useReservation = () => {
     const {reservations,selectors} = useSelector((state: IRootState) => state.reservations);
     const dispatch = useDispatch()
+    
+    const getReservation=()=>{
+       return reservations.find(item => item.room == selectors.room && item.table == selectors.table);
+    }
+    
     const addOrder = (dish: IDish) => {
 
         //Check if there is any reservation
@@ -26,7 +31,8 @@ const useReservation = () => {
                 room: selectors.room,
                 table: selectors.table,
                 state: 'new',
-                orders: []
+                orders: [],
+                paymentType:'UNIFICADO'
             }
             let order: IOrder = {
                 customer: selectors.customer,
@@ -113,14 +119,31 @@ try {
 }
 }
 
+const updatePaymentType=(method:'UNIFICADO'|'DIVIDIDO')=>{
+dispatch(updatePayment(method));
+}
+
+const getReservationTotal=()=>{
+
+   return getOrdersByReservation()?.reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,)
+}
+
+const getOrderByClintId=(id:number)=>{
+return getOrdersByReservation()?.filter(item=>item.customer==id).reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,)
+}
+
     return (
         {
             addOrder,
-            getOrdersByReservation,
-            deleteOrder,
             changeOfCustomer,
+            deleteOrder,
+            getOrderByClintId,
+            getOrdersByReservation,
+            getReservation,
+            getReservationTotal,
             sendReservation,
-            updateOrders
+            updateOrders,
+            updatePaymentType,
         }
     )
 }

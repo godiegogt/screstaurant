@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { Container } from '../../components/common'
+import { BillSection, BillingSection } from '../../components/bill'
 
 
 const BillScreen = () => {
   return (
     <Container>
-      <Text>BillScreen</Text>
+      <BillSection/>
+      <BillingSection/>
     </Container>
   )
 }

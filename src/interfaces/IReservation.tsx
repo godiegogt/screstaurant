@@ -6,6 +6,8 @@ export default interface IReservation{
     table:number
     state:string
     orders:Array<IOrder>
+    paymentMethod?:string
+    paymentType?:'UNIFICADO'|'DIVIDIDO'
 
 }
 

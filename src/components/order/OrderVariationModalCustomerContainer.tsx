@@ -1,49 +1,34 @@
-import  {  FC } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { FC } from 'react'
+import { View, StyleSheet, FlatList } from 'react-native'
 
 import CustomerItem from '../customers/CustomerItem'
 import { materialTheme } from '../../constants'
+import { ICustomer } from '../../interfaces'
 
 
-
-const customers = [
-  {
-    title: 1,
-    reserved: false,
-
-  },
-  {
-    title: 2,
-    reserved: false,
-
-  },
-  {
-    title: 3,
-    reserved: false,
-
-  },
-  {
-    title: 4,
-    reserved: false,
-
-  }
-]
 
 type OrderVariationModalCustomerContainer = {
- customerId:string,
- changeCustomer:(newCustomerId:string)=>void
+  customers: Array<ICustomer>,
+  customerId: string,
+  changeCustomer: (newCustomerId: string) => void
 }
 
-const OrderVariationModalCustomerContainer: FC<OrderVariationModalCustomerContainer> = ({customerId,changeCustomer}) => {
+const OrderVariationModalCustomerContainer: FC<OrderVariationModalCustomerContainer> = ({ customers, customerId, changeCustomer }) => {
 
   return (
     <View style={styles.container}>
+      <FlatList
+        data={customers}
+        // renderItem={({item}) => <CategoryItem pickRoom={setRoomSelected} roomSelected={roomSelected} key={item.title} title={item.title} />}
+        renderItem={({ item }) => <CustomerItem key={item.title} item={item} pickCustomer={changeCustomer} customerSelected={customerId} />}
+        keyExtractor={item => item.title.toString()}
+        horizontal
+      />
 
-    
-        {
+      {/* {
           customers.map(item => <CustomerItem key={item.title} item={item} pickCustomer={changeCustomer} customerSelected={customerId} />)
-        }
-     
+        } */}
+
 
     </View>
   )
@@ -54,12 +39,12 @@ const OrderVariationModalCustomerContainer: FC<OrderVariationModalCustomerContai
 
 export const styles = StyleSheet.create({
   container: {
-    height:50,
-   
+    height: 50,
+
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginVertical: materialTheme.sizes.BASE 
+    marginVertical: materialTheme.sizes.BASE
 
 
 

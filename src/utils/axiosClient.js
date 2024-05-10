@@ -2,7 +2,7 @@ import axios from 'axios';
 import {store} from '../app/store'; // Import your Redux store
 
 const axiosClient = axios.create({
-  baseURL: 'http://192.168.0.7:3000',
+  baseURL: 'http://192.168.0.3:3000',
   headers:{'Content-Type':'application/json'}
 });
 

@@ -11,23 +11,7 @@ import { IOrder } from '../../interfaces'
 
 import ChangeCustomerModal from './ChangeCustomerModal'
 
-const products = [
-  {
-    amount: 5,
-    detail: 'Hamburguesa doble',
-    price: 45.99
-  },
-  {
-    amount: 5,
-    detail: 'Pasta Alfredo',
-    price: 90.99
-  },
-  {
-    amount: 5,
-    detail: 'Cafe de la casa ñldfgsgsdf sdfsdf sdfsd sds sdfsdf sdfsdf sdfsdf sdfsdf sdf',
-    price: 20.45
-  },
-]
+
 
 const OrderComponent = () => {
 const [ordrs, setOrdrs] = useState<IOrder[]>([]);

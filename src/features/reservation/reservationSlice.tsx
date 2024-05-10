@@ -53,6 +53,18 @@ let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reser
 
 
     },
+    updatePaymentType: (state, action: PayloadAction<'UNIFICADO'|'DIVIDIDO'>) => {
+let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table);
+     if(reservation){
+      reservation.paymentType=action.payload
+     }
+    },
+    updatePaymentMethod: (state, action: PayloadAction<string>) => {
+      let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table);
+           if(reservation){
+            reservation.paymentMethod=action.payload
+           }
+          },
     changeCustomer: (state, action: PayloadAction<IOrder>) => {
       //console.log('State: ',state.reservations.find(item=>item.UUID==action.payload.reservation_UUID)?.orders.filter(item=>item.UUID!=action.payload.UUID).push(action.payload));
 
@@ -90,7 +102,7 @@ let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reser
   },
 })
 
-export const { addReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer,updateOrder } = reservationSlide.actions
+export const { addReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer,updateOrder,updatePaymentType,updatePaymentMethod } = reservationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

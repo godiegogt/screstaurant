@@ -15,7 +15,7 @@ const OrderButtonsSection = () => {
     // { title: 'Cambiar orden de comensal',
     // onPress: () => setIsVisible(false), },
     { title: 'Facturar' ,
-    onPress: () => {setIsVisible(false);navigate('BillScreen')}},
+    onPress: () => {billing()}},
     { title: 'Descuentos' ,
     onPress: () => setIsVisible(false),},
     {
@@ -25,6 +25,18 @@ const OrderButtonsSection = () => {
       onPress: () => setIsVisible(false),
     },
   ];
+
+  const billing=()=>{
+
+    reservationhook.sendReservation().then(()=>{
+      console.log('Ir a facturacion')
+      setIsVisible(false);
+      navigate('BillScreen');
+    });
+
+    
+
+  }
 
 const _sendReservation=()=>{
   reservationhook.sendReservation();

@@ -51,7 +51,7 @@ function HomeStack(props) {
         component={TablesScreen}
       />
         <Stack.Screen
-        options={{ title: 'Cuenta' }}
+        options={{ title: 'Facturar' }}
         name="BillScreen"
         component={BillScreen}
       />
