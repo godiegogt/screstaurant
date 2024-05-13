@@ -111,7 +111,7 @@ total!=undefined&&total>0&&setTotal(total.toFixed(2))
       }
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         <Text h3>Saldo: </Text>
-        <Text h3 styles={{ color: materialTheme.colors.primary }}>{'Q. '+total.toString()}</Text>
+        <Text h3 styles={{ color: materialTheme.colors.primary }} bold>{'Q. '+total.toString()}</Text>
       </View>
 
       <Button title={'Facturar'} onPress={() => { }} />

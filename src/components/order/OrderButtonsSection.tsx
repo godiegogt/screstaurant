@@ -27,11 +27,13 @@ const OrderButtonsSection = () => {
   ];
 
   const billing=()=>{
-
+  
     reservationhook.sendReservation().then(()=>{
       console.log('Ir a facturacion')
       setIsVisible(false);
       navigate('BillScreen');
+    }).catch(e=>{
+      console.log('Error')
     });
 
     

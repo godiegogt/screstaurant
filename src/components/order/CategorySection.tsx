@@ -17,7 +17,7 @@ const CategorySection:FC<ICategorySection> = ({categories,changeCategory}) => {
 
   return (
     <Card>
-      <Card.Title><Text h4  bold>Categoria</Text></Card.Title>
+      <Card.Title><Text h4  bold>Categorias</Text></Card.Title>
       <Card.Divider/>
      
       <FlatList

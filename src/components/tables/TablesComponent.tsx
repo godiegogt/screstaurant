@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
-import PropTypes from 'prop-types'
-import { Container, Text } from '../common'
+import {  Text } from '../common'
 import TableItem from './TableItem'
 import { Card } from '@rneui/themed'
 import PageNavigator from '../common/PageNavigator'
@@ -83,7 +82,7 @@ const TablesComponent=()=> {
   
     return (
       <Card>
-          <Card.Title>Mesas</Card.Title>
+          <Card.Title><Text h4  bold>Mesas</Text></Card.Title>
           <Card.Divider />
           <PageNavigator/>
           <View style={styles.container}>

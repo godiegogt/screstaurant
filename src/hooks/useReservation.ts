@@ -129,7 +129,7 @@ const getReservationTotal=()=>{
 }
 
 const getOrderByClintId=(id:number)=>{
-return getOrdersByReservation()?.filter(item=>item.customer==id).reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,)
+return getOrdersByReservation()?.filter(item=>item.customer==id&&item.state!='canceled').reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,)
 }
 
     return (
