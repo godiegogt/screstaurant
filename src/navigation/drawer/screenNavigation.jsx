@@ -10,7 +10,7 @@ import CustomDrawerContent from './Menu';
 //Import customer components
 import MenuButton from '../../components/drawer/MenuButton'
 
-import {RoomsScreen,LoginScreen,TablesScreen,OrderScreen,BillScreen } from '../screens'
+import {RoomsScreen,LoginScreen,TablesScreen,OrderScreen,BillScreen,ConfigurationScreen,EditPrinterScreen } from '../screens'
 
 import { materialTheme } from "../../constants/";
 
@@ -59,6 +59,35 @@ function HomeStack(props) {
   );
 }
 
+//Config stack
+function ConfigStack(props) {
+
+  return (
+    <Stack.Navigator
+      screenOptions={({ navigation }) => ({
+        headerRight: () => <MenuButton navigation={navigation} />,
+      headerStyle:{backgroundColor:'#3299FE'},
+      headerBackTitleStyle:'#fff',
+      headerTitleStyle:{color:'#fff',textAlign:'center'},
+        presentation: 'card',
+        headerMode: 'screen'
+      })}
+    >
+      <Stack.Screen
+        options={{ title: 'Configuraciones' }}
+        name="ConfigurationScreen"
+        component={ConfigurationScreen}
+      />
+       <Stack.Screen
+        options={{ title: 'Editar impresora' }}
+        name="EditPrinterScreen"
+        component={EditPrinterScreen}
+
+      />
+    </Stack.Navigator>
+  );
+}
+
 
 export function SigninStack(props) {
   return (
@@ -76,6 +105,12 @@ export function SigninStack(props) {
         options={{ headerShown: false }}
         name="LoginScreen"
         component={LoginScreen}
+      />
+        <Stack.Screen
+        options={{ title: 'Editar impresora' }}
+        name="EditPrinterScreen"
+        component={EditPrinterScreen}
+
       />
 
     </Stack.Navigator>
@@ -236,6 +271,25 @@ export function DrawerStack(props) {
               name="users"
               color={focused ? "white" : materialTheme.colors.muted}
             />
+          )
+        }}
+      />
+
+
+      <Drawer.Screen
+        name="ConfigStack"
+        component={ConfigStack}
+        options={{
+          title: 'Configuracion',
+          headerShown: false,
+          unmountOnBlur: true,
+          drawerIcon: ({ focused }) => (
+            <Icon
+              size={20}
+              name="store"
+              color={focused ? "white" : materialTheme.colors.muted}
+            />
+
           )
         }}
       />

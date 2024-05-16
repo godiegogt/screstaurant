@@ -5,6 +5,7 @@ import Alert from './Alert'
 import Text from './Text'
 import RadioButtonList from './RadioButtonList'
 import FormInput from './FormInput'
+import PrinterPicker from './PrinterPicker'
 export {
 Box,
 Container,
@@ -12,5 +13,6 @@ TextComponent,
 Text,
 Alert,
 RadioButtonList,
-FormInput
+FormInput,
+PrinterPicker
 }

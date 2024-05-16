@@ -35,6 +35,10 @@ const dispatch=useDispatch();
    {
        screen:'HomeStack',
        title:'Inicio'
+   },
+   {
+    screen:'ConfigStack',
+    title:'Configuracion'
    }
   ];
 
