@@ -8,7 +8,7 @@ import {useDispatch,useSelector} from 'react-redux';
 
 //Const
 import { printerCongifs } from '../../constants/variables';
-import { updateExportType,updatePrinterConfig } from '../../features/configurations/configurationSlide';
+import { updateExportType,updatePrinterConfig } from '../../features/configurations/configurationSlice';
 import { ListItem } from '@rneui/themed';
 import Theme from '../../constants/Theme';
 

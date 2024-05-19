@@ -10,7 +10,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 
 
 import Theme from '../../constants/Theme';
-import { updatePOSID } from '../../features/configurations/configurationSlide';
+import { updatePOSID } from '../../features/configurations/configurationSlice';
 
 
 

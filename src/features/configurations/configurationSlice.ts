@@ -6,9 +6,9 @@ export const configurationSlide = createSlice({
     isAuth: false,
     token: {
       data: '',
-      expiration_date: ''
+      expiration_date: 0
     },
-    userData: {},
+    userData: {name:"",roomDefaultId:0,userId:0},
     products: [],
     POSBT: '',
     canChangePrice: "Si",
@@ -39,13 +39,13 @@ export const configurationSlide = createSlice({
     pricesNames: []
   },
   reducers: {
-    login: (state) => {
+    login: (state,action:PayloadAction<{name:string,roomDefaultId:number,userId:number}>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       state.isAuth = true,
-        state.token.data = 'asd234ad234'
+      state.userData=action.payload
     },
     logOut: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -71,13 +71,17 @@ export const configurationSlide = createSlice({
     },
     updatePOSID: (state, acition: PayloadAction<string>) => {
       state.POSBT = acition.payload
-    }
+    },
+    updateToken:(state,acition:PayloadAction<{data:string,expiration_date:number}>)=>{
+state.token=acition.payload
+    },
+    
 
 
   },
 })
 
-export const { login, logOut, updateExportType, updatePrinterConfig, updateBluetoothPermission, updatePOSID } = configurationSlide.actions
+export const { login, logOut, updateExportType, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken } = configurationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

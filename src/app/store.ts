@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer, persistStore,persistCombineReducers } from 'redux-persist';
 import thunk from 'redux-thunk';
 
-import configReducer from "../features/configurations/configurationSlide";
+import configReducer from "../features/configurations/configurationSlice";
 import reservationReducer from "../features/reservation/reservationSlice";
 
 const rootReducer = { 

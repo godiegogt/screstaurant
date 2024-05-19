@@ -10,8 +10,8 @@ const TableItem = ({item}) => {
   const {navigate}=  useNavigation();
  const dispatch= useDispatch();
   return (
-    <TouchableOpacity style={styles.container} onPress={()=>{dispatch(selectTable(Number(item.title)));navigate('OrderScreen')}}>
-        <Text style={styles.title} >{item.title}</Text>
+    <TouchableOpacity style={styles.container} onPress={()=>{dispatch(selectTable(Number(item.MesaID)));navigate('OrderScreen')}}>
+        <Text style={styles.title} >{item.Nombre}</Text>
      <Image  source={require('../../assets/img/mesa-de-cena.png')} width={20} height={20}/>
     </TouchableOpacity>
   )
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
         marginLeft:25,
         marginTop:20,
         color:materialTheme.colors.primary,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        fontSize:10
     }
   })

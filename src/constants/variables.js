@@ -1,6 +1,6 @@
 
-export const URL_BASE = 'https://appbac.ccgfel.gt/';
-export const URL_API = URL_BASE + 'Api/';
+export const URL_BASE = 'https://apprest.solutioncenter.com.gt/';
+export const URL_API = URL_BASE + 'Api';
 export const appVersion = 'v1.0.0';
 export const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 export const printerCongifs = [{

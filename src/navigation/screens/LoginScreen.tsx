@@ -6,9 +6,12 @@ import { Button} from '@rneui/themed';
 import Box from '../../components/common/Box'
 import NumericKeyword from '../../components/common/NumericKeyword';
 import { materialTheme } from '../../constants';
-import { login as doLogin, updateBluetoothPermission} from '../../features/configurations/configurationSlide'
+import { login as doLogin, updateBluetoothPermission, updateToken} from '../../features/configurations/configurationSlice'
 import { useDispatch } from 'react-redux';
 import { Alert } from '../../components/common';
+import axios from 'axios'
+import { URL_API } from '../../constants/variables';
+import axiosClient from '../../utils/axiosClient';
 
 const LoginScreen:FC = () => {
   const [valueText, setValueText] = React.useState("");
@@ -50,9 +53,41 @@ const requestCameraPermission = async () => {
     }
 };
 
-const login=()=>{
-  dispatch(doLogin())
+const login= async ()=>{
+
+    // axios({
+    //     method: 'post',
+    //     url: URL_API + 'GetToken',
+    //     headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    //     data: qs.stringify(credentials)
+
+// axiosClient.post('/GetToken',{username:'Administrador',password:'Admin2024$',grant_type:'password'}).then(data=>{
+//     console.log(data)
+// })
+const credentials = {
+    username: 'Administrador',
+    password: 'Admin2024$',
+    grant_type: 'password'
 }
+axios({
+    method: 'post',
+    url: URL_API + '/GetToken',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: credentials
+}).then(data=>{
+    
+   dispatch(updateToken({data:data.data.access_token,expiration_date:data.data.expiration_date}))
+
+    axiosClient.post('/ObtenerUsuarioPorCodigo',{Codigo:valueText}).then((data2:any)=>{
+      
+       dispatch(doLogin({name:data2.Nombre,roomDefaultId:data2.SalonDefaultID,userId:data2.UsuarioID}))
+    })
+})
+
+ // dispatch(doLogin())
+}
+
+
  
   return (
     <View style={styles.container}>

@@ -51,9 +51,9 @@ constructor(props:propsOrder){
   }
 
   loadCategories(){
-    axiosClient.get('/getCategories').then(res=>{
+    axiosClient.post('/ObtenerCategorias').then(res=>{
       this.setState({categories:(res as unknown) as ICategory[]});
-      this.state.categories.length>0&&this.changeCategory(this.state.categories[0].id);
+      this.state.categories.length>0&&this.changeCategory(this.state.categories[0].CategoriaID);
       console.log(res)
      })
   }

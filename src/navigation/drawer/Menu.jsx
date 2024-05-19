@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux';
 
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { appVersion } from "../../constants/variables";
-import { logOut } from "../../features/configurations/configurationSlide";
+import { logOut } from "../../features/configurations/configurationSlice";
 
 
 export default function CustomDrawerContent({
