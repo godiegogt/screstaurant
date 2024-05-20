@@ -125,11 +125,11 @@ dispatch(updatePayment(method));
 
 const getReservationTotal=()=>{
 
-   return getOrdersByReservation()?.reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,)
+   return getOrdersByReservation()?.reduce((accumulator, currentValue) => accumulator + currentValue.dish.Precio,0,)
 }
 
 const getOrderByClintId=(id:number)=>{
-return getOrdersByReservation()?.filter(item=>item.customer==id&&item.state!='canceled').reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,)
+return getOrdersByReservation()?.filter(item=>item.customer==id&&item.state!='canceled').reduce((accumulator, currentValue) => accumulator + currentValue.dish.Precio,0,)
 }
 
     return (
