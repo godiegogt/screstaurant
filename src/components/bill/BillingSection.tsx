@@ -92,7 +92,7 @@ total!=undefined&&total>0&&setTotal(total.toFixed(2))
         selectedIndex={billingType}
         onPress={(value) => {
           setBillingType(value);
-          console.log('billingType',value)
+        
           dispatch(updatePaymentType(value==0?'UNIFICADO':'DIVIDIDO'))
 
         }}

@@ -14,8 +14,8 @@ const PageNavigator = ({ rooms, roomSelected, setRoomSelected }) => {
   const ROOMS_NUMBER = rooms.length;
 
 useEffect(() => {
-  console.log(rooms)
-  console.log(room,roomSelected)
+  //console.log(rooms)
+  //console.log(room,roomSelected)
   
 }, [room])
 
