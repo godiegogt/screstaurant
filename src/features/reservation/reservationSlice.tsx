@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IOrder, IReservation, ISelectors } from '../../interfaces'
 import { IDIshR } from './interfaces'
-
+import moduleName from '../../hooks/useReservation'
+import { TableType } from '../../components/tables/TablesComponent'
 export const reservationSlide = createSlice({
   name: 'reservations',
   initialState: {
-    selectors: { room: 1, table: 0, customer: 1 } as ISelectors,
+    selectors: { room: 1, table: {Nombre:'',MesaID:0,OrdenID:0,NumeroPersonas:0}, customer: 1 } as ISelectors,
     reservations: [] as Array<IReservation>
   },
   reducers: {
@@ -14,7 +15,7 @@ export const reservationSlide = createSlice({
 
       state.selectors.room = action.payload;
     },
-    selectTable: (state, action: PayloadAction<number>) => {
+    selectTable: (state, action: PayloadAction<TableType>) => {
 
       state.selectors.table = action.payload;
     },
@@ -54,13 +55,13 @@ let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reser
 
     },
     updatePaymentType: (state, action: PayloadAction<'UNIFICADO'|'DIVIDIDO'>) => {
-let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table);
+let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table.MesaID);
      if(reservation){
       reservation.paymentType=action.payload
      }
     },
     updatePaymentMethod: (state, action: PayloadAction<string>) => {
-      let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table);
+      let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table.MesaID);
            if(reservation){
             reservation.paymentMethod=action.payload
            }

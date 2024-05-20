@@ -38,22 +38,36 @@ const CustomersContainer: FC<CustomersContainerState> = () => {
  
   const dispatch = useDispatch();
 const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer )
-
+const customersNumber = useSelector((state:IRootState) => state.reservations.selectors.table ).NumeroPersonas
   const pickCustomer = (customerid: number) => {
    
     dispatch(selectCustomer(customerid))
 
   }
 
+  const PrintCustomers=()=>{
+    let customers:Array<any>=[];
+
+
+
+    for (let index = 0; index < customersNumber; index++) {
+      
+     //customers+=<CustomerItem key={index+1} item={index+1} pickCustomer={pickCustomer} customerSelected={customerSelected} />
+    customers.push(<CustomerItem key={index+1} item={index+1} pickCustomer={pickCustomer} customerSelected={customerSelected} />)
+    
+    }
+    console.log('Customers',customers)
+    return customers
+  }
 
   return (
     <View style={styles.container}>
 
-      <View style={styles.container}>
-        {
-          tables.map(item => <CustomerItem key={item.title} item={item} pickCustomer={pickCustomer} customerSelected={customerSelected} />)
-        }
-      </View>
+      
+        
+         <PrintCustomers/>
+        
+    
 
     </View>
   )

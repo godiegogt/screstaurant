@@ -50,7 +50,7 @@ const {getOrdersByReservation}=useReservation()
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Total</Text>
-        <Text bold>{'Q '+ordrs.reduce((accumulator, currentValue) => accumulator + currentValue.dish.price,0,).toFixed(2)}</Text>
+        <Text bold>{'Q '+ordrs.reduce((accumulator, currentValue) => accumulator + currentValue.dish.Precio,0,).toFixed(2)}</Text>
       </View>
     </View>
   )
@@ -103,10 +103,10 @@ setIsVisible(!isVisible)
       <Text>{item.customer.toString()}</Text>
     </View>
     <View style={[styles.tr, styles.itemTrDetail]}>
-      <Text>{item.dish.name}</Text>
+      <Text>{item.dish.Nombre}</Text>
     </View>
     <View style={[styles.tr, styles.itemTrPrice]}>
-      <Text  styles={{ textAlign: 'right' }}>{'Q '+item.dish.price.toString()}</Text>
+      <Text  styles={{ textAlign: 'right' }}>{'Q '+item.dish.Precio.toString()}</Text>
     </View>
     <BottomSheet modalProps={{}} isVisible={isVisible}>
       {list.map((l, i) => (

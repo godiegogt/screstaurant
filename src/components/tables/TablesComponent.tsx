@@ -8,7 +8,7 @@ import axiosClient from '../../utils/axiosClient'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 
-type TableType = {
+export type TableType = {
   MesaID: number,
   Nombre: string,
   NumeroPersonas: number
@@ -39,10 +39,12 @@ const TablesComponent = () => {
         setTables((data2 as unknown) as TableType[]);
 
         axiosClient.post('/ObtenerMesasStatus', { SalonID: roomSelected }).then(data3 => {
+          const oldTables=(data2 as unknown) as TableType[]
+          
           //Check if there are new orders
           const newSstatesTables = (data3 as unknown) as TableType[];
           if (newSstatesTables.length > 0) {
-            const tablesWithStatus = data2.map((oldStatus) => {
+            const tablesWithStatus = oldTables.map((oldStatus) => {
               for (let index = 0; index < newSstatesTables.length; index++) {
                 // const newState = newSstatesTables[index];
                 console.log('Old Mesa',oldStatus)

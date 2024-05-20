@@ -10,7 +10,7 @@ const TableItem = ({item}) => {
   const {navigate}=  useNavigation();
  const dispatch= useDispatch();
   return (
-    <TouchableOpacity style={styles.container} onPress={()=>{dispatch(selectTable(Number(item.MesaID)));navigate('OrderScreen')}}>
+    <TouchableOpacity style={styles.container} onPress={()=>{dispatch(selectTable(item));navigate('OrderScreen')}}>
         <Text style={[styles.title,!item.OrdenID>0&&{color:materialTheme.colors.muted}]} >{item.Nombre}</Text>
    {
     item.OrdenID>0?<Image  source={require('../../assets/img/mesa-de-cena.png')} width={20} height={20}/>
