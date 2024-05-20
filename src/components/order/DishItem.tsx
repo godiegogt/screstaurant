@@ -34,7 +34,7 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
   return (
 
     <TouchableOpacity style={styles.container} onPress={toggleModal}>
-      <Text style={styles.text}>{item.name}</Text>
+      <Text style={styles.text}>{item.Nombre}</Text>
       <Image
         source={{ uri: 'https://i.pinimg.com/736x/c6/dc/94/c6dc940457e1a8e6fc55082fd10dd04c.jpg' }}
         containerStyle={styles.image}

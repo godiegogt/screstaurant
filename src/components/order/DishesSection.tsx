@@ -12,6 +12,7 @@ import CustomersContainer from '../customers/CustomersContainer'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import { IArticles } from '../../interfaces/services'
+import { IDish } from '../../interfaces/IOrder'
 
 const dishes=[
     {
@@ -69,7 +70,7 @@ price:45.45}
 ]
 
 type DishesSectionProps={
-    articles:IArticles[]
+    articles:IDish[]
 }
 
 const DishesSection =({articles}:DishesSectionProps)=> {
@@ -84,7 +85,7 @@ const DishesSection =({articles}:DishesSectionProps)=> {
                 <CustomersContainer/>
             </View>
          <Box row flex style={styles.container}>
-         {articles.map(item=><DishItem  key={item.id} item={item} />)  }
+         {articles.map(item=><DishItem  key={item.ProductoID} item={item} />)  }
          </Box>
       
            

@@ -7,9 +7,11 @@ export default interface IOrder{
 }
 
 export interface IDish{
-    id:string
-    name:string,
-    price:number,
+    CocinaID:number,
+    ProductoID:string
+    Nombre:string,
+    Precio:number,
+    Codigo:string,
     amount?:number
     state?:string
     variations?:Array<IModifiers>

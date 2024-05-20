@@ -24,16 +24,17 @@ type propsOrder={
 type stateOrder={
   categories:ICategory[],
   articles:IDish[]
-categoryId:string
+categoryId:number
 }
 
 export default class OrderScreen extends Component<propsOrder,stateOrder> {
 constructor(props:propsOrder){
   super(props);
+  this.changeCategory = this.changeCategory.bind(this)
   this.state={
     categories:[],
     articles:[],
-    categoryId:"0"
+    categoryId:0
   }
 }
 
@@ -46,27 +47,29 @@ constructor(props:propsOrder){
     if (
       prevState.categoryId!=this.state.categoryId
     ) {
-     this.loadArticles(prevState.categoryId);
+     this.loadArticles(this.state.categoryId);
     }
   }
 
   loadCategories(){
     axiosClient.post('/ObtenerCategorias').then(res=>{
       this.setState({categories:(res as unknown) as ICategory[]});
-      this.state.categories.length>0&&this.changeCategory(this.state.categories[0].CategoriaID);
-      console.log(res)
+    
+     this.changeCategory(this.state.categories[0].CategoriaID);
+     
      })
   }
 
-  loadArticles(id:string){
-    axiosClient.get('/getArticles').then(res=>{
-      this.setState({articles:(res as unknown) as IArticles[]});
+  loadArticles(id:number){
+    axiosClient.post('/ObtenerProductos',{CategoriaID:id}).then(res=>{
+      this.setState({articles:(res as unknown) as IDish[]});
      
       console.log(res)
      })
   }
 
-  changeCategory(id:string){
+  changeCategory(id:number){
+    console.log('cat',id)
     this.setState({categoryId:id});
   }
 

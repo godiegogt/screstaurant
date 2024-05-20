@@ -1,5 +1,5 @@
 interface ICategory{
-    CategoriaID:string,
+    CategoriaID:number,
     Nombre:string,
     Orden:number,
 icon?:string

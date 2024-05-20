@@ -8,7 +8,7 @@ import {ICategory} from '../../interfaces/services'
 
 interface ICategorySection{
 categories:ICategory[],
-changeCategory:(id:string)=>void
+changeCategory:(id:number)=>void
 }
 const CategorySection:FC<ICategorySection> = ({categories,changeCategory}) => {
 
@@ -24,7 +24,7 @@ const CategorySection:FC<ICategorySection> = ({categories,changeCategory}) => {
         data={categories}
         // renderItem={({item}) => <CategoryItem pickRoom={setRoomSelected} roomSelected={roomSelected} key={item.title} title={item.title} />}
         renderItem={({item}) => <CategoryItem item={item} changeCategory={changeCategory} />}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.CategoriaID.toString()}
         horizontal
       />
     </Card>

@@ -6,7 +6,7 @@ import { Image, Tile } from '@rneui/themed'
 import { materialTheme } from '../../constants'
 
 const CategoryItem = ({item,changeCategory}) => {
-    
+    console.log(item)
   return (
     
     //   <Tile
@@ -23,7 +23,7 @@ const CategoryItem = ({item,changeCategory}) => {
     //       activeOpacity={2}
     //       width={200}
     //     />
-    <TouchableOpacity style={styles.container} onPress={()=>{changeCategory(item.id)}}>
+    <TouchableOpacity style={styles.container} onPress={()=>{changeCategory(item.CategoriaID)}}>
        
          {/* <Image
             source={{ uri: 'https://i.pinimg.com/736x/c6/dc/94/c6dc940457e1a8e6fc55082fd10dd04c.jpg' }}
@@ -39,7 +39,7 @@ const CategoryItem = ({item,changeCategory}) => {
               color={'#fff'}
             />
           </View>
-             <Text style={styles.text}>{item.name}</Text>
+             <Text style={styles.text}>{item.Nombre}</Text>
     </TouchableOpacity>
    
   )
