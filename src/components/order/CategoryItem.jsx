@@ -6,7 +6,7 @@ import { Image, Tile } from '@rneui/themed'
 import { materialTheme } from '../../constants'
 
 const CategoryItem = ({item,changeCategory}) => {
-    console.log(item)
+   
   return (
     
     //   <Tile

@@ -56,7 +56,7 @@ const customersNumber = useSelector((state:IRootState) => state.reservations.sel
     customers.push(<CustomerItem key={index+1} item={index+1} pickCustomer={pickCustomer} customerSelected={customerSelected} />)
     
     }
-    console.log('Customers',customers)
+
     return customers
   }
 

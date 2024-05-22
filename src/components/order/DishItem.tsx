@@ -6,7 +6,7 @@ import { materialTheme } from '../../constants'
 
 import OrderVariationModal from './OrderVariationModal'
 import { useDispatch } from 'react-redux'
-import { IDish } from '../../interfaces/IOrder'
+import { IDish, IModifiers } from '../../interfaces/IOrder'
 import { IReservation } from '../../interfaces'
 import { useReservation } from '../../hooks'
 
@@ -17,6 +17,7 @@ interface IDishItemProps {
 
 const DishItem: FC<IDishItemProps> = ({ item }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [modifiers, setModifiers] = useState<IModifiers[]>();
   const { addOrder } = useReservation()
 
   const toggleModal = () => {
@@ -41,7 +42,9 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
         PlaceholderContent={<ActivityIndicator />}
 
       />
-      <OrderVariationModal isVisible={isVisible} toggleModal={toggleModal} addOrder={_addOrder} />
+      {
+        isVisible&&<OrderVariationModal ProductoID={item.ProductoID} isVisible={isVisible} toggleModal={toggleModal} addOrder={_addOrder} />
+      }
     </TouchableOpacity>
 
   )

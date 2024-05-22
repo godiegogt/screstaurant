@@ -64,12 +64,12 @@ constructor(props:propsOrder){
     axiosClient.post('/ObtenerProductos',{CategoriaID:id}).then(res=>{
       this.setState({articles:(res as unknown) as IDish[]});
      
-      console.log(res)
+     
      })
   }
 
   changeCategory(id:number){
-    console.log('cat',id)
+  
     this.setState({categoryId:id});
   }
 

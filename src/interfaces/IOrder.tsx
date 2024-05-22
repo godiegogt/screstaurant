@@ -8,7 +8,7 @@ export default interface IOrder{
 
 export interface IDish{
     CocinaID:number,
-    ProductoID:string
+    ProductoID:number
     Nombre:string,
     Precio:number,
     Codigo:string,
@@ -18,6 +18,20 @@ export interface IDish{
 }
 
 export interface IModifiers{
-    UUID:number
-name:string
+UUID?:number
+ModificadorID:number,
+Nombre:string,
+Pregunta:string,
+Tipo:string,
+Respuestas?:IRespuestaModifier[]
 }
+
+
+export interface IRespuestaModifier{
+    RespuestaModificadorID:number,
+    Nombre:string,
+    Tipo:string,
+    Precio:number
+}
+
+

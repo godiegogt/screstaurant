@@ -47,17 +47,15 @@ const TablesComponent = () => {
             const tablesWithStatus = oldTables.map((oldStatus) => {
               for (let index = 0; index < newSstatesTables.length; index++) {
                 // const newState = newSstatesTables[index];
-                console.log('Old Mesa',oldStatus)
-                console.log('Mesa request',newSstatesTables[index])
-                console.log('Mesa validation',oldStatus.MesaID == newSstatesTables[index].MesaID)
+             
                 if (oldStatus.MesaID == newSstatesTables[index].MesaID) {
-                  console.log('Mesa found')
+                
                   return { ...oldStatus, OrdenID: newSstatesTables[index].OrdenID }
                 }               }
-              console.log('Mesa not found')
+            
               return oldStatus
             });
-            console.log('new tables variable', tablesWithStatus)
+           
             setTables(tablesWithStatus)
           } else {
             //DOnt do anything because there arent new orders

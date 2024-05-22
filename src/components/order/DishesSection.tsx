@@ -14,60 +14,7 @@ import { IRootState } from '../../app/store'
 import { IArticles } from '../../interfaces/services'
 import { IDish } from '../../interfaces/IOrder'
 
-const dishes=[
-    {
-        id:'1',
-name:'Cafe',
-price:45.45
-    },
-    {        id:'2',
-        name:'Pasta',
-        price:45.45},
-    {
-        id:'3',
-        name:'Huevos revueltos al gusto',
-        price:45.45
-    },
-    {
-        id:'4',
-        name:'Aperitivos para compartir',
-        price:45.45
-    },
-    {id:'5',
-    name:'Aperitivos para compartir',
-    price:45.45},
-    
-    {id:'6',
-    name:'Aperitivos para compartir',
-    price:45.45},
 
-    
-    {id:'7',
-    name:'Aperitivos para compartir',
-    price:45.45},
-    {id:'8',
-    name:'Aperitivos para compartir',
-    price:45.45}
-,{id:'9',
-name:'Aperitivos para compartir',
-price:45.45}
-
-,{id:'10',
-name:'Aperitivos para compartir',
-price:45.45}
-
-,{id:'11',
-name:'Aperitivos para compartir',
-price:45.45}
-
-,{id:'12',
-name:'Aperitivos para compartir',
-price:45.45}
-
-
-
-
-]
 
 type DishesSectionProps={
     articles:IDish[]

@@ -33,12 +33,12 @@ const [sizeSelected, setsizeSelected] = React.useState(configurations.printerCon
    }
 
    const changePrinter=(index)=>{
-    console.log(index);
+    
     const sizeSelected2=printerCongifs.filter(item=>item.id==index)[0];
     
     dispatch(updatePrinterConfig(sizeSelected2));
     setsizeSelected(sizeSelected2.id)
-    console.log(sizeSelected2);
+
    }
 
    const exporttypes=[

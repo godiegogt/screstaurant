@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../app/store'
-import IOrder, { IDish } from '../interfaces/IOrder'
+import IOrder, { IDish, IModifiers } from '../interfaces/IOrder'
 import { IReservation } from '../interfaces'
 import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer, updateOrder,updatePaymentType as updatePayment} from '../features/reservation/reservationSlice'
 import { generateuuid } from '../utils/idgenerator'
@@ -12,14 +12,14 @@ const useReservation = () => {
     const dispatch = useDispatch()
     
     const getReservation=()=>{
-       return reservations.find(item => item.room == selectors.room && item.table == selectors.table);
+       return reservations.find(item => item.room == selectors.room && item.table.MesaID == selectors.table.MesaID);
     }
     
     const addOrder = (dish: IDish) => {
 
         //Check if there is any reservation
 
-        let reservation = reservations.find(item => item.room == selectors.room && item.table == selectors.table);
+        let reservation = reservations.find(item => item.room == selectors.room && item.table.MesaID == selectors.table.MesaID);
 
        
         
@@ -76,7 +76,7 @@ const useReservation = () => {
     }
 const getOrdersByReservation=()=>{
 
-    const order:IOrder[]|undefined=reservations.find(item=>item.room==selectors.room && item.table==selectors.table)?.orders
+    const order:IOrder[]|undefined=reservations.find(item=>item.room==selectors.room && item.table.MesaID==selectors.table.MesaID)?.orders
 return order
 
 }
@@ -104,10 +104,9 @@ dispatch(updateOrder(orders))
 
 const sendReservation= async ()=>{
 try {
-    const orders=reservations.find(item=>item.table==selectors.table&&item.room==selectors.room)?.orders.filter(item=>item.state=='new') as IOrder[];
+    const orders=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.orders.filter(item=>item.state=='new') as IOrder[];
     const response=  await axiosClient.post('/sendorder',orders) as IOrder[];
-    console.log('response',response);
-    const orders2=reservations.find(item=>item.table==selectors.table&&item.room==selectors.room)?.orders.filter(item=>item.state!='new').concat(response);
+    const orders2=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.orders.filter(item=>item.state!='new').concat(response);
     updateOrders(orders2 as IOrder[])
 
    
@@ -132,12 +131,21 @@ const getOrderByClintId=(id:number)=>{
 return getOrdersByReservation()?.filter(item=>item.customer==id&&item.state!='canceled').reduce((accumulator, currentValue) => accumulator + currentValue.dish.Precio,0,)
 }
 
+const getModifiersByProductoID= async (id:number)=>{
+const request = axiosClient.post('/ObtenerProductoModificadores',{ProductoID:id});
+
+return (request as unknown) as IModifiers[]
+
+}
+
+
     return (
         {
             addOrder,
             changeOfCustomer,
             deleteOrder,
             getOrderByClintId,
+            getModifiersByProductoID,
             getOrdersByReservation,
             getReservation,
             getReservationTotal,
