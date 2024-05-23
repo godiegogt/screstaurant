@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View,ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 
 import {
     BLEPrinter,
-    USBPrinter,
  
   } from "react-native-thermal-receipt-printer-image-qrv2";
 import {PrinterPicker} from '../../components/common/index';
