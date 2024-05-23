@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { FC } from 'react'
 import Box from './Box'
 import NumberButton from './NumberButton'
 import { Button, Input } from '@rneui/themed'
 import { materialTheme } from '../../constants'
+import Text from './Text'
 
 interface INumericKeyword{
     valueText:string,
@@ -19,12 +20,18 @@ const NumericKeyword:FC<INumericKeyword> = ({valueText,setValueText,login}) => {
 setValueText(valueText+number);
     }
 
+const InputTextComponent=()=>{
+return <Box style={styles.inputTextComponent}>
+    <Text styles={{textAlign:'center'}}>{valueText}</Text>
+</Box>
+}
 
+const deleteCharacter=(text:string)=>{
+  setValueText(valueText.substring(0, valueText.length - 1))
+}
     return (
         <Box style={styles.container}>
-            <Box>
-                <Input secureTextEntry textAlign='center' keyboardType='decimal-pad' value={valueText}  onChangeText={(text)=>{setValueText(text)}} inputStyle={{borderColor:materialTheme.colors.muted,borderWidth:1}}/>
-            </Box>
+            <InputTextComponent />
             <Box flex row middle >
                 <NumberButton onPress={changeValue} title='1'/>
                 <NumberButton onPress={changeValue} title='2'/>
@@ -42,7 +49,7 @@ setValueText(valueText+number);
             </Box>
             <Box flex row  center bottom>
             <NumberButton onPress={changeValue} title='0'/>
-            <NumberButton onPress={changeValue} title='<'/>
+            <NumberButton onPress={deleteCharacter} title='<'/>
             </Box>
             <Button size='lg' title={'Entrar'} onPress={login}/>
         </Box>
@@ -57,5 +64,15 @@ const styles = StyleSheet.create({
         height: 400,
         margin:materialTheme.sizes.BASE,
         justifyContent:'space-between'
+    },
+    inputTextComponent:{
+        backgroundColor:'transparent',
+        borderWidth:3,
+        borderColor:materialTheme.colors.muted,
+        height:40,
+       
+        justifyContent:'center',
+        alignItems:'center',
+        flexDirection:'row'
     }
 })
