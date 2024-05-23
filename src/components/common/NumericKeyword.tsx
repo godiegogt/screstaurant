@@ -22,7 +22,7 @@ setValueText(valueText+number);
 
 const InputTextComponent=()=>{
 return <Box style={styles.inputTextComponent}>
-    <Text styles={{textAlign:'center'}}>{valueText}</Text>
+    <Text h3 styles={{textAlign:'center'}}>{valueText}</Text>
 </Box>
 }
 
