@@ -105,8 +105,8 @@ dispatch(updateOrder(orders))
 const sendReservation= async ()=>{
 try {
     const orders=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.orders.filter(item=>item.state=='new') as IOrder[];
-    const response=  await axiosClient.post('/sendorder',orders) as IOrder[];
-    const orders2=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.orders.filter(item=>item.state!='new').concat(response);
+    const response=  await axiosClient.post('/sendorder',orders);
+    const orders2=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.orders.filter(item=>item.state!='new').concat(response.data);
     updateOrders(orders2 as IOrder[])
 
    
@@ -114,7 +114,7 @@ try {
  
     
 } catch (error) {
-    console.log(axiosClient.getUri())
+   // console.log(axiosClient.getUri())
 }
 }
 
@@ -132,9 +132,9 @@ return getOrdersByReservation()?.filter(item=>item.customer==id&&item.state!='ca
 }
 
 const getModifiersByProductoID= async (id:number)=>{
-const request = axiosClient.post('/ObtenerProductoModificadores',{ProductoID:id});
+const request = await axiosClient.post('/ObtenerProductoModificadores',{ProductoID:id});
 
-return (request as unknown) as IModifiers[]
+return (request.data as unknown) as IModifiers[]
 
 }
 

@@ -78,9 +78,9 @@ axios({
     
    dispatch(updateToken({data:data.data.access_token,expiration_date:data.data.expiration_date}))
 
-    axiosClient.post('/ObtenerUsuarioPorCodigo',{Codigo:valueText}).then((data2:any)=>{
+    axiosClient.post('/ObtenerUsuarioPorCodigo',{Codigo:valueText}).then((data2)=>{
       
-       dispatch(doLogin({name:data2.Nombre,roomDefaultId:data2.SalonDefaultID,userId:data2.UsuarioID}))
+       dispatch(doLogin({name:data2.data.Nombre,roomDefaultId:data2.data.SalonDefaultID,userId:data2.data.UsuarioID}))
     })
 })
 

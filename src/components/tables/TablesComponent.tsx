@@ -34,12 +34,12 @@ const TablesComponent = () => {
 
   const getRooms = () => {
     axiosClient.post('/ObtenerSalones').then(data => {
-      setRooms((data as unknown) as RoomType[]);
+      setRooms((data.data as unknown) as RoomType[]);
       axiosClient.post('/ObtenerMesas', { SalonID: roomSelected }).then(data2 => {
-        setTables((data2 as unknown) as TableType[]);
+        setTables((data2.data as unknown) as TableType[]);
 
         axiosClient.post('/ObtenerMesasStatus', { SalonID: roomSelected }).then(data3 => {
-          const oldTables=(data2 as unknown) as TableType[]
+          const oldTables=(data2.data as unknown) as TableType[]
           
           //Check if there are new orders
           const newSstatesTables = (data3 as unknown) as TableType[];

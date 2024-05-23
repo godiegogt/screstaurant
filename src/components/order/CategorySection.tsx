@@ -3,7 +3,6 @@ import { Card } from '@rneui/themed'
 import Text from '../common/Text'
 import CategoryItem from './CategoryItem'
 import { FC, useEffect, useState } from 'react'
-import axiosClient from '../../utils/axiosClient'
 import {ICategory} from '../../interfaces/services'
 
 interface ICategorySection{

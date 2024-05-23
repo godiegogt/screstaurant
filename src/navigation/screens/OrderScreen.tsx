@@ -53,7 +53,7 @@ constructor(props:propsOrder){
 
   loadCategories(){
     axiosClient.post('/ObtenerCategorias').then(res=>{
-      this.setState({categories:(res as unknown) as ICategory[]});
+      this.setState({categories:(res.data as unknown) as ICategory[]});
     
      this.changeCategory(this.state.categories[0].CategoriaID);
      
@@ -62,7 +62,7 @@ constructor(props:propsOrder){
 
   loadArticles(id:number){
     axiosClient.post('/ObtenerProductos',{CategoriaID:id}).then(res=>{
-      this.setState({articles:(res as unknown) as IDish[]});
+      this.setState({articles:(res.data as unknown) as IDish[]});
      
      
      })
