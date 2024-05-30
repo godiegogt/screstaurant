@@ -4,11 +4,14 @@ import {IOrder} from './'
 export default interface IReservation{
     UUID:number
     room:number
-    table:TableType
+    table:TableType,
+    MesaID:number,
     state:string
-    orders:Array<IOrder>
+    DetalleOrden:Array<IOrder>
     paymentMethod?:string
     paymentType?:'UNIFICADO'|'DIVIDIDO'
+    UsuarioID?:number,
+    Terminal:string
 
 }
 

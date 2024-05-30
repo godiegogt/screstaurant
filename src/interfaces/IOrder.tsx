@@ -1,9 +1,25 @@
 export default interface IOrder{
     reservation_UUID:number
     UUID:number
-    customer:number,
+    ComensalNo:number,
     state:string
-    dish:IDish
+    CocinaID?:number,
+    ProductoID:number
+    Descripcion:string,
+    Precio:number,
+    Cantidad:number
+    DetalleModificadores:Array<IModifiers>|[]
+}
+
+
+export interface IModifiers{
+UUID?:number
+ModificadorID:number,
+Descripcion:string,
+Pregunta:string,
+Nombre:string,
+Tipo:string,
+Precio:number
 }
 
 export interface IDish{
@@ -16,22 +32,4 @@ export interface IDish{
     state?:string
     variations?:Array<IModifiers>
 }
-
-export interface IModifiers{
-UUID?:number
-ModificadorID:number,
-Nombre:string,
-Pregunta:string,
-Tipo:string,
-Respuestas?:IRespuestaModifier[]
-}
-
-
-export interface IRespuestaModifier{
-    RespuestaModificadorID:number,
-    Nombre:string,
-    Tipo:string,
-    Precio:number
-}
-
 

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../app/store'
-import IOrder, { IDish, IModifiers } from '../interfaces/IOrder'
+import IOrder, {  IDish, IModifiers } from '../interfaces/IOrder'
 import { IReservation } from '../interfaces'
 import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer, updateOrder,updatePaymentType as updatePayment} from '../features/reservation/reservationSlice'
 import { generateuuid } from '../utils/idgenerator'
@@ -9,6 +9,7 @@ import axiosClient from '../utils/axiosClient'
 
 const useReservation = () => {
     const {reservations,selectors} = useSelector((state: IRootState) => state.reservations);
+    const {userData} = useSelector((state: IRootState) => state.configuration);
     const dispatch = useDispatch()
     
     const getReservation=()=>{
@@ -21,29 +22,32 @@ const useReservation = () => {
 
         let reservation = reservations.find(item => item.room == selectors.room && item.table.MesaID == selectors.table.MesaID);
 
-       
-        
-       
         if (reservation == undefined) {
             //Let's to create a new reservation
             let reservation: IReservation = {
                 UUID: generateuuid(),
                 room: selectors.room,
                 table: selectors.table,
+                MesaID:selectors.table.MesaID,
                 state: 'new',
-                orders: [],
-                paymentType:'UNIFICADO'
+                DetalleOrden: [],
+                paymentType:'UNIFICADO',
+                UsuarioID:userData.userId,
+                Terminal:'PRUEBA_TERMINAL'
             }
             let order: IOrder = {
-                customer: selectors.customer,
-                dish: dish,
+                ComensalNo: selectors.customer,
                 state: 'new',
                 UUID: generateuuid(),
-                reservation_UUID:reservation.UUID
-
+                reservation_UUID:reservation.UUID,
+                ProductoID:dish.ProductoID,
+                Descripcion:dish.Nombre,
+                Precio:dish.Precio,
+                Cantidad:1,
+                DetalleModificadores:[],
             }
-            order.dish.amount=1;
-            reservation.orders.push(order)
+          
+            reservation.DetalleOrden.push(order)
 
             //Add reservation to state
 
@@ -52,14 +56,18 @@ const useReservation = () => {
 
         }else{
             let order: IOrder = {
-                customer: selectors.customer,
-                dish: dish,
+                ComensalNo: selectors.customer,
                 state: 'new',
                 UUID: generateuuid(),
-                reservation_UUID:reservation.UUID
+                reservation_UUID:reservation.UUID,
+                ProductoID:dish.ProductoID,
+                Descripcion:dish.Nombre,
+                Precio:dish.Precio,
+                Cantidad:1,
+                DetalleModificadores:[],
 
             }
-            order.dish.amount=1;
+          
 
            
 
@@ -76,16 +84,15 @@ const useReservation = () => {
     }
 const getOrdersByReservation=()=>{
 
-    const order:IOrder[]|undefined=reservations.find(item=>item.room==selectors.room && item.table.MesaID==selectors.table.MesaID)?.orders
+    const order:IOrder[]|undefined=reservations.find(item=>item.room==selectors.room && item.table.MesaID==selectors.table.MesaID)?.DetalleOrden
 return order
 
 }
 
 const changeOfCustomer=(order:IOrder,newCustomerId:number)=>{
    const order2:IOrder={
-UUID:order.UUID,
-dish:order.dish,
-customer:newCustomerId,
+...order,
+ComensalNo:newCustomerId,
 reservation_UUID:order.reservation_UUID,
 state:order.state
    }
@@ -104,9 +111,9 @@ dispatch(updateOrder(orders))
 
 const sendReservation= async ()=>{
 try {
-    const orders=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.orders.filter(item=>item.state=='new') as IOrder[];
+    const orders=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.DetalleOrden.filter(item=>item.state=='new') as IOrder[];
     const response=  await axiosClient.post('/sendorder',orders);
-    const orders2=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.orders.filter(item=>item.state!='new').concat(response.data);
+    const orders2=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.DetalleOrden.filter(item=>item.state!='new').concat(response.data);
     updateOrders(orders2 as IOrder[])
 
    
@@ -124,11 +131,11 @@ dispatch(updatePayment(method));
 
 const getReservationTotal=()=>{
 
-   return getOrdersByReservation()?.reduce((accumulator, currentValue) => accumulator + currentValue.dish.Precio,0,)
+   return getOrdersByReservation()?.reduce((accumulator, currentValue) => accumulator + currentValue.Precio,0,)
 }
 
 const getOrderByClintId=(id:number)=>{
-return getOrdersByReservation()?.filter(item=>item.customer==id&&item.state!='canceled').reduce((accumulator, currentValue) => accumulator + currentValue.dish.Precio,0,)
+return getOrdersByReservation()?.filter(item=>item.ComensalNo==id&&item.state!='canceled').reduce((accumulator, currentValue) => accumulator + currentValue.Precio,0,)
 }
 
 const getModifiersByProductoID= async (id:number)=>{

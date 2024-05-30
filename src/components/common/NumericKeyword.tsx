@@ -10,9 +10,10 @@ interface INumericKeyword{
     valueText:string,
     setValueText:(value:string)=>void,
     login:()=>void
+    isLoading:boolean
 }
 
-const NumericKeyword:FC<INumericKeyword> = ({valueText,setValueText,login}) => {
+const NumericKeyword:FC<INumericKeyword> = ({valueText,setValueText,login,isLoading}) => {
 
    
 
@@ -51,7 +52,7 @@ const deleteCharacter=(text:string)=>{
             <NumberButton onPress={changeValue} title='0'/>
             <NumberButton onPress={deleteCharacter} title='<'/>
             </Box>
-            <Button size='lg' title={'Entrar'} onPress={login}/>
+            <Button loading={isLoading} disabled={isLoading} size='lg' title={'Entrar'} onPress={login}/>
         </Box>
     )
 }

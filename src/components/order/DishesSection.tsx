@@ -22,7 +22,7 @@ type DishesSectionProps={
 
 const DishesSection =({articles}:DishesSectionProps)=> {
    
- const reservations = useSelector((state:IRootState) => state.reservations.reservations)
+ //const reservations = useSelector((state:IRootState) => state.reservations.reservations)
 
     return (
         <Card>

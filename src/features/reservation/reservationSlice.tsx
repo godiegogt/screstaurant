@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IOrder, IReservation, ISelectors } from '../../interfaces'
-import { IDIshR } from './interfaces'
+import {  IOrderR } from './interfaces'
 import moduleName from '../../hooks/useReservation'
 import { TableType } from '../../components/tables/TablesComponent'
 export const reservationSlide = createSlice({
@@ -31,7 +31,7 @@ export const reservationSlide = createSlice({
     updateOrder: (state, action: PayloadAction<IOrder[]>) => {
 let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reservation_UUID);
       if(reservation){
-        reservation.orders=action.payload;
+        reservation.DetalleOrden=action.payload;
       }
     },
     
@@ -41,27 +41,27 @@ let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reser
     },
     addOrder: (state, action: PayloadAction<IOrder>) => {
 
-      state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0].orders.push(action.payload)
+      state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0].DetalleOrden.push(action.payload)
     },
     deleteOrder: (state, action: PayloadAction<IOrder>) => {
 
       const reservation: IReservation | undefined = state.reservations.find(item => item.UUID == action.payload.reservation_UUID);
 
-      if (reservation != undefined && reservation.orders != undefined) {
-        const orders: IOrder[] = reservation.orders.filter(item => item.UUID != action.payload.UUID);
-        reservation.orders = orders;
+      if (reservation != undefined && reservation.DetalleOrden != undefined) {
+        const orders: IOrder[] = reservation.DetalleOrden.filter(item => item.UUID != action.payload.UUID);
+        reservation.DetalleOrden = orders;
       }
 
 
     },
     updatePaymentType: (state, action: PayloadAction<'UNIFICADO'|'DIVIDIDO'>) => {
-let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table.MesaID);
+let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.MesaID==state.selectors.table.MesaID);
      if(reservation){
       reservation.paymentType=action.payload
      }
     },
     updatePaymentMethod: (state, action: PayloadAction<string>) => {
-      let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.table==state.selectors.table.MesaID);
+      let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.MesaID==state.selectors.table.MesaID);
            if(reservation){
             reservation.paymentMethod=action.payload
            }
@@ -78,21 +78,21 @@ let reservation=state.reservations.find(item=>item.room==state.selectors.room&&i
       //   reservation.orders = orders;
       // }
 
-      const order = state.reservations.find(item => item.UUID == action.payload.reservation_UUID)?.orders.find(item => item.UUID == action.payload.UUID);
+      const order = state.reservations.find(item => item.UUID == action.payload.reservation_UUID)?.DetalleOrden.find(item => item.UUID == action.payload.UUID);
      if(order){
-    order.customer=action.payload.customer;
+    order.ComensalNo=action.payload.ComensalNo;
      }
      
     },
-    addDish: (state, action: PayloadAction<IDIshR>) => {
+    addDish: (state, action: PayloadAction<IOrderR>) => {
 
       const reservation = state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0];
-      reservation.orders.filter(item => item.UUID == action.payload.order_UUID)[0].dish = action.payload.dish
+      reservation.DetalleOrden.filter(item => item.UUID == action.payload.order_UUID)[0] = action.payload
       state.reservations = [...state.reservations, reservation]
     },
-    deleteDish: (state, action: PayloadAction<IDIshR>) => {
+    deleteDish: (state, action: PayloadAction<IOrderR>) => {
 
-      // const dishes = state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0].order.filter(item => item.UUID == action.payload.order_UUID)[0].dish.filter(item => item.UUID != action.payload.dish.UUID);
+      // const dishes = state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0].DetalleOrden.filter(item => item.UUID == action.payload.order_UUID)[0].dish.filter(item => item.UUID != action.payload.dish.UUID);
       // const reservation = state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0];
       // reservation.order.filter(item => item.UUID == action.payload.order_UUID)[0].dish = dishes
       // state.reservations = [...state.reservations, reservation];
