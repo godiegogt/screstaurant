@@ -109,6 +109,11 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
     implementation project(':react-native-vector-icons')
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation files('libs\\NeptuneLiteApi_V2.03.00_20180208.jar')
+
+
+
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
