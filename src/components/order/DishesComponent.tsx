@@ -57,7 +57,7 @@ export class DishesComponent extends Component {
    
 
     return (
-        <Container title={'Platillos'}>
+        <Container >
             <Text h2 bold>Platillos</Text>
          <Box row flex style={styles.container}>
          {dishes.map(item=><DishItem key={item.id} item={item} />)  }

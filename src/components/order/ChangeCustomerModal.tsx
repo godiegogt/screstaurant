@@ -1,9 +1,11 @@
 import { StyleSheet, View } from 'react-native'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Dialog, Divider } from '@rneui/themed';
 import { Text } from '../common'
 import { ICustomer, IOrder } from '../../interfaces';
 import OrderVariationModalCustomerContainer from './OrderVariationModalCustomerContainer';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../app/store';
 
 
 
@@ -20,57 +22,28 @@ interface IChangeCustomerModal {
 
 const ChangeCustomerModal: FC<IChangeCustomerModal> = ({ isVisible, toggleModal, order, changeCustomer }) => {
 
-  const [newCustomer, setNewCustomer] = useState(order.customer.toString())
+  const [newCustomer, setNewCustomer] = useState(order.ComensalNo.toString());
+  const [customers, setcustomers] = useState<any[]>([]);
+  const customersNumber = useSelector((state:IRootState) => state.reservations.selectors.table ).NumeroPersonas;
+
+useEffect(() => {
+  buildCustomersData()
+}, [customersNumber]);
+
+
+const buildCustomersData=()=>{
+  let data=[];
+  for (let index = 0; index < customersNumber; index++) {
+   data.push({title:index+1})
+  }
+  setcustomers(data)
+}
 
   const change = () => {
     setNewCustomer(newCustomer);
     changeCustomer(newCustomer);
   }
-  const customers = [
-    {
-      title: 1,
-      reserved: false,
-  
-    },
-    {
-      title: 2,
-      reserved: false,
-  
-    },
-    {
-      title: 3,
-      reserved: false,
-  
-    },
-    {
-      title: 4,
-      reserved: false,
-  
-    }
-    ,
-    {
-      title: 5,
-      reserved: false,
-  
-    }
-    ,
-    {
-      title: 6,
-      reserved: false,
-  
-    }
-    ,
-    {
-      title: 7,
-      reserved: false,
-  
-    },
-    {
-      title: 8,
-      reserved: false,
-  
-    }
-  ]
+ 
   
   return (
     <Dialog isVisible={isVisible} onBackdropPress={toggleModal}>

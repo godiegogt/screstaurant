@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 
 import CustomerItem from '../customers/CustomerItem'
@@ -7,13 +7,19 @@ import { ICustomer } from '../../interfaces'
 
 
 
+
 type OrderVariationModalCustomerContainer = {
-  customers: Array<ICustomer>,
+ 
   customerId: string,
   changeCustomer: (newCustomerId: string) => void
+  customers:any[]
 }
 
-const OrderVariationModalCustomerContainer: FC<OrderVariationModalCustomerContainer> = ({ customers, customerId, changeCustomer }) => {
+const OrderVariationModalCustomerContainer: FC<OrderVariationModalCustomerContainer> = ({  customers,customerId, changeCustomer }) => {
+ 
+
+
+
 
   return (
     <View style={styles.container}>

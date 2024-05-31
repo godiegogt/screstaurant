@@ -11,7 +11,7 @@ const  CustomerItem = ({item,pickCustomer,customerSelected}) => {
 
 
 const pickRoom2=()=>{
-    pickCustomer(item);
+    pickCustomer(item.title);
     // navigate('OrderScreen')
 }
 
@@ -23,7 +23,7 @@ const pickRoom2=()=>{
               solid
               color={item==customerSelected?materialTheme.colors.primary:materialTheme.colors.primary_light}
             />
-      <Text style={styles.text}>{item}</Text>
+      <Text style={styles.text}>{item.title}</Text>
     </TouchableOpacity>
   )
 }
