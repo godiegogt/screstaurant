@@ -17,17 +17,17 @@ interface IDishItemProps {
 
 const DishItem: FC<IDishItemProps> = ({ item }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [modifiers, setModifiers] = useState<IModifiers[]>();
-  const { addOrder } = useReservation()
+  const { addOrder } = useReservation();
+  const [newDish, setNewDish] = useState(item)
 
   const toggleModal = () => {
     setIsVisible(!isVisible)
   }
 
-  const _addOrder = () => {
+  const _addOrder = (selecciones:any) => {
 
 
-    addOrder(item)
+    addOrder(newDish,selecciones)
     toggleModal();
   }
 
@@ -35,7 +35,7 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
   return (
 
     <TouchableOpacity style={styles.container} onPress={toggleModal}>
-      <Text style={styles.text}>{item.Nombre}</Text>
+      <Text style={styles.text}>{newDish.Nombre}</Text>
       <Image
         source={{ uri: 'https://i.pinimg.com/736x/c6/dc/94/c6dc940457e1a8e6fc55082fd10dd04c.jpg' }}
         containerStyle={styles.image}
@@ -43,7 +43,7 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
 
       />
       {
-        isVisible&&<OrderVariationModal ProductoID={item.ProductoID} isVisible={isVisible} toggleModal={toggleModal} addOrder={_addOrder} />
+        isVisible&&<OrderVariationModal ProductoID={newDish.ProductoID} isVisible={isVisible} toggleModal={toggleModal} addOrder={_addOrder} changeDish={setNewDish}/>
       }
     </TouchableOpacity>
 

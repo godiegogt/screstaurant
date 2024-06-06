@@ -5,9 +5,11 @@ import { IReservation } from '../interfaces'
 import { addReservation,addOrder as addOrderR, deleteOrder as _deleteOrder, changeCustomer, updateOrder,updatePaymentType as updatePayment} from '../features/reservation/reservationSlice'
 import { generateuuid } from '../utils/idgenerator'
 import axiosClient from '../utils/axiosClient'
+import { useState } from 'react'
 
 
 const useReservation = () => {
+   const [isLoadingReservation, setisLoadingReservation] = useState(false)
     const {reservations,selectors} = useSelector((state: IRootState) => state.reservations);
     const {userData} = useSelector((state: IRootState) => state.configuration);
     const dispatch = useDispatch()
@@ -16,12 +18,12 @@ const useReservation = () => {
        return reservations.find(item => item.room == selectors.room && item.table.MesaID == selectors.table.MesaID);
     }
     
-    const addOrder = (dish: IDish) => {
+    const addOrder = async (dish: IDish,selecciones:any) => {
 
         //Check if there is any reservation
 
         let reservation = reservations.find(item => item.room == selectors.room && item.table.MesaID == selectors.table.MesaID);
-
+        console.log('reservation: ',reservation)
         if (reservation == undefined) {
             //Let's to create a new reservation
             let reservation: IReservation = {
@@ -44,9 +46,9 @@ const useReservation = () => {
                 Descripcion:dish.Nombre,
                 Precio:dish.Precio,
                 Cantidad:1,
-                DetalleModificadores:[],
+                DetalleModificadores:selecciones,
             }
-          
+         
             reservation.DetalleOrden.push(order)
 
             //Add reservation to state
@@ -64,7 +66,7 @@ const useReservation = () => {
                 Descripcion:dish.Nombre,
                 Precio:dish.Precio,
                 Cantidad:1,
-                DetalleModificadores:[],
+                DetalleModificadores:selecciones,
 
             }
           
@@ -111,10 +113,22 @@ dispatch(updateOrder(orders))
 
 const sendReservation= async ()=>{
 try {
-    const orders=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.DetalleOrden.filter(item=>item.state=='new') as IOrder[];
-    const response=  await axiosClient.post('/sendorder',orders);
-    const orders2=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.DetalleOrden.filter(item=>item.state!='new').concat(response.data);
-    updateOrders(orders2 as IOrder[])
+    setisLoadingReservation(true)
+    let reservation=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room) as unknown as IReservation;
+    reservation.DetalleOrden=reservation?.DetalleOrden.filter(item=>item.state=='new') as unknown as IOrder[];
+    const {data,status}=  await axiosClient.post('/CrearOrden',reservation);
+   // const orders2=reservations.find(item=>item.table.MesaID==selectors.table.MesaID&&item.room==selectors.room)?.DetalleOrden.filter(item=>item.state!='new').concat(response.data);
+    console.log('Data: ',data)
+   if(status==200 && data.CodigoError==0){
+    updateOrders(reservation.DetalleOrden.map(item=>{return {...item,state:'created'}}) as IOrder[]);
+    setisLoadingReservation(false)
+    return null
+   }else{ 
+    setisLoadingReservation(false)
+    return data.DescripcionError
+   }
+   
+   
 
    
     
@@ -122,6 +136,8 @@ try {
     
 } catch (error) {
    // console.log(axiosClient.getUri())
+}finally{
+    setisLoadingReservation(false)
 }
 }
 
@@ -159,6 +175,7 @@ return (request.data as unknown) as IModifiers[]
             sendReservation,
             updateOrders,
             updatePaymentType,
+            isLoadingReservation
         }
     )
 }

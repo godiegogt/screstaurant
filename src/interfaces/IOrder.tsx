@@ -16,10 +16,18 @@ export interface IModifiers{
 UUID?:number
 ModificadorID:number,
 Descripcion:string,
-Pregunta:string,
-Nombre:string,
-Tipo:string,
-Precio:number
+Pregunta?:string,
+Nombre?:string,
+Tipo?:string,
+Precio:number,
+Respuestas?:Array<IModifierResponses>|undefined
+}
+
+interface IModifierResponses{
+    RespuestaModificadorID: 8,
+    Nombre: string
+    Tipo: string,
+    Precio: 0.00,
 }
 
 export interface IDish{

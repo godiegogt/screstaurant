@@ -4,9 +4,11 @@ import { BottomSheet, Button, ListItem } from '@rneui/themed'
 import { materialTheme } from '../../constants'
 import { useReservation } from '../../hooks'
 import { useNavigation } from '@react-navigation/native'
+import { Alert } from '../common'
 
 const OrderButtonsSection = () => {
   const {navigate}=  useNavigation();
+  const [errormessage, seterrormessage] = useState('')
  const reservationhook= useReservation()
   const [isVisible, setIsVisible] = useState(false)
   const list = [
@@ -40,14 +42,23 @@ const OrderButtonsSection = () => {
 
   }
 
-const _sendReservation=()=>{
-  reservationhook.sendReservation();
+const _sendReservation=async ()=>{
+  
+const CodigoError=await  reservationhook.sendReservation();
+console.log(CodigoError)
+if(CodigoError==null){
+
+}else{
+seterrormessage(CodigoError)
+}
+
 }
 
   return (
     <View style={styles.OrderButtonsSection}>
+      <Alert message={errormessage} type='warning' setMessage={()=>{seterrormessage('')}}/>
       <View style={styles.buttonContainer}>
-      <Button title="Enviar Orden"  onPress={_sendReservation}/>
+      <Button title="Enviar Orden" disabled={reservationhook.isLoadingReservation} loading={reservationhook.isLoadingReservation}  onPress={_sendReservation}/>
       </View>
       <View style={styles.buttonContainer}>
       <Button title="Otras opciones"  onPress={()=>{setIsVisible(true)}}/>

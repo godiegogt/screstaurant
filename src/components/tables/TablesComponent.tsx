@@ -7,7 +7,7 @@ import PageNavigator from '../common/PageNavigator'
 import axiosClient from '../../utils/axiosClient'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
-
+import { useFocusEffect } from '@react-navigation/native';
 export type TableType = {
   MesaID: number,
   Nombre: string,
@@ -31,18 +31,22 @@ const TablesComponent = () => {
 
   }, [roomSelected]);
 
-
+  useFocusEffect(
+    React.useCallback(() => {
+      getRooms();
+    }, [])
+  );
   const getRooms = () => {
     axiosClient.post('/ObtenerSalones').then(data => {
       setRooms((data.data as unknown) as RoomType[]);
       axiosClient.post('/ObtenerMesas', { SalonID: roomSelected }).then(data2 => {
-        setTables((data2.data as unknown) as TableType[]);
-
+       setTables((data2.data as unknown) as TableType[]);
         axiosClient.post('/ObtenerMesasStatus', { SalonID: roomSelected }).then(data3 => {
           const oldTables=(data2.data as unknown) as TableType[]
-          
+         
           //Check if there are new orders
-          const newSstatesTables = (data3 as unknown) as TableType[];
+          const newSstatesTables = (data3.data as unknown) as TableType[];
+          console.log('Tables: ',newSstatesTables)
           if (newSstatesTables.length > 0) {
             const tablesWithStatus = oldTables.map((oldStatus) => {
               for (let index = 0; index < newSstatesTables.length; index++) {
@@ -55,11 +59,13 @@ const TablesComponent = () => {
             
               return oldStatus
             });
-           
+            console.log('Tables: ',tablesWithStatus)
             setTables(tablesWithStatus)
           } else {
             //DOnt do anything because there arent new orders
           }
+        }).catch(e=>{
+          console.log(e)
         });
 
       })
