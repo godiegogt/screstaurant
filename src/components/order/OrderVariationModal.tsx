@@ -29,7 +29,7 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
   const getModifiers = async () => {
     const responseModifiers = await getModifiersByProductoID(ProductoID);
     if (responseModifiers != null && responseModifiers.length > 0) {
-      console.log('Modifiers: ', responseModifiers)
+   
       setModifiers(responseModifiers);
     }
   }
@@ -47,13 +47,13 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
     // Transformar selecciones a un array con la estructura de salida deseada
     const resultado = Object.values(selecciones)
       .filter(seleccion => seleccion !== null)
-      .map(seleccion => ({
+      .map((seleccion:IModifiers) => ({
         ModificadorID: seleccion.RespuestaModificadorID,
         Descripcion: seleccion.Nombre,
         Precio: seleccion.Precio,
       }));
 
-    console.log('resultado',resultado);
+   
    addOrder(resultado)
 
 

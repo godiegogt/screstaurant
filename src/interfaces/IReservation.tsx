@@ -11,7 +11,11 @@ export default interface IReservation{
     paymentMethod?:string
     paymentType?:'UNIFICADO'|'DIVIDIDO'
     UsuarioID?:number,
-    Terminal:string
+    Terminal:string,
+    OrdenID?:string,
+    CodigoError?: number,
+    DescripcionError?: string,
+    Total?: number,
 
 }
 

@@ -45,7 +45,7 @@ const OrderButtonsSection = () => {
 const _sendReservation=async ()=>{
   
 const CodigoError=await  reservationhook.sendReservation();
-console.log(CodigoError)
+
 if(CodigoError==null){
 
 }else{

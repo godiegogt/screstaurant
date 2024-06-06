@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IOrder, IReservation, ISelectors } from '../../interfaces'
-import {  IOrderR } from './interfaces'
+import { IOrderR } from './interfaces'
 import moduleName from '../../hooks/useReservation'
 import { TableType } from '../../components/tables/TablesComponent'
 export const reservationSlide = createSlice({
   name: 'reservations',
   initialState: {
-    selectors: { room: 1, table: {Nombre:'',MesaID:0,OrdenID:0,NumeroPersonas:0}, customer: 1 } as ISelectors,
+    selectors: { room: 1, table: { Nombre: '', MesaID: 0, OrdenID: 0, NumeroPersonas: 0 }, customer: 1 } as ISelectors,
     reservations: [] as Array<IReservation>
   },
   reducers: {
@@ -28,13 +28,23 @@ export const reservationSlide = createSlice({
 
       state.reservations = [...state.reservations, action.payload]
     },
-    updateOrder: (state, action: PayloadAction<IOrder[]>) => {
-let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reservation_UUID);
-      if(reservation){
-        reservation.DetalleOrden=action.payload;
+    updateReservation: (state, action: PayloadAction<IReservation>) => {
+
+      let reservation = state.reservations.find(item => item.UUID == action.payload.UUID);
+     
+      if (reservation) {
+      
+        Object.assign(reservation, action.payload);
+
       }
     },
-    
+    updateOrder: (state, action: PayloadAction<IOrder[]>) => {
+      let reservation = state.reservations.find(item => item.UUID == action.payload[0].reservation_UUID);
+      if (reservation) {
+        reservation.DetalleOrden = action.payload;
+      }
+    },
+
     deleteReservation: (state, action: PayloadAction<number>) => {
 
       state.reservations = state.reservations.filter(item => item.UUID != action.payload)
@@ -45,27 +55,27 @@ let reservation=state.reservations.find(item=>item.UUID==action.payload[0].reser
     },
     deleteOrder: (state, action: PayloadAction<IOrder>) => {
 
-      const reservation: IReservation | undefined = state.reservations.find(item => item.UUID == action.payload.reservation_UUID);
+      const reservation: IReservation | undefined = state.reservations.find(item => item.MesaID==state.selectors.table.MesaID);
 
       if (reservation != undefined && reservation.DetalleOrden != undefined) {
-        const orders: IOrder[] = reservation.DetalleOrden.filter(item => item.UUID != action.payload.UUID);
+        const orders: IOrder[] = reservation.DetalleOrden.filter(item => item.DetalleID != action.payload.DetalleID);
         reservation.DetalleOrden = orders;
       }
 
 
     },
-    updatePaymentType: (state, action: PayloadAction<'UNIFICADO'|'DIVIDIDO'>) => {
-let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.MesaID==state.selectors.table.MesaID);
-     if(reservation){
-      reservation.paymentType=action.payload
-     }
+    updatePaymentType: (state, action: PayloadAction<'UNIFICADO' | 'DIVIDIDO'>) => {
+      let reservation = state.reservations.find(item => item.room == state.selectors.room && item.MesaID == state.selectors.table.MesaID);
+      if (reservation) {
+        reservation.paymentType = action.payload
+      }
     },
     updatePaymentMethod: (state, action: PayloadAction<string>) => {
-      let reservation=state.reservations.find(item=>item.room==state.selectors.room&&item.MesaID==state.selectors.table.MesaID);
-           if(reservation){
-            reservation.paymentMethod=action.payload
-           }
-          },
+      let reservation = state.reservations.find(item => item.room == state.selectors.room && item.MesaID == state.selectors.table.MesaID);
+      if (reservation) {
+        reservation.paymentMethod = action.payload
+      }
+    },
     changeCustomer: (state, action: PayloadAction<IOrder>) => {
       //console.log('State: ',state.reservations.find(item=>item.UUID==action.payload.reservation_UUID)?.orders.filter(item=>item.UUID!=action.payload.UUID).push(action.payload));
 
@@ -78,16 +88,16 @@ let reservation=state.reservations.find(item=>item.room==state.selectors.room&&i
       //   reservation.orders = orders;
       // }
 
-      const order = state.reservations.find(item => item.UUID == action.payload.reservation_UUID)?.DetalleOrden.find(item => item.UUID == action.payload.UUID);
-     if(order){
-    order.ComensalNo=action.payload.ComensalNo;
-     }
-     
+      const order = state.reservations.find(item => item.UUID == action.payload.reservation_UUID)?.DetalleOrden.find(item => item.DetalleID == action.payload.DetalleID);
+      if (order) {
+        order.ComensalNo = action.payload.ComensalNo;
+      }
+
     },
     addDish: (state, action: PayloadAction<IOrderR>) => {
 
       const reservation = state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0];
-      reservation.DetalleOrden.filter(item => item.UUID == action.payload.order_UUID)[0] = action.payload
+      reservation.DetalleOrden.filter(item => item.DetalleID == action.payload.order_UUID)[0] = action.payload
       state.reservations = [...state.reservations, reservation]
     },
     deleteDish: (state, action: PayloadAction<IOrderR>) => {
@@ -103,7 +113,7 @@ let reservation=state.reservations.find(item=>item.room==state.selectors.room&&i
   },
 })
 
-export const { addReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer,updateOrder,updatePaymentType,updatePaymentMethod } = reservationSlide.actions
+export const { addReservation,updateReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer, updateOrder, updatePaymentType, updatePaymentMethod } = reservationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

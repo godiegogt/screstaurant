@@ -1,6 +1,5 @@
 export default interface IOrder{
     reservation_UUID:number
-    UUID:number
     ComensalNo:number,
     state:string
     CocinaID?:number,
@@ -8,12 +7,17 @@ export default interface IOrder{
     Descripcion:string,
     Precio:number,
     Cantidad:number
-    DetalleModificadores:Array<IModifiers>|[]
+    DetalleModificadores:Array<IModifiers>|[],
+    DetalleID?: number,
+    EstadoID?: number,
+    Saldo?: number,
+    Facturado?: boolean,
 }
 
 
 export interface IModifiers{
-UUID?:number
+UUID?:number,
+RespuestaModificadorID?:number,
 ModificadorID:number,
 Descripcion:string,
 Pregunta?:string,

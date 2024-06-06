@@ -46,7 +46,7 @@ const TablesComponent = () => {
          
           //Check if there are new orders
           const newSstatesTables = (data3.data as unknown) as TableType[];
-          console.log('Tables: ',newSstatesTables)
+        
           if (newSstatesTables.length > 0) {
             const tablesWithStatus = oldTables.map((oldStatus) => {
               for (let index = 0; index < newSstatesTables.length; index++) {
@@ -59,7 +59,6 @@ const TablesComponent = () => {
             
               return oldStatus
             });
-            console.log('Tables: ',tablesWithStatus)
             setTables(tablesWithStatus)
           } else {
             //DOnt do anything because there arent new orders
