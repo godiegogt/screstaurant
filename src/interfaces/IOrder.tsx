@@ -1,5 +1,5 @@
 export default interface IOrder{
-    reservation_UUID:number
+    reservation_UUID?:number
     ComensalNo:number,
     state:string
     CocinaID?:number,

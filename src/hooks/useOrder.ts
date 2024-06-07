@@ -4,21 +4,25 @@ import { IOrder, IReservation } from '../interfaces'
 import { getOrderByOrdenId } from '../services/OrderService';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../app/store';
-import { updateOrder } from '../features/order/orderSlice';
+import { updateOrder,addDetail } from '../features/order/orderSlice';
+import { generateuuid } from '../utils/idgenerator';
+import { IDish, IModifiers } from '../interfaces/IOrder';
 
 type userOrderProps = {
     OrderID?: number
 }
 
-const useOrder = (props: userOrderProps) => {
+const useOrder = () => {
     const { currentOrder } = useSelector((state: IRootState) => state.order);
+    const {  selectors } = useSelector((state: IRootState) => state.reservations);
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        if (props.OrderID) {
-            getOrderById(props.OrderID)
-        }
-    }, [props.OrderID])
+    // useEffect(() => {
+    //     if (props.OrderID) {
+    //         getOrderById(props.OrderID)
+    //     }
+    // }, [props.OrderID])
+
 
     const changeOrder = (order: IReservation) => {
         dispatch(updateOrder(order))
@@ -34,17 +38,31 @@ const useOrder = (props: userOrderProps) => {
 
     }
 
-    const addDetail = (article: IOrder) => {
-        currentOrder?.DetalleOrden.push(article)
-        if (currentOrder) {
-            changeOrder(currentOrder);
+    const _addDetail = (dish: IDish,modifiers:IModifiers[]) => {
+        const order: IOrder = {
+            ComensalNo: selectors.customer,
+            state: 'new',
+            DetalleID: generateuuid(),
+            ProductoID: dish.ProductoID,
+            Descripcion: dish.Nombre,
+            Precio: dish.Precio,
+            Cantidad: 1,
+            DetalleModificadores: modifiers,
         }
+        dispatch(addDetail(order))
+
+    }
+
+    const _deleteDetail=(order:IOrder)=>{
+
+        
 
     }
 
     return (
         {
-            addDetail,
+            addDetail:_addDetail,
+            deleteDetail:_deleteDetail,
             order: currentOrder,
             changeOrder,
             getOrderById

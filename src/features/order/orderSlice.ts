@@ -3,34 +3,38 @@ import { IOrder, IReservation, ISelectors } from '../../interfaces'
 import { TableType } from '../../components/tables/TablesComponent';
 
 export const orderSlide = createSlice({
-  name: 'order',
-  initialState: {
-   currentOrder:{ 
-    UUID:0,
-    room:0,
-    table:{} as TableType,
-    MesaID:0,
-    state:"",
-    DetalleOrden:[] as Array<IOrder>,
-    paymentMethod:"",
-    paymentType:'UNIFICADO',
-    UsuarioID:0,
-    Terminal:"",
-    OrdenID:"",
-    CodigoError: 0,
-    DescripcionError: "",
-    Total: 0,} as IReservation
-  },
-  reducers: {
+    name: 'order',
+    initialState: {
+        currentOrder: {
+            UUID: 0,
+            room: 0,
+            table: {} as TableType,
+            MesaID: 0,
+            state: "",
+            DetalleOrden: [] as Array<IOrder>,
+            paymentMethod: "",
+            paymentType: 'UNIFICADO',
+            UsuarioID: 0,
+            Terminal: "",
+            OrdenID: "",
+            CodigoError: 0,
+            DescripcionError: "",
+            Total: 0,
+        } as IReservation
+    },
+    reducers: {
 
-    updateOrder: (state, action: PayloadAction<IReservation>) => {
-     state.currentOrder=action.payload;
-    }
+        updateOrder: (state, action: PayloadAction<IReservation>) => {
+            state.currentOrder = action.payload;
+        },
+        addDetail: (state, action: PayloadAction<IOrder>) => {
+            state.currentOrder.DetalleOrden.push(action.payload)
+        }
 
-  },
+    },
 })
 
-export const { updateOrder } = orderSlide.actions
+export const { updateOrder,addDetail } = orderSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

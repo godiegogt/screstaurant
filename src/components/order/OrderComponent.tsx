@@ -33,8 +33,14 @@ const OrderComponent = () => {
 
   // }
 const Table=useSelector((state:IRootState)=>state.reservations.selectors.table);
-const {order}= useOrder({OrderID:Table.OrdenID});
+const {order,getOrderById}= useOrder();
 
+useEffect(() => {
+
+ if(Table.OrdenID){
+  getOrderById(Table.OrdenID)
+ }
+}, [Table.OrdenID])
 
 
 

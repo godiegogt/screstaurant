@@ -9,9 +9,6 @@ import { StyleSheet, View } from 'react-native'
 import { Card } from '@rneui/themed'
 
 import CustomersContainer from '../customers/CustomersContainer'
-import { useSelector } from 'react-redux'
-import { IRootState } from '../../app/store'
-import { IArticles } from '../../interfaces/services'
 import { IDish } from '../../interfaces/IOrder'
 
 

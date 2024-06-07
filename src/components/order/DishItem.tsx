@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { IDish, IModifiers } from '../../interfaces/IOrder'
 import { IReservation } from '../../interfaces'
 import { useReservation } from '../../hooks'
+import useOrder from '../../hooks/useOrder'
 
 interface IDishItemProps {
   item: IDish
@@ -17,7 +18,7 @@ interface IDishItemProps {
 
 const DishItem: FC<IDishItemProps> = ({ item }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const { addOrder } = useReservation();
+  const { addDetail } = useOrder();
   const [newDish, setNewDish] = useState(item)
 
   const toggleModal = () => {
@@ -27,7 +28,7 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
   const _addOrder = (selecciones:any) => {
 
 
-    addOrder(newDish,selecciones)
+    addDetail(newDish,selecciones)
     toggleModal();
   }
 
