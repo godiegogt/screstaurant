@@ -9,7 +9,6 @@ import {
 } from 'react-native-responsive-screen';
 
 import { Container } from '../../components/common'
-import OrderContainer from '../../components/order/OrderContainer'
 import CategorySection from '../../components/order/CategorySection'
 import DishesSection from '../../components/order/DishesSection'
 import OrderSection from '../../components/order/OrderSection'
@@ -94,12 +93,10 @@ constructor(props:propsOrder){
     return (
       <Container>
         <View style={styles.container}>
-         
           <View style={styles.section}>
             <CategorySection categories={this.state.categories} changeCategory={this.changeCategory}/>
             <DishesSection articles={this.state.articles}/>
           </View>
-
           <View style={styles.section}>
             <OrderSection />
           </View>

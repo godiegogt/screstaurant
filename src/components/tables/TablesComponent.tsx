@@ -43,7 +43,7 @@ const TablesComponent = () => {
        setTables((data2.data as unknown) as TableType[]);
         axiosClient.post('/ObtenerMesasStatus', { SalonID: roomSelected }).then(data3 => {
           const oldTables=(data2.data as unknown) as TableType[]
-         
+    
           //Check if there are new orders
           const newSstatesTables = (data3.data as unknown) as TableType[];
         

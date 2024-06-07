@@ -11,28 +11,31 @@ import { IOrder, IReservation } from '../../interfaces'
 
 import ChangeCustomerModal from './ChangeCustomerModal'
 import { IModifiers } from '../../interfaces/IOrder'
+import { getOrderByOrdenId } from '../../services/OrderService'
+import { useFocusEffect } from '@react-navigation/native'
+import useOrder from '../../hooks/useOrder'
 
 
 
 const OrderComponent = () => {
-  const [ordrs, setOrdrs] = useState<IOrder[]>([]);
-  const { reservations } = useSelector((state: IRootState) => state.reservations);
-  const { getOrdersByReservation, getReservation } = useReservation();
-  const [reservation, setReservation] = useState<IReservation>();
-  useEffect(() => {
-    loadOrders()
-    setReservation(getReservation())
-  }, [reservations])
+  // const [ordrs, setOrdrs] = useState<IOrder[]>([]);
+  // const { reservations } = useSelector((state: IRootState) => state.reservations);
+  // const { getOrdersByReservation, getReservation } = useReservation();
+  // const [reservation, setReservation] = useState<IReservation>();
+  // useEffect(() => {
+  //   loadOrders()
+  //   setReservation(getReservation())
+  // }, [reservations])
 
-  const loadOrders = () => {
-    const orders = getOrdersByReservation();
-    orders != undefined && setOrdrs(orders);
+  // const loadOrders = () => {
+  //   const orders = getOrdersByReservation();
+  //   orders != undefined && setOrdrs(orders);
 
-  }
+  // }
+const Table=useSelector((state:IRootState)=>state.reservations.selectors.table);
+const {order}= useOrder({OrderID:Table.OrdenID});
 
-  const printOrderNumber = () => {
 
-  }
 
 
   return (
@@ -40,8 +43,8 @@ const OrderComponent = () => {
 
       <>
         <View style={[styles.tr, styles.headerTr]}>
-          <Text bold>{reservation?.table.Nombre ? reservation?.table.Nombre : 'Sin Asignar'}</Text>
-          <Text bold>{reservation?.OrdenID ? reservation?.OrdenID : 'Sin Asignar'}</Text>
+          <Text bold>{Table?.Nombre ? Table.Nombre : 'Sin Asignar'}</Text>
+          <Text bold>{Table?.OrdenID ? Table.OrdenID.toString() : "Sin Asignar"}</Text>
         </View>
         <View style={[styles.tr, styles.headerTr]}>
           <Text bold>#</Text>
@@ -53,11 +56,11 @@ const OrderComponent = () => {
 
 
       {
-        ordrs.map((item, key) => <OrderItem key={key} item={item} />)
+        order?.DetalleOrden.map((item, key) => <OrderItem key={key} item={item} />)
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Total</Text>
-        <Text bold>{'Q ' + ordrs.reduce((accumulator, currentValue) => accumulator + currentValue.Precio, 0,).toFixed(2)}</Text>
+        <Text bold>{'Q ' + order?.DetalleOrden.reduce((accumulator, currentValue) => accumulator + currentValue.Precio, 0,).toFixed(2)}</Text>
       </View>
     </View>
   )

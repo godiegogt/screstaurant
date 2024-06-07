@@ -5,10 +5,11 @@ import thunk from 'redux-thunk';
 
 import configReducer from "../features/configurations/configurationSlice";
 import reservationReducer from "../features/reservation/reservationSlice";
-
+import orderReducer from "../features/order/orderSlice";
 const rootReducer = { 
   configuration:configReducer,
-  reservations:reservationReducer
+  reservations:reservationReducer,
+  order:orderReducer
  }
 
 
