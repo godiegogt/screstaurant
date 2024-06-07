@@ -16,7 +16,6 @@ export default interface IOrder{
 
 
 export interface IModifiers{
-UUID?:number,
 RespuestaModificadorID?:number,
 ModificadorID:number,
 Descripcion:string,

@@ -114,6 +114,17 @@ const useReservation = () => {
             setisLoadingReservation(false);
         }
     }
+
+    const deleteModifier=(order:IOrder,modifier:IModifiers)=>{
+//If its a new modifier dont do nothing but if the modifier already was created in the server,first  delete from it
+if(modifier.RespuestaModificadorID){
+//Request
+}
+
+
+
+    }
+
     const getOrdersByReservation = () => {
 
         const order: IOrder[] | undefined = reservations.find(item => item.room == selectors.room && item.table.MesaID == selectors.table.MesaID)?.DetalleOrden
@@ -210,6 +221,7 @@ const useReservation = () => {
             addOrder,
             changeOfCustomer,
             deleteOrder,
+            deleteModifier,
             getOrderByClintId,
             getModifiersByProductoID,
             getOrdersByReservation,

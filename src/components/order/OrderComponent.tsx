@@ -69,15 +69,22 @@ interface IOrderItem {
 
 const OrderItem: FC<IOrderItem> = ({ item }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisible2, setIsVisible2] = useState(false);
   const [isVisibleChangeCustomerModal, setIsVisibleChangeCustomerModal] = useState(false);
   const [newCustomer, setNewCustomer] = useState('')
-  const { deleteOrder, changeOfCustomer } = useReservation();
+  const { deleteOrder, changeOfCustomer,deleteModifier } = useReservation();
 
 
 
   const _deleteOrder = () => {
     deleteOrder(item)
     setIsVisible(!isVisible)
+  }
+
+  const _deleteModifier=(modifier:IModifiers)=>{
+setIsVisible2(!isVisible2);
+console.log('modifier',modifier)
+//deleteModifier(item,modifier)
   }
 
 
@@ -94,6 +101,16 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
       containerStyle: { backgroundColor: materialTheme.colors.error },
       titleStyle: { color: 'white' },
       onPress: () => setIsVisible(false),
+    },
+  ];
+
+  const list2 = [
+    { title: 'Eliminar', onPress: (modifier:IModifiers) => _deleteModifier(modifier) },
+    {
+      title: 'Cancel',
+      containerStyle: { backgroundColor: materialTheme.colors.error },
+      titleStyle: { color: 'white' },
+      onPress: () => setIsVisible2(false),
     },
   ];
 
@@ -133,7 +150,7 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   }
 
   const OrderItemChildren_1: FC<OrderItemChildren_1Type> = ({ modifier }) => {
-    return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state == 'new' && styles.pendingOrder]} onPress={() => { setIsVisible(!isVisible) }}>
+    return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state == 'new' && styles.pendingOrder]} onPress={() => { setIsVisible2(!isVisible2) }}>
       {/* <View style={[styles.tr, styles.itemTrAmount]}>
           <Text>{item.dish.amount?.toString()}</Text>
         </View> */}
@@ -146,12 +163,12 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
       <View style={[styles.tr, styles.itemTrPrice]}>
         <Text styles={{ textAlign: 'right' }}>{'Q ' + modifier.Precio.toString()}</Text>
       </View>
-      <BottomSheet modalProps={{}} isVisible={isVisible}>
-        {list.map((l, i) => (
+      <BottomSheet modalProps={{}} isVisible={isVisible2}>
+        {list2.map((l, i) => (
           <ListItem
             key={i}
             containerStyle={l.containerStyle}
-            onPress={l.onPress}
+            onPress={()=>{l.onPress(modifier)}}
           >
             <ListItem.Content>
               <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>

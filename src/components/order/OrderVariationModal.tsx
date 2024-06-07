@@ -6,6 +6,7 @@ import { IDish, IModifiers } from '../../interfaces/IOrder'
 import { addOrder } from '../../features/reservation/reservationSlice'
 import { useReservation } from '../../hooks'
 import Formulario from './FormModifiers'
+import { generateuuid } from '../../utils/idgenerator'
 
 
 interface IOrderVariationModal {
@@ -48,9 +49,10 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
     const resultado = Object.values(selecciones)
       .filter(seleccion => seleccion !== null)
       .map((seleccion:IModifiers) => ({
-        ModificadorID: seleccion.RespuestaModificadorID,
+        ModificadorID: seleccion.ModificadorID,
         Descripcion: seleccion.Nombre,
         Precio: seleccion.Precio,
+        RespuestaModificadorID:generateuuid(),
       }));
 
    
