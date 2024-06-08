@@ -5,12 +5,13 @@ import { materialTheme } from '../../constants'
 import { useReservation } from '../../hooks'
 import { useNavigation } from '@react-navigation/native'
 import { Alert } from '../common'
+import useOrder from '../../hooks/useOrder'
 
 const OrderButtonsSection = () => {
-  const {navigate}=  useNavigation();
+  const navigation=  useNavigation();
   const [errormessage, seterrormessage] = useState('')
- const reservationhook= useReservation()
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
+ const orderHook= useOrder();
   const list = [
     { title: 'Pre-cuenta' ,
     onPress: () => setIsVisible(false),},
@@ -30,13 +31,13 @@ const OrderButtonsSection = () => {
 
   const billing=()=>{
   
-    reservationhook.sendReservation().then(()=>{
-      //console.log('Ir a facturacion')
-      setIsVisible(false);
-      navigate('BillScreen');
-    }).catch(e=>{
-      console.log('Error')
-    });
+    // reservationhook.sendReservation().then(()=>{
+    //   //console.log('Ir a facturacion')
+    //   setIsVisible(false);
+    //   navigate('BillScreen');
+    // }).catch(e=>{
+    //   console.log('Error')
+    // });
 
     
 
@@ -44,13 +45,9 @@ const OrderButtonsSection = () => {
 
 const _sendReservation=async ()=>{
   
-const CodigoError=await  reservationhook.sendReservation();
+await  orderHook.sendOrder();
+navigation.navigate("RoomsScreen");
 
-if(CodigoError==null){
-
-}else{
-seterrormessage(CodigoError)
-}
 
 }
 
@@ -58,7 +55,7 @@ seterrormessage(CodigoError)
     <View style={styles.OrderButtonsSection}>
       <Alert message={errormessage} type='warning' setMessage={()=>{seterrormessage('')}}/>
       <View style={styles.buttonContainer}>
-      <Button title="Enviar Orden" disabled={reservationhook.isLoadingReservation} loading={reservationhook.isLoadingReservation}  onPress={_sendReservation}/>
+      <Button title="Enviar Orden" disabled={orderHook.isLoading} loading={orderHook.isLoading}  onPress={_sendReservation}/>
       </View>
       <View style={styles.buttonContainer}>
       <Button title="Otras opciones"  onPress={()=>{setIsVisible(true)}}/>

@@ -8,7 +8,7 @@ export default interface IOrder{
     Precio:number,
     Cantidad:number
     DetalleModificadores:Array<IModifiers>|[],
-    DetalleID?: number,
+    DetalleID: number,
     EstadoID?: number,
     Saldo?: number,
     Facturado?: boolean,

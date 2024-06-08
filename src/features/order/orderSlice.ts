@@ -1,27 +1,32 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IOrder, IReservation, ISelectors } from '../../interfaces'
 import { TableType } from '../../components/tables/TablesComponent';
+import { IModifiers } from '../../interfaces/IOrder';
+import { IDeleteDetailReqItem } from './interfaces/IDeleteDetailReq';
+
+const initialState={
+    currentOrder: {
+        UUID: 0,
+        room: 0,
+        table: {} as TableType,
+        MesaID: 0,
+        state: "",
+        DetalleOrden: [] as Array<IOrder>,
+        paymentMethod: "",
+        paymentType: 'UNIFICADO',
+        UsuarioID: 0,
+        Terminal: "",
+        OrdenID: "",
+        CodigoError: 0,
+        DescripcionError: "",
+        Total: 0,
+    } as IReservation,
+    toDelete:[] as IDeleteDetailReqItem[]
+}
 
 export const orderSlide = createSlice({
     name: 'order',
-    initialState: {
-        currentOrder: {
-            UUID: 0,
-            room: 0,
-            table: {} as TableType,
-            MesaID: 0,
-            state: "",
-            DetalleOrden: [] as Array<IOrder>,
-            paymentMethod: "",
-            paymentType: 'UNIFICADO',
-            UsuarioID: 0,
-            Terminal: "",
-            OrdenID: "",
-            CodigoError: 0,
-            DescripcionError: "",
-            Total: 0,
-        } as IReservation
-    },
+    initialState ,
     reducers: {
 
         updateOrder: (state, action: PayloadAction<IReservation>) => {
@@ -29,12 +34,19 @@ export const orderSlide = createSlice({
         },
         addDetail: (state, action: PayloadAction<IOrder>) => {
             state.currentOrder.DetalleOrden.push(action.payload)
-        }
+        },
+        deleteDetail:(state,action: PayloadAction<number>)=>{
+            state.currentOrder.DetalleOrden=state.currentOrder.DetalleOrden.filter(order=>order.DetalleID!=action.payload)
+        },
+        addToDeleteSate:(state, action: PayloadAction<IDeleteDetailReqItem>)=>{
+            state.toDelete.push(action.payload)
+        },
+        restart:() => initialState
 
     },
 })
 
-export const { updateOrder,addDetail } = orderSlide.actions
+export const { updateOrder,addDetail,deleteDetail,addToDeleteSate,restart } = orderSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

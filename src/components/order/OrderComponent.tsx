@@ -82,11 +82,13 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   const [isVisibleChangeCustomerModal, setIsVisibleChangeCustomerModal] = useState(false);
   const [newCustomer, setNewCustomer] = useState('')
   const { deleteOrder, changeOfCustomer,deleteModifier } = useReservation();
+  const {deleteDetail}= useOrder();
 
 
 
   const _deleteOrder = () => {
-    deleteOrder(item)
+    //A for Articles, M for Modifiers
+    deleteDetail(item,'A')
     setIsVisible(!isVisible)
   }
 
