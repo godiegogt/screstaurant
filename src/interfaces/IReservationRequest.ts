@@ -1,11 +1,11 @@
-interface IReservationRequest{
+export interface IReservationRequest{
     MesaID:number,
     UsuarioID:number,
     Terminal:string,
     DetalleOrden:Array<Orden>
 }
 
-interface Orden{
+export interface Orden{
     ProductoID:number,
     Cantidad:number,
     Precio:number,

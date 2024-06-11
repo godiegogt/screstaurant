@@ -1,4 +1,5 @@
 interface ICreateOrder{
+    OrdenID?:number,
     MesaID: number,
     UsuarioID: number,
     Terminal: string,

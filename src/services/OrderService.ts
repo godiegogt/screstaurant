@@ -15,7 +15,17 @@ export const getOrderByOrdenId = async (id: number) => {
 }
 
 export const createOrder=async (order:ICreateOrder)=>{
-    const { data, status } = await axiosClient.post('/CrearOrden', { order });
+    const { data, status } = await axiosClient.post('/CrearOrden',  order );
+
+    if (status == 200) {
+        return data as IReservation
+    } else {
+        return null
+    }
+}
+
+export const addArticles=async (order:ICreateOrder)=>{
+    const { data, status } = await axiosClient.post('/OrdenAgregarDetalle',  order );
 
     if (status == 200) {
         return data as IReservation
