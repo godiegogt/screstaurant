@@ -23,7 +23,8 @@ Pregunta?:string,
 Nombre?:string,
 Tipo?:string,
 Precio:number,
-Respuestas?:Array<IModifierResponses>|undefined
+Respuestas?:Array<IModifierResponses>|undefined,
+state?:string
 }
 
 interface IModifierResponses{

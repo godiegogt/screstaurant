@@ -3,7 +3,15 @@ interface ICreateOrder{
     MesaID: number,
     UsuarioID: number,
     Terminal: string,
-      DetalleOrden:Array<IDetailOrderItem>
+    DetalleOrden:Array<IDetailOrderItem>
+}
+
+interface IAddOrder{
+    OrdenID?:number,
+    MesaID: number,
+    UsuarioID: number,
+    Terminal: string,
+    DetallesAgregar:Array<IDetailOrderItem>
 }
 
 interface IDetailOrderItem {

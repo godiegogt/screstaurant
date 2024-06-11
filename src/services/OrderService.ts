@@ -24,7 +24,7 @@ export const createOrder=async (order:ICreateOrder)=>{
     }
 }
 
-export const addArticles=async (order:ICreateOrder)=>{
+export const addArticles=async (order:IAddOrder)=>{
     const { data, status } = await axiosClient.post('/OrdenAgregarDetalle',  order );
 
     if (status == 200) {

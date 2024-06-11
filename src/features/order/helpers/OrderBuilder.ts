@@ -15,6 +15,18 @@ export const buildCreateOrder=(table:TableType,userid:number,termianlid:string,o
     return order;
 }
 
+export const buildAddOrder=(table:TableType,userid:number,termianlid:string,orders:Orden[])=>{
+    let order:IAddOrder={
+    MesaID: table.MesaID,
+    OrdenID:table.OrdenID,
+    UsuarioID: userid,
+    Terminal: termianlid,
+    DetallesAgregar:orders
+    }
+
+    return order;
+}
+
 export const buildDetailDelete=(OrderID:number,UserID:number,TerminalName:string,orders:IDeleteDetailReqItem[])=>{
 const data:IDeleteDetailReq={
     OrdenID: OrderID,

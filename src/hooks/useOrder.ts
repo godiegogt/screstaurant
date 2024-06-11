@@ -8,7 +8,7 @@ import { updateOrder, addDetail, deleteDetail, addToDeleteSate, restart } from '
 import { generateuuid } from '../utils/idgenerator';
 import { IDish, IModifiers } from '../interfaces/IOrder';
 import { IDeleteDetailReq, IDeleteDetailReqItem } from '../features/order/interfaces/IDeleteDetailReq';
-import { buildCreateOrder, buildDetailDelete } from '../features/order/helpers/OrderBuilder';
+import { buildAddOrder, buildCreateOrder, buildDetailDelete } from '../features/order/helpers/OrderBuilder';
 
 type userOrderProps = {
     OrderID?: number
@@ -75,7 +75,7 @@ const useOrder = () => {
                  response1=await createOrder(reservation);
             } else {
                 const orders = currentOrder.DetalleOrden.filter(item => item.state == 'new').map((item) => { return { ...item, DetalleID: 0 } });
-                const reservation = buildCreateOrder(selectors.table, userData.userId, 'Terminal 1', orders);
+                const reservation = buildAddOrder(selectors.table, userData.userId, 'Terminal 1', orders);
                 console.log('Add articles: ', reservation);
                 response2=addArticles(reservation);
             }
