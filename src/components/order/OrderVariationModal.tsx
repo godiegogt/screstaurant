@@ -52,7 +52,9 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
         ModificadorID: seleccion.ModificadorID,
         Descripcion: seleccion.Nombre,
         Precio: seleccion.Precio,
-        RespuestaModificadorID:generateuuid(),
+        RespuestaModificadorID: seleccion.RespuestaModificadorID,
+        DetalleModificadorID:generateuuid(),
+        state:'new'
       }));
 
    
@@ -89,7 +91,7 @@ interface IOrderVariationModalItem {
 const OrderVariationModalItem: FC<IOrderVariationModalItem> = ({ item }) => {
   const [selectedIndex, setSelectedIndex] = useState(10)
   return <View>
-    <Text>{item.Pregunta}</Text>
+    <Text>{item.Pregunta?item.Pregunta:''}</Text>
     <View>
       <ButtonGroup
         buttons={item.Respuestas?.map(mod => mod.Nombre)}

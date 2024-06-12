@@ -4,7 +4,7 @@ import { IOrder, IReservation } from '../interfaces'
 import { addArticles, createOrder, deleteDetails, getOrderByOrdenId } from '../services/OrderService';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../app/store';
-import { updateOrder, addDetail, deleteDetail, addToDeleteSate, restart } from '../features/order/orderSlice';
+import { updateOrder, addDetail, deleteDetail,removeDetalleModificadorItem, addToDeleteStore, restart } from '../features/order/orderSlice';
 import { generateuuid } from '../utils/idgenerator';
 import { IDish, IModifiers } from '../interfaces/IOrder';
 import { IDeleteDetailReq, IDeleteDetailReqItem } from '../features/order/interfaces/IDeleteDetailReq';
@@ -20,13 +20,6 @@ const useOrder = () => {
     const { selectors } = useSelector((state: IRootState) => state.reservations);
     const [isLoading, setisLoading] = useState(false);
     const dispatch = useDispatch()
-
-    // useEffect(() => {
-    //     if (props.OrderID) {
-    //         getOrderById(props.OrderID)
-    //     }
-    // }, [props.OrderID])
-
 
     const changeOrder = (order: IReservation) => {
         dispatch(updateOrder(order))
@@ -63,24 +56,24 @@ const useOrder = () => {
             let response2 = null;
             let response3 = null;
             setisLoading(true)
-//This method must does 2 main actions. 1 Create new Orders, 2 Delete orders
+            //This method must does 2 main actions. 1 Create new Orders, 2 Delete orders
 
 
-//Step 1 Create new order/s
+            //Step 1 Create new order/s
             //Verify if the order already exists
             //Otherwise just add new orders and use other service
             if (!selectors.table.OrdenID) {
                 const reservation = buildCreateOrder(selectors.table, userData.userId, 'Terminal 1', currentOrder.DetalleOrden.map((item) => { return { ...item, DetalleID: 0, } }));
                 console.log('New reservation: ', reservation)
-                 response1=await createOrder(reservation);
+                response1 = await createOrder(reservation);
             } else {
                 const orders = currentOrder.DetalleOrden.filter(item => item.state == 'new').map((item) => { return { ...item, DetalleID: 0 } });
                 const reservation = buildAddOrder(selectors.table, userData.userId, 'Terminal 1', orders);
                 console.log('Add articles: ', reservation);
-                response2=addArticles(reservation);
+                response2 = addArticles(reservation);
             }
-          
-//Step 2 Delete orders
+
+            //Step 2 Delete orders
             if (toDelete.length > 0) {
                 //Build data request
                 let details: IDeleteDetailReq = buildDetailDelete(selectors.table.OrdenID as number, userData.userId, 'Temrinal 1', toDelete);
@@ -99,15 +92,15 @@ const useOrder = () => {
 
 
     }
-    const _deleteDetail = (item: any, type: string) => {
+    const _deleteDetail = (item: any) => {
         //If the article exists in the server, delete  from server and store
         let detail: IDeleteDetailReqItem = {
             DetalleID: item.DetalleID,
-            Tipo: type
+            Tipo: 'A'
         }
         if (item.state != 'new') {
             //1. Step Add item to todelete store
-            dispatch(addToDeleteSate(detail))
+            dispatch(addToDeleteStore(detail))
             //2. Step Delete item from store
             dispatch(deleteDetail(item.DetalleID))
 
@@ -119,11 +112,33 @@ const useOrder = () => {
 
     }
 
+    const _deleteModifier=(DetalleOrdenID:number,modifier:any)=>{
+        console.log('DetalleOdenID: ',DetalleOrdenID,' Mod: ',modifier)
+       
+
+        if (modifier.state != 'new') {
+            let detail: IDeleteDetailReqItem = {
+                DetalleID: modifier.DetalleModificadorID,
+                Tipo: 'M'
+            };
+            //1. Step Add item to todelete store
+            dispatch(addToDeleteStore(detail))
+            //2. Step Delete item from store
+            dispatch(removeDetalleModificadorItem({DetalleOrdenID,ModificadorID:modifier.DetalleModificadorID}))
+
+            //Otherwise only delete from store
+        } else {
+            console.log('New modifier: ')
+            dispatch(removeDetalleModificadorItem({DetalleOrdenID,ModificadorID:modifier.DetalleModificadorID}))
+        }
+    }
+
 
     return (
         {
             addDetail: _addDetail,
             deleteDetail: _deleteDetail,
+            deleteModifier:_deleteModifier,
             order: currentOrder,
             changeOrder,
             getOrderById,

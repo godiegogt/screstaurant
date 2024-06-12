@@ -16,6 +16,7 @@ export default interface IOrder{
 
 
 export interface IModifiers{
+DetalleModificadorID?:number,
 RespuestaModificadorID?:number,
 ModificadorID:number,
 Descripcion:string,
@@ -28,7 +29,7 @@ state?:string
 }
 
 interface IModifierResponses{
-    RespuestaModificadorID: 8,
+    RespuestaModificadorID: number,
     Nombre: string
     Tipo: string,
     Precio: 0.00,

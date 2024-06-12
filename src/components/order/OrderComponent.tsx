@@ -2,17 +2,15 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC, useEffect, useState } from 'react'
 import { materialTheme } from '../../constants'
 import { BottomSheet, ListItem } from '@rneui/themed'
-import { Alert, Text } from '../common'
-import { useDispatch, useSelector } from 'react-redux'
+import { Text } from '../common'
+import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import { useReservation } from '../../hooks'
-import { IOrder, IReservation } from '../../interfaces'
+import { IOrder } from '../../interfaces'
 
 
 import ChangeCustomerModal from './ChangeCustomerModal'
 import { IModifiers } from '../../interfaces/IOrder'
-import { getOrderByOrdenId } from '../../services/OrderService'
-import { useFocusEffect } from '@react-navigation/native'
 import useOrder from '../../hooks/useOrder'
 
 
@@ -32,15 +30,15 @@ const OrderComponent = () => {
   //   orders != undefined && setOrdrs(orders);
 
   // }
-const Table=useSelector((state:IRootState)=>state.reservations.selectors.table);
-const {order,getOrderById}= useOrder();
+  const Table = useSelector((state: IRootState) => state.reservations.selectors.table);
+  const { order, getOrderById } = useOrder();
 
-useEffect(() => {
+  useEffect(() => {
 
- if(Table.OrdenID){
-  getOrderById(Table.OrdenID)
- }
-}, [Table.OrdenID])
+    if (Table.OrdenID) {
+      getOrderById(Table.OrdenID)
+    }
+  }, [Table.OrdenID])
 
 
 
@@ -81,23 +79,27 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   const [isVisible2, setIsVisible2] = useState(false);
   const [isVisibleChangeCustomerModal, setIsVisibleChangeCustomerModal] = useState(false);
   const [newCustomer, setNewCustomer] = useState('')
-  const { deleteOrder, changeOfCustomer,deleteModifier } = useReservation();
-  const {deleteDetail}= useOrder();
+  const { deleteOrder, changeOfCustomer } = useReservation();
+  const { deleteDetail, deleteModifier } = useOrder();
+  const [modifierSelected, setModifierSelected] = useState<IModifiers>();
 
 
 
   const _deleteOrder = () => {
     //A for Articles, M for Modifiers
-    deleteDetail(item,'A')
+    deleteDetail(item)
     setIsVisible(!isVisible)
   }
 
-  const _deleteModifier=(modifier:IModifiers)=>{
-setIsVisible2(!isVisible2);
-console.log('modifier',modifier)
-//deleteModifier(item,modifier)
+  const _deleteModifier = () => {
+    setIsVisible2(!isVisible2);
+    console.log('order: ', item)
+    console.log('modifier', modifierSelected);
+    deleteModifier(item.DetalleID,modifierSelected)
   }
+  const _addModifier = () => {
 
+  }
 
   const changeCustomer = (CustomerId: string) => {
     setIsVisibleChangeCustomerModal(!isVisibleChangeCustomerModal);
@@ -105,6 +107,7 @@ console.log('modifier',modifier)
   }
 
   const list = [
+    { title: 'Agregar modificador', onPress: () => _addModifier() },
     { title: 'Eliminar', onPress: () => _deleteOrder() },
     { title: 'Cambiar de comensal', onPress: () => { setIsVisible(false), setIsVisibleChangeCustomerModal(true) }, },
     {
@@ -116,7 +119,7 @@ console.log('modifier',modifier)
   ];
 
   const list2 = [
-    { title: 'Eliminar', onPress: (modifier:IModifiers) => _deleteModifier(modifier) },
+    { title: 'Eliminar', onPress: () => _deleteModifier() },
     {
       title: 'Cancel',
       containerStyle: { backgroundColor: materialTheme.colors.error },
@@ -161,7 +164,7 @@ console.log('modifier',modifier)
   }
 
   const OrderItemChildren_1: FC<OrderItemChildren_1Type> = ({ modifier }) => {
-    return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state == 'new' && styles.pendingOrder]} onPress={() => { setIsVisible2(!isVisible2) }}>
+    return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state == 'new' && styles.pendingOrder]} onPress={() => { setIsVisible2(!isVisible2),setModifierSelected(modifier) }}>
       {/* <View style={[styles.tr, styles.itemTrAmount]}>
           <Text>{item.dish.amount?.toString()}</Text>
         </View> */}
@@ -174,12 +177,21 @@ console.log('modifier',modifier)
       <View style={[styles.tr, styles.itemTrPrice]}>
         <Text styles={{ textAlign: 'right' }}>{'Q ' + modifier.Precio.toString()}</Text>
       </View>
-      <BottomSheet modalProps={{}} isVisible={isVisible2}>
+      
+    </TouchableOpacity>
+  }
+
+  return <>
+    <OrderItemChildren />
+    {
+      item.DetalleModificadores.map((modifier: IModifiers) => <OrderItemChildren_1 key={modifier.RespuestaModificadorID} modifier={modifier} />)
+    }
+    <BottomSheet modalProps={{}} isVisible={isVisible2}>
         {list2.map((l, i) => (
           <ListItem
             key={i}
             containerStyle={l.containerStyle}
-            onPress={()=>{l.onPress(modifier)}}
+            onPress={() => { l.onPress() }}
           >
             <ListItem.Content>
               <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
@@ -187,14 +199,6 @@ console.log('modifier',modifier)
           </ListItem>
         ))}
       </BottomSheet>
-    </TouchableOpacity>
-  }
-
-  return <>
-    <OrderItemChildren />
-    {
-      item.DetalleModificadores.map((modifier: IModifiers) => <OrderItemChildren_1 modifier={modifier} />)
-    }
   </>
 }
 
