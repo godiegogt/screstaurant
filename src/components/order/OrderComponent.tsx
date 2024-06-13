@@ -12,6 +12,7 @@ import { IOrder } from '../../interfaces'
 import ChangeCustomerModal from './ChangeCustomerModal'
 import { IModifiers } from '../../interfaces/IOrder'
 import useOrder from '../../hooks/useOrder'
+import AddManualModifierModal from './AddManualModifierModal'
 
 
 
@@ -80,8 +81,9 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   const [isVisibleChangeCustomerModal, setIsVisibleChangeCustomerModal] = useState(false);
   const [newCustomer, setNewCustomer] = useState('')
   const { deleteOrder, changeOfCustomer } = useReservation();
-  const { deleteDetail, deleteModifier } = useOrder();
+  const { deleteDetail, deleteModifier,addModifier } = useOrder();
   const [modifierSelected, setModifierSelected] = useState<IModifiers>();
+  const [manualModifierModal, setManualModifierModal] = useState(false)
 
 
 
@@ -93,12 +95,10 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
 
   const _deleteModifier = () => {
     setIsVisible2(!isVisible2);
-    console.log('order: ', item)
-    console.log('modifier', modifierSelected);
     deleteModifier(item.DetalleID,modifierSelected)
   }
-  const _addModifier = () => {
-
+  const _addModifier = (modifier:IModifiers) => {
+addModifier(item.DetalleID,modifier)
   }
 
   const changeCustomer = (CustomerId: string) => {
@@ -107,7 +107,7 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   }
 
   const list = [
-    { title: 'Agregar modificador', onPress: () => _addModifier() },
+    { title: 'Agregar modificador', onPress: () => { setIsVisible(false), setManualModifierModal(true) } },
     { title: 'Eliminar', onPress: () => _deleteOrder() },
     { title: 'Cambiar de comensal', onPress: () => { setIsVisible(false), setIsVisibleChangeCustomerModal(true) }, },
     {
@@ -129,8 +129,9 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   ];
 
   const OrderItemChildren = () => {
-    return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state == 'new' && styles.pendingOrder]} onPress={() => { setIsVisible(!isVisible) }}>
+    return <TouchableOpacity style={[styles.tr, styles.itemTr, (item.state == 'new' ||item.state=='edited' ) && styles.pendingOrder]} onPress={() => { setIsVisible(!isVisible) }}>
       <ChangeCustomerModal changeCustomer={changeCustomer} isVisible={isVisibleChangeCustomerModal} order={item} toggleModal={() => setIsVisibleChangeCustomerModal(!setIsVisibleChangeCustomerModal)} />
+      <AddManualModifierModal key={item.DetalleID} isVisible={manualModifierModal} toggleModal={()=>setManualModifierModal(!manualModifierModal)} addManualModifier={_addModifier}/>
       {/* <View style={[styles.tr, styles.itemTrAmount]}>
       <Text>{item.dish.amount?.toString()}</Text>
     </View> */}
@@ -164,10 +165,7 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   }
 
   const OrderItemChildren_1: FC<OrderItemChildren_1Type> = ({ modifier }) => {
-    return <TouchableOpacity style={[styles.tr, styles.itemTr, item.state == 'new' && styles.pendingOrder]} onPress={() => { setIsVisible2(!isVisible2),setModifierSelected(modifier) }}>
-      {/* <View style={[styles.tr, styles.itemTrAmount]}>
-          <Text>{item.dish.amount?.toString()}</Text>
-        </View> */}
+    return <TouchableOpacity style={[styles.tr, styles.itemTr, modifier.state == 'new' && styles.pendingOrder]} onPress={() => { setIsVisible2(!isVisible2),setModifierSelected(modifier) }}>
       <View style={[styles.tr, styles.itemTrAmount]}>
         <Text>{item.ComensalNo.toString()}</Text>
       </View>

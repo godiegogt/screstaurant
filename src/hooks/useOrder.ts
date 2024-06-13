@@ -4,7 +4,7 @@ import { IOrder, IReservation } from '../interfaces'
 import { addArticles, createOrder, deleteDetails, getOrderByOrdenId } from '../services/OrderService';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../app/store';
-import { updateOrder, addDetail, deleteDetail,removeDetalleModificadorItem, addToDeleteStore, restart } from '../features/order/orderSlice';
+import { updateOrder, addDetail, deleteDetail,removeDetalleModificadorItem, addToDeleteStore, restart, addModifier } from '../features/order/orderSlice';
 import { generateuuid } from '../utils/idgenerator';
 import { IDish, IModifiers } from '../interfaces/IOrder';
 import { IDeleteDetailReq, IDeleteDetailReqItem } from '../features/order/interfaces/IDeleteDetailReq';
@@ -29,7 +29,6 @@ const useOrder = () => {
         const response = await getOrderByOrdenId(OrderID);
         if (response != null && response?.CodigoError == 0 && response.DetalleOrden.length > 0) {
             changeOrder(response)
-            console.log('Orden', response)
         }
 
 
@@ -50,6 +49,11 @@ const useOrder = () => {
 
     }
 
+    const _addModifier=(DetalleID:number,modifier:IModifiers)=>{
+        console.log(modifier)
+dispatch(addModifier({DetalleID,modifier}))
+    }
+
     const sendOrder = async () => {
         try {
             let response1 = null;
@@ -64,12 +68,12 @@ const useOrder = () => {
             //Otherwise just add new orders and use other service
             if (!selectors.table.OrdenID) {
                 const reservation = buildCreateOrder(selectors.table, userData.userId, 'Terminal 1', currentOrder.DetalleOrden.map((item) => { return { ...item, DetalleID: 0, } }));
-                console.log('New reservation: ', reservation)
                 response1 = await createOrder(reservation);
             } else {
-                const orders = currentOrder.DetalleOrden.filter(item => item.state == 'new').map((item) => { return { ...item, DetalleID: 0 } });
+                //Filter by state new and edited (it has new modifiers)
+                //Then filter modifiers by state new
+                const orders = currentOrder.DetalleOrden.filter(item => item.state == 'new' || item.state=='edited').map((item2) => { return { ...item2, DetalleID: item2.state=='new'?0:item2.DetalleID,DetalleModificadores:item2.DetalleModificadores.filter(item3=>item3.state=='new') } });
                 const reservation = buildAddOrder(selectors.table, userData.userId, 'Terminal 1', orders);
-                console.log('Add articles: ', reservation);
                 response2 = addArticles(reservation);
             }
 
@@ -113,9 +117,6 @@ const useOrder = () => {
     }
 
     const _deleteModifier=(DetalleOrdenID:number,modifier:any)=>{
-        console.log('DetalleOdenID: ',DetalleOrdenID,' Mod: ',modifier)
-       
-
         if (modifier.state != 'new') {
             let detail: IDeleteDetailReqItem = {
                 DetalleID: modifier.DetalleModificadorID,
@@ -128,7 +129,6 @@ const useOrder = () => {
 
             //Otherwise only delete from store
         } else {
-            console.log('New modifier: ')
             dispatch(removeDetalleModificadorItem({DetalleOrdenID,ModificadorID:modifier.DetalleModificadorID}))
         }
     }
@@ -137,6 +137,7 @@ const useOrder = () => {
     return (
         {
             addDetail: _addDetail,
+            addModifier:_addModifier,
             deleteDetail: _deleteDetail,
             deleteModifier:_deleteModifier,
             order: currentOrder,

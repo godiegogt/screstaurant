@@ -35,6 +35,15 @@ export const orderSlide = createSlice({
         addDetail: (state, action: PayloadAction<IOrder>) => {
             state.currentOrder.DetalleOrden.push(action.payload)
         },
+        addModifier: (state, action: PayloadAction<{DetalleID:number,modifier:IModifiers}>) => {
+           // state.currentOrder.DetalleOrden.push(action.payload);
+           const { DetalleID, modifier } = action.payload;
+           const orderItem = state.currentOrder.DetalleOrden.find(item => item.DetalleID === DetalleID);
+           if (orderItem) {
+            orderItem.DetalleModificadores = [...orderItem.DetalleModificadores,modifier];
+            orderItem.state='edited'
+        }
+        },
         deleteDetail:(state,action: PayloadAction<number>)=>{
             state.currentOrder.DetalleOrden=state.currentOrder.DetalleOrden.filter(order=>order.DetalleID!=action.payload)
         },
@@ -56,7 +65,7 @@ export const orderSlide = createSlice({
     },
 })
 
-export const { updateOrder,addDetail,deleteDetail,removeDetalleModificadorItem,addToDeleteStore,restart } = orderSlide.actions
+export const { updateOrder,addDetail,addModifier,deleteDetail,removeDetalleModificadorItem,addToDeleteStore,restart } = orderSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
