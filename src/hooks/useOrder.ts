@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { FC, useEffect, useState } from 'react'
 import { IOrder, IReservation } from '../interfaces'
-import { addArticles, createOrder, deleteDetails, getOrderByOrdenId } from '../services/OrderService';
+import { addArticles, changeOfCustomer, createOrder, deleteDetails, getOrderByOrdenId } from '../services/OrderService';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../app/store';
-import { updateOrder, addDetail, deleteDetail,removeDetalleModificadorItem, addToDeleteStore, restart, addModifier } from '../features/order/orderSlice';
+import { updateOrder, addDetail, deleteDetail, removeDetalleModificadorItem, addToDeleteStore, restart, addModifier, changeCustomer } from '../features/order/orderSlice';
 import { generateuuid } from '../utils/idgenerator';
 import { IDish, IModifiers } from '../interfaces/IOrder';
 import { IDeleteDetailReq, IDeleteDetailReqItem } from '../features/order/interfaces/IDeleteDetailReq';
 import { buildAddOrder, buildCreateOrder, buildDetailDelete } from '../features/order/helpers/OrderBuilder';
+import { IChangeCustomerReq } from '../features/order/interfaces/IChangeCustomerReq';
 
 type userOrderProps = {
     OrderID?: number
@@ -49,9 +50,9 @@ const useOrder = () => {
 
     }
 
-    const _addModifier=(DetalleID:number,modifier:IModifiers)=>{
+    const _addModifier = (DetalleID: number, modifier: IModifiers) => {
         console.log(modifier)
-dispatch(addModifier({DetalleID,modifier}))
+        dispatch(addModifier({ DetalleID, modifier }))
     }
 
     const sendOrder = async () => {
@@ -72,7 +73,7 @@ dispatch(addModifier({DetalleID,modifier}))
             } else {
                 //Filter by state new and edited (it has new modifiers)
                 //Then filter modifiers by state new
-                const orders = currentOrder.DetalleOrden.filter(item => item.state == 'new' || item.state=='edited').map((item2) => { return { ...item2, DetalleID: item2.state=='new'?0:item2.DetalleID,DetalleModificadores:item2.DetalleModificadores.filter(item3=>item3.state=='new') } });
+                const orders = currentOrder.DetalleOrden.filter(item => item.state == 'new' || item.state == 'edited').map((item2) => { return { ...item2, DetalleID: item2.state == 'new' ? 0 : item2.DetalleID, DetalleModificadores: item2.DetalleModificadores.filter(item3 => item3.state == 'new') } });
                 const reservation = buildAddOrder(selectors.table, userData.userId, 'Terminal 1', orders);
                 response2 = addArticles(reservation);
             }
@@ -84,13 +85,14 @@ dispatch(addModifier({DetalleID,modifier}))
                 response3 = await deleteDetails(details);
 
             }
-            //If all ok Restart Order State
-            dispatch(restart())
+
 
 
         } catch (error) {
 
         } finally {
+            //If all ok Restart Order State
+            dispatch(restart())
             setisLoading(false)
         }
 
@@ -116,7 +118,7 @@ dispatch(addModifier({DetalleID,modifier}))
 
     }
 
-    const _deleteModifier=(DetalleOrdenID:number,modifier:any)=>{
+    const _deleteModifier = (DetalleOrdenID: number, modifier: any) => {
         if (modifier.state != 'new') {
             let detail: IDeleteDetailReqItem = {
                 DetalleID: modifier.DetalleModificadorID,
@@ -125,21 +127,52 @@ dispatch(addModifier({DetalleID,modifier}))
             //1. Step Add item to todelete store
             dispatch(addToDeleteStore(detail))
             //2. Step Delete item from store
-            dispatch(removeDetalleModificadorItem({DetalleOrdenID,ModificadorID:modifier.DetalleModificadorID}))
+            dispatch(removeDetalleModificadorItem({ DetalleOrdenID, ModificadorID: modifier.DetalleModificadorID }))
 
             //Otherwise only delete from store
         } else {
-            dispatch(removeDetalleModificadorItem({DetalleOrdenID,ModificadorID:modifier.DetalleModificadorID}))
+            dispatch(removeDetalleModificadorItem({ DetalleOrdenID, ModificadorID: modifier.DetalleModificadorID }))
         }
+    }
+
+    const _changeOfCustomer = async (DetalleID: number, CustomerID: number) => {
+
+        const changeCustomerData: IChangeCustomerReq = {
+            ComensalNo: CustomerID,
+            OrderID: selectors.table.OrdenID,
+            DetalleID: DetalleID,
+            Terminal: 'Terminal 1',
+            Usuario: userData.userId
+        }
+        // console.log('CHange COmensal: ', changeCustomerData)
+        // return
+
+        try {
+            setisLoading(true);
+            const response = await changeOfCustomer(changeCustomerData);
+            if (response == null) {
+                Alert.alert('No fue posible cambiar comensal.');
+                return
+            }
+            dispatch(changeCustomer(changeCustomerData))
+        } catch (error) {
+
+        } finally {
+            setisLoading(false)
+        }
+
+
+
     }
 
 
     return (
         {
             addDetail: _addDetail,
-            addModifier:_addModifier,
+            addModifier: _addModifier,
             deleteDetail: _deleteDetail,
-            deleteModifier:_deleteModifier,
+            deleteModifier: _deleteModifier,
+            changeOfCustomer: _changeOfCustomer,
             order: currentOrder,
             changeOrder,
             getOrderById,

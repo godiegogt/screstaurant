@@ -3,6 +3,7 @@ import { IOrder, IReservation, ISelectors } from '../../interfaces'
 import { TableType } from '../../components/tables/TablesComponent';
 import { IModifiers } from '../../interfaces/IOrder';
 import { IDeleteDetailReqItem } from './interfaces/IDeleteDetailReq';
+import { IChangeCustomerReq } from './interfaces/IChangeCustomerReq';
 
 const initialState={
     currentOrder: {
@@ -60,12 +61,20 @@ export const orderSlide = createSlice({
         addToDeleteStore:(state, action: PayloadAction<IDeleteDetailReqItem>)=>{
             state.toDelete.push(action.payload)
         },
-        restart:() => initialState
+        restart:() => initialState,
+        changeCustomer: (state, action: PayloadAction<IChangeCustomerReq>) => {
+      
+            const order = state.currentOrder.DetalleOrden.find(item => item.DetalleID == action.payload.DetalleID);
+            if (order) {
+              order.ComensalNo = action.payload.ComensalNo;
+            }
+      
+          },
 
     },
 })
 
-export const { updateOrder,addDetail,addModifier,deleteDetail,removeDetalleModificadorItem,addToDeleteStore,restart } = orderSlide.actions
+export const { updateOrder,addDetail,addModifier,deleteDetail,removeDetalleModificadorItem,addToDeleteStore,restart,changeCustomer } = orderSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

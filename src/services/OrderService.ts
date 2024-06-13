@@ -1,3 +1,4 @@
+import { IChangeCustomerReq } from "../features/order/interfaces/IChangeCustomerReq";
 import { IDeleteDetailReq } from "../features/order/interfaces/IDeleteDetailReq";
 import { IReservation } from "../interfaces";
 import axiosClient from "../utils/axiosClient"
@@ -39,6 +40,18 @@ export const deleteDetails = async (details: IDeleteDetailReq) => {
 
     if (status == 200) {
         return data as IReservation
+    } else {
+        return null
+    }
+
+
+}
+
+export const changeOfCustomer = async (customerData: IChangeCustomerReq) => {
+    const { data, status } = await axiosClient.post('/OrdenCambiarComensal',  customerData );
+
+    if (status == 200 && data.CodigoError==0) {
+        return data
     } else {
         return null
     }
