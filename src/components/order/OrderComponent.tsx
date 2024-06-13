@@ -13,6 +13,8 @@ import ChangeCustomerModal from './ChangeCustomerModal'
 import { IModifiers } from '../../interfaces/IOrder'
 import useOrder from '../../hooks/useOrder'
 import AddManualModifierModal from './AddManualModifierModal'
+import { IChangeCustomerReq } from '../../features/order/interfaces/IChangeCustomerReq'
+import { calcularPrecioTotal } from '../../features/order/helpers/CalcTotal'
 
 
 
@@ -65,7 +67,7 @@ const OrderComponent = () => {
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Total</Text>
-        <Text bold>{'Q ' + order?.DetalleOrden.reduce((accumulator, currentValue) => accumulator + currentValue.Precio, 0,).toFixed(2)}</Text>
+        <Text bold>{'Q ' + calcularPrecioTotal(order).toFixed(2)}</Text>
       </View>
     </View>
   )
@@ -80,8 +82,7 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
   const [isVisible2, setIsVisible2] = useState(false);
   const [isVisibleChangeCustomerModal, setIsVisibleChangeCustomerModal] = useState(false);
   const [newCustomer, setNewCustomer] = useState('')
-  const { deleteOrder, changeOfCustomer } = useReservation();
-  const { deleteDetail, deleteModifier,addModifier } = useOrder();
+  const { deleteDetail, deleteModifier,addModifier,changeOfCustomer } = useOrder();
   const [modifierSelected, setModifierSelected] = useState<IModifiers>();
   const [manualModifierModal, setManualModifierModal] = useState(false)
 
@@ -103,7 +104,7 @@ addModifier(item.DetalleID,modifier)
 
   const changeCustomer = (CustomerId: string) => {
     setIsVisibleChangeCustomerModal(!isVisibleChangeCustomerModal);
-    changeOfCustomer(item, Number(CustomerId))
+    changeOfCustomer(item.DetalleID,parseInt(CustomerId));
   }
 
   const list = [
