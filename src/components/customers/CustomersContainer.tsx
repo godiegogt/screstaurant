@@ -37,12 +37,14 @@ type CustomersContainerState = {
 const CustomersContainer: FC<CustomersContainerState> = () => {
  
   const dispatch = useDispatch();
-const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer )
+//const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer );
+const [customerSelected, setCustomerSelected] = useState(1)
+
 const customersNumber = useSelector((state:IRootState) => state.reservations.selectors.table ).NumeroPersonas
   const pickCustomer = (customerid: number) => {
    
-    dispatch(selectCustomer(customerid))
-
+   // dispatch(selectCustomer(customerid))
+setCustomerSelected(customerid)
   }
 
   const PrintCustomers=()=>{
