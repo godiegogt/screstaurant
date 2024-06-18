@@ -6,9 +6,12 @@ import { useReservation } from '../../hooks'
 import { useNavigation } from '@react-navigation/native'
 import { Alert } from '../common'
 import useOrder from '../../hooks/useOrder'
+import { useDispatch } from 'react-redux'
+import { restart } from '../../features/order/orderSlice'
 
 const OrderButtonsSection = () => {
   const navigation=  useNavigation();
+ const dispatch= useDispatch()
   const [errormessage, seterrormessage] = useState('')
   const [isVisible, setIsVisible] = useState(false);
  const orderHook= useOrder();
@@ -51,6 +54,11 @@ navigation.navigate("RoomsScreen");
 
 }
 
+const returnToIndex=()=>{
+  dispatch(restart())
+  navigation.navigate("RoomsScreen");
+}
+
   return (
     <View style={styles.OrderButtonsSection}>
       <Alert message={errormessage} type='warning' setMessage={()=>{seterrormessage('')}}/>
@@ -60,7 +68,7 @@ navigation.navigate("RoomsScreen");
       <View style={styles.buttonContainer}>
       <Button title="Otras opciones"  onPress={()=>{setIsVisible(true)}}/>
       </View>
-      <Button title="Salir"  />
+      <Button title="Salir"  onPress={returnToIndex}/>
 
       <BottomSheet modalProps={{}} isVisible={isVisible}>
       {list.map((l, i) => (
