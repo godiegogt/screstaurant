@@ -42,7 +42,7 @@ const OrderButtonsSection = () => {
     //   console.log('Error')
     // });
 
-    
+    navigation.navigate('BillScreen');
 
   }
 
