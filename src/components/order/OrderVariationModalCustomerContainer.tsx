@@ -26,7 +26,7 @@ const OrderVariationModalCustomerContainer: FC<OrderVariationModalCustomerContai
       <FlatList
         data={customers}
         // renderItem={({item}) => <CategoryItem pickRoom={setRoomSelected} roomSelected={roomSelected} key={item.title} title={item.title} />}
-        renderItem={({ item }) => <CustomerItem key={item.title} item={item} pickCustomer={changeCustomer} customerSelected={customerId} />}
+        renderItem={({ item }) => <CustomerItem key={item.title} item={item.title} pickCustomer={changeCustomer} customerSelected={customerId} />}
         keyExtractor={item => item.title.toString()}
         horizontal
       />
