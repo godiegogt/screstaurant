@@ -8,8 +8,6 @@ const RadioItem=({item,value,onChange})=>{
 const screenWidth=Dimensions.get('window').width;
     return(
         <View style={{flexDirection:"row",alignItems:"center",width:screenWidth/4,paddingRight:Theme.sizes.BASE*0.8}}>
-            
-            
             <CheckBox
              style={{padding:0,margin:0}}
         containerStyle={{padding:0,margin:0}}
@@ -51,7 +49,7 @@ const RadioButtonList = ({items,value,onChange,title}) => {
                     {title}
                 </Text>
             </View>
-            <View style={{flexDirection:"row",justifyContent:'space-around',flex:1,flexWrap:'wrap'}}>
+            <View style={{flexDirection:"row",justifyContent:'space-between',flex:1,flexWrap:'wrap'}}>
             {
                 items.map((item,key)=>{
                     return <RadioItem key={key} item={item} value={value} onChange={onChange}/>
