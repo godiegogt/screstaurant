@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { IParam } from './interfaces/IParam'
 
 export const configurationSlide = createSlice({
   name: 'configuration',
@@ -8,7 +9,7 @@ export const configurationSlide = createSlice({
       data: '',
       expiration_date: 0
     },
-    userData: {name:"",roomDefaultId:0,userId:0},
+    userData: { name: "", roomDefaultId: 0, userId: 0 },
     products: [],
     POSBT: '',
     canChangePrice: "Si",
@@ -36,16 +37,17 @@ export const configurationSlide = createSlice({
     CambiarBodega: '',
     PreciosEspeciales: '',
     stores: [],
-    pricesNames: []
+    pricesNames: [],
+    params: [] as IParam[]
   },
   reducers: {
-    login: (state,action:PayloadAction<{name:string,roomDefaultId:number,userId:number}>) => {
+    login: (state, action: PayloadAction<{ name: string, roomDefaultId: number, userId: number }>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       state.isAuth = true,
-      state.userData=action.payload
+        state.userData = action.payload
     },
     logOut: (state) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -72,16 +74,18 @@ export const configurationSlide = createSlice({
     updatePOSID: (state, acition: PayloadAction<string>) => {
       state.POSBT = acition.payload
     },
-    updateToken:(state,acition:PayloadAction<{data:string,expiration_date:number}>)=>{
-state.token=acition.payload
+    updateToken: (state, acition: PayloadAction<{ data: string, expiration_date: number }>) => {
+      state.token = acition.payload
     },
-    
+    updateParams: (state, acition: PayloadAction<IParam[]>) => {
+      state.params = acition.payload;
+    }
 
 
   },
 })
 
-export const { login, logOut, updateExportType, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken } = configurationSlide.actions
+export const { login, logOut, updateExportType, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams } = configurationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

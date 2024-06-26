@@ -119,28 +119,29 @@ export function SigninStack(props) {
 
 //Create drawer
 export function DrawerStack(props) {
-//   const configurations = useSelector(state => state.configurations);
+const configurations = useSelector(state => state.configurations);
 //   const user = useSelector(state => state.user);
 //   const invoice = useSelector(state => state.invoice);
-//   const inithook=useInit({user,invoice, printerCongifs});
-//   const [needLoadParams, setneedLoadParams] = useState(true)
-  //Init configs
-//   React.useEffect(() => {
-//     //Validate if it is neccesary load enterprise information
-//     loadParams();
+const confighook=useConfiguration()
+  const [needLoadParams, setneedLoadParams] = useState(true)
+ 
+  React.useEffect(() => {
+    //Validate if it is neccesary load enterprise information
+    loadParams();
   
-//   }, []);
+  }, []);
 
-//   const loadParams=()=>{
-//     if(needLoadParams){
-//       inithook.fetchEnterpriseInformation();
-//       inithook.getParams();
-//       inithook.loadPrinterOptions();
-//       inithook.fetchStores();
-//       inithook.fetchPricesList();
-//       setneedLoadParams(false);
-//     }
-//   }
+  const loadParams=()=>{
+    if(needLoadParams){
+      // inithook.fetchEnterpriseInformation();
+      // inithook.getParams();
+      // inithook.loadPrinterOptions();
+      // inithook.fetchStores();
+      // inithook.fetchPricesList();
+      confighook.updateParams();
+      setneedLoadParams(false);
+    }
+  }
 
 //Printer options load
 // const loadPrinterOptions=()=>{
@@ -300,6 +301,7 @@ export function DrawerStack(props) {
 
 
 import { useSelector } from 'react-redux'
+import useConfiguration from '../../hooks/useConfiguration';
 export default function Navigation(params) {
 //   const user = useSelector(state => state.user)
 const isAuth = useSelector(state => state.configuration.isAuth)
