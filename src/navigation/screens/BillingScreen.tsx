@@ -18,7 +18,7 @@ export class BillingScreen extends Component {
     lor(this);
   }
   componentWillUnmount() {
-    rol();
+    //rol();
   }
 
 

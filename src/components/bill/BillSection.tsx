@@ -1,65 +1,76 @@
 import { StyleSheet, View } from 'react-native'
 import React, { useState } from 'react'
-import { ButtonGroup, Card } from '@rneui/themed'
+import { Button, ButtonGroup, Card } from '@rneui/themed'
 import { Text } from '../common'
 import OrderComponent from '../order/OrderComponent'
 import { materialTheme } from '../../constants'
 import OrderVariationModalCustomerContainer from '../order/OrderVariationModalCustomerContainer'
 
-const customers = [
-  {
-    title: 1,
-    reserved: false,
+import {
+  BLEPrinter,
+  ColumnAlignment,
+  PrinterOptions,
+  COMMANDS
 
-  },
-  {
-    title: 2,
-    reserved: false,
+} from "react-native-thermal-receipt-printer-image-qrv2";
+import { useSelector } from 'react-redux'
+import { IRootState } from '../../app/store'
+import BillComponent from './BillComponent'
 
-  },
-  {
-    title: 3,
-    reserved: false,
-
-  },
-  {
-    title: 4,
-    reserved: false,
-
-  }
-  ,
-  {
-    title: 5,
-    reserved: false,
-
-  }
-  ,
-  {
-    title: 6,
-    reserved: false,
-
-  }
-  ,
-  {
-    title: 7,
-    reserved: false,
-
-  },
-  {
-    title: 8,
-    reserved: false,
-
-  }
-]
 const BillSection = () => {
-    const [billingType, setBillingType] = useState(0)
-    const [customerId, setCustomerId] = useState('')
+  const POSBT=useSelector((state:IRootState)=>state.configuration.POSBT)
+  const [currentPrinter, setCurrentPrinter] = React.useState<any>();
+  React.useEffect(() => {
+    BLEPrinter.init().then(()=> {
+      BLEPrinter.connectPrinter(POSBT).then(
+        setCurrentPrinter,
+        error => console.warn(error))
+    });
+  }, []);
+
+
+const print=()=>{
+  const BOLD_ON = COMMANDS.TEXT_FORMAT.TXT_BOLD_ON;
+  const BOLD_OFF = COMMANDS.TEXT_FORMAT.TXT_BOLD_OFF;
+  let orderList = [
+    ["1", "Camarones al ajillo con otras cosas raras", "Q 100"],
+    ["100", "Ceviche con un poco de pollo", "Q 95"],
+    [
+      "500",
+      "Bebida fria de orchata",
+      "Q 1000",
+    ],
+   
+  ];
+  let columnAlignment = [
+    ColumnAlignment.LEFT,
+    ColumnAlignment.CENTER,
+    ColumnAlignment.RIGHT,
+  ];
+  let columnWidth = [5, 14, 10];
+  const header = ["Cant.", "Detalle", "Sub."];
+  BLEPrinter.printColumnsText(header, columnWidth, columnAlignment, [
+    `${BOLD_ON}`,
+    "",
+    "",
+  ]);
+  for (let i in orderList) {
+    BLEPrinter.printColumnsText(orderList[i], columnWidth, columnAlignment, [
+      `${BOLD_OFF}`,
+      "",
+      "",
+    ]);
+  }
+  BLEPrinter.printBill(`${ColumnAlignment.CENTER}Thank you\n`);
+}
+
+
   return (
     <Card containerStyle={styles.BillSectionContainer}>
       <Card.Title><Text h4  bold>Orden</Text></Card.Title>
       <Card.Divider/>
-      <OrderComponent/>
-     
+      <BillComponent/>
+     <Button onPress={print}>Imprimir precuenta</Button>
     </Card>
   )
 }
