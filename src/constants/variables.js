@@ -31,5 +31,9 @@ export const methospayment = [
     {
         name: "Combinado"
     }
+    ,
+    {
+        name: "Cuotas"
+    }
 ];
 

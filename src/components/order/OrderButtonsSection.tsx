@@ -41,7 +41,7 @@ const OrderButtonsSection = () => {
     // }).catch(e=>{
     //   console.log('Error')
     // });
-
+    setIsVisible(false)
     navigation.navigate('BillScreen');
 
   }
