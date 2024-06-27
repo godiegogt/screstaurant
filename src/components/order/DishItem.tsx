@@ -55,14 +55,14 @@ export default DishItem
 
 const styles = StyleSheet.create({
   container: {
-    margin: materialTheme.sizes.BASE / 6,
+    marginVertical: materialTheme.sizes.BASE / 6,
+    marginHorizontal: materialTheme.sizes.BASE / 3,
     width: 70,
     height: 70,
     maxWidth: 70,
     minWidth: 70,
     backgroundColor: materialTheme.colors.primary,
     flex: 1,
-
     borderRadius: materialTheme.sizes.BASE / 2,
     justifyContent: 'center'
 

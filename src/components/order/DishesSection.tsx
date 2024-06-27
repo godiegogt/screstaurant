@@ -42,7 +42,8 @@ export default DishesSection
 
 const styles=StyleSheet.create({
     container:{
+        flex:1,
         flexWrap:'wrap',
-        justifyContent:'space-between'
+        justifyContent:'flex-start'
     }
 })
