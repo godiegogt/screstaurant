@@ -32,9 +32,9 @@ const requestCameraPermission = async () => {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
                 {
-                    title: 'Utilitas',
+                    title: 'SC Restaurant',
                     message:
-                        'Utilitas Necesita acceder a tu bluetooth. ',
+                        'Esta app Necesita acceder a tu bluetooth. ',
                     buttonNeutral: 'Preguntar luego',
                     buttonNegative: 'Cancel',
                     buttonPositive: 'OK',
