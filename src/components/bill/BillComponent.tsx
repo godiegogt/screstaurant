@@ -73,7 +73,7 @@ const OrderItem: FC<IBillItem> = ({ item }) => {
         <Text>{item.Descripcion}</Text>
       </View>
       <View style={[styles.tr, styles.itemTrPrice]}>
-        <Text styles={{ textAlign: 'right' }}>{'Q ' + item.Precio.toString()}</Text>
+        <Text styles={{ textAlign: 'right' }}>{'Q ' + item.Precio.toFixed(2)}</Text>
       </View>
     </View>
   }
@@ -91,7 +91,7 @@ const OrderItem: FC<IBillItem> = ({ item }) => {
         <Text>{'-->' + modifier.Descripcion}</Text>
       </View>
       <View style={[styles.tr, styles.itemTrPrice]}>
-        <Text styles={{ textAlign: 'right' }}>{'Q ' + modifier.Precio.toString()}</Text>
+        <Text styles={{ textAlign: 'right' }}>{'Q ' + modifier.Precio.toFixed(2)}</Text>
       </View>
       
     </View>

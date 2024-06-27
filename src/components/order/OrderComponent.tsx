@@ -143,7 +143,7 @@ addModifier(item.DetalleID,modifier)
         <Text>{item.Descripcion}</Text>
       </View>
       <View style={[styles.tr, styles.itemTrPrice]}>
-        <Text styles={{ textAlign: 'right' }}>{'Q ' + item.Precio.toString()}</Text>
+        <Text styles={{ textAlign: 'right' }}>{'Q ' + item.Precio.toFixed(2)}</Text>
       </View>
       <BottomSheet modalProps={{}} isVisible={isVisible}>
         {list.map((l, i) => (
@@ -174,7 +174,7 @@ addModifier(item.DetalleID,modifier)
         <Text>{'-->' + modifier.Descripcion}</Text>
       </View>
       <View style={[styles.tr, styles.itemTrPrice]}>
-        <Text styles={{ textAlign: 'right' }}>{'Q ' + modifier.Precio.toString()}</Text>
+        <Text styles={{ textAlign: 'right' }}>{'Q ' + modifier.Precio.toFixed(2)}</Text>
       </View>
       
     </TouchableOpacity>
