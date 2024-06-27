@@ -6,30 +6,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectCustomer } from '../../features/reservation/reservationSlice'
 import { IRootState } from '../../app/store'
 
-
-const tables = [
-  {
-    title: 1,
-    reserved: false,
-
-  },
-  {
-    title: 2,
-    reserved: false,
-
-  },
-  {
-    title: 3,
-    reserved: false,
-
-  },
-  {
-    title: 4,
-    reserved: false,
-
-  }
-]
-
 type CustomersContainerState = {
  
 }
@@ -42,8 +18,7 @@ const [customerSelected, setCustomerSelected] = useState(1)
 
 const customersNumber = useSelector((state:IRootState) => state.reservations.selectors.table ).NumeroPersonas
   const pickCustomer = (customerid: number) => {
-   
-   // dispatch(selectCustomer(customerid))
+dispatch(selectCustomer(customerid))
 setCustomerSelected(customerid)
   }
 

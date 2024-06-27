@@ -55,7 +55,6 @@ navigation.navigate("RoomsScreen");
 }
 
 const returnToIndex=()=>{
-  dispatch(restart())
   navigation.navigate("RoomsScreen");
 }
 

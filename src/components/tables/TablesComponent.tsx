@@ -34,7 +34,6 @@ const dispatch=useDispatch()
 
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(restart())
       getRooms();
     }, [])
   );

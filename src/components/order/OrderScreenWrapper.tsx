@@ -15,11 +15,12 @@ const WithScreenFocus = (WrappedComponent: React.ComponentType<any>) => {
     //   const unsubscribeFocus = props.navigation.addListener('focus', () => {
     //     console.log('Screen is focused');
     //   });
+    const sendAndRestart = async () => {
+      console.log('Screen is blurred');
+      await sendOrder(); // Call the async enviarSolicitud method
+    };
 
-      const unsubscribeBlur = props.navigation.addListener('blur', () => {
-        console.log('Screen is blurred');
-        sendOrder(); // Call the sendOrder method
-      });
+      const unsubscribeBlur = props.navigation.addListener('blur', () => {sendAndRestart()});
 
       return () => {
         // if (unsubscribeFocus) {
