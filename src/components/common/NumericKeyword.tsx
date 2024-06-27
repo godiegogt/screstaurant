@@ -23,7 +23,7 @@ setValueText(valueText+number);
 
 const InputTextComponent=()=>{
 return <Box style={styles.inputTextComponent}>
-    <Text h3 styles={{textAlign:'center'}}>{valueText}</Text>
+    <Text h3 styles={{textAlign:'center'}}>{("*".repeat(valueText.length))}</Text>
 </Box>
 }
 
