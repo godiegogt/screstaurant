@@ -5,9 +5,10 @@ import TableItem from './TableItem'
 import { Card } from '@rneui/themed'
 import PageNavigator from '../common/PageNavigator'
 import axiosClient from '../../utils/axiosClient'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import { useFocusEffect } from '@react-navigation/native';
+import { restart } from '../../features/order/orderSlice'
 export type TableType = {
   MesaID: number,
   Nombre: string,
@@ -25,7 +26,7 @@ const TablesComponent = () => {
   const [tables, setTables] = useState<TableType[]>([]);
   const roomDefault = useSelector((state: IRootState) => state.configuration.userData.roomDefaultId);
   const [roomSelected, setRoomSelected] = useState(roomDefault);
-
+const dispatch=useDispatch()
   useEffect(() => {
     getRooms();
 
@@ -33,6 +34,7 @@ const TablesComponent = () => {
 
   useFocusEffect(
     React.useCallback(() => {
+      dispatch(restart())
       getRooms();
     }, [])
   );
