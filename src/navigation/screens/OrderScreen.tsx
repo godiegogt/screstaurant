@@ -15,9 +15,10 @@ import OrderSection from '../../components/order/OrderSection'
 import axiosClient from '../../utils/axiosClient';
 import { ICategory,IArticles } from '../../interfaces/services';
 import { IDish } from '../../interfaces/IOrder';
+import WithScreenFocus from '../../components/order/OrderScreenWrapper';
 
 type propsOrder={
-
+ 
 }
 
 type stateOrder={
@@ -26,7 +27,7 @@ type stateOrder={
 categoryId:number
 }
 
-export default class OrderScreen extends Component<propsOrder,stateOrder> {
+class OrderScreen extends Component<propsOrder,stateOrder> {
 constructor(props:propsOrder){
   super(props);
   this.changeCategory = this.changeCategory.bind(this)
@@ -107,3 +108,4 @@ constructor(props:propsOrder){
   }
 }
 
+export default  WithScreenFocus(OrderScreen)
