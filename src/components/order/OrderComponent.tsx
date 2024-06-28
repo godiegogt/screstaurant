@@ -39,7 +39,7 @@ const OrderComponent = () => {
   useEffect(() => {
 
     if (Table.OrdenID) {
-      getOrderById(Table.OrdenID)
+      getOrderById(Table.OrdenID,0)
     }
   }, [Table.OrdenID])
 
