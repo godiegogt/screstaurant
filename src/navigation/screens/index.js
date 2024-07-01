@@ -5,6 +5,7 @@ import OrderScreen from './OrderScreen'
 import BillScreen from './BillingScreen'
 import ConfigurationScreen from './ConfigurationScreen'
 import EditPrinterScreen from './EditPrinterScreen'
+import ChangeServerScreen from './ChangeServerScreen'
 export {
     LoginScreen,
     RoomsScreen,
@@ -12,6 +13,7 @@ export {
     OrderScreen,
     BillScreen,
     ConfigurationScreen,
-    EditPrinterScreen
+    EditPrinterScreen,
+    ChangeServerScreen
 
 }

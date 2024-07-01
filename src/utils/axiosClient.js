@@ -1,9 +1,8 @@
 import axios from 'axios';
 import {store} from '../app/store'; // Import your Redux store
-import {URL_API} from '../constants/variables'
+import {URL_API,} from '../constants/variables'
 
 const axiosClient = axios.create({
-  baseURL: URL_API,
   headers:{'Content-Type':'application/json'}
 });
 
@@ -11,6 +10,12 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   (config) => {
     const { data } = store.getState().configuration.token;
+
+    const URL = store.getState().configuration.URL; // Get url
+
+    if (URL) {
+      config.baseURL = URL+"/Api";
+    }
     if (data) {
       config.headers.Authorization = `Bearer ${data}`;
     }

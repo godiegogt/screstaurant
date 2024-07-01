@@ -10,7 +10,7 @@ import CustomDrawerContent from './Menu';
 //Import customer components
 import MenuButton from '../../components/drawer/MenuButton'
 
-import {RoomsScreen,LoginScreen,TablesScreen,OrderScreen,BillScreen,ConfigurationScreen,EditPrinterScreen } from '../screens'
+import {RoomsScreen,LoginScreen,TablesScreen,OrderScreen,BillScreen,ConfigurationScreen,EditPrinterScreen,ChangeServerScreen } from '../screens'
 
 import { materialTheme } from "../../constants/";
 
@@ -82,6 +82,12 @@ function ConfigStack(props) {
         options={{ title: 'Editar impresora' }}
         name="EditPrinterScreen"
         component={EditPrinterScreen}
+
+      />
+      <Stack.Screen
+        options={{ title: 'Cambiar Servidor' }}
+        name="ChangeServerScreen"
+        component={ChangeServerScreen}
 
       />
     </Stack.Navigator>

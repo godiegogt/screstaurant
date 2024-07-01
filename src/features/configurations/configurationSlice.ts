@@ -38,7 +38,8 @@ export const configurationSlide = createSlice({
     PreciosEspeciales: '',
     stores: [],
     pricesNames: [],
-    params: [] as IParam[]
+    params: [] as IParam[],
+    URL:'https://apprest.solutioncenter.com.gt'
   },
   reducers: {
     login: (state, action: PayloadAction<{ name: string, roomDefaultId: number, userId: number }>) => {
@@ -79,13 +80,16 @@ export const configurationSlide = createSlice({
     },
     updateParams: (state, acition: PayloadAction<IParam[]>) => {
       state.params = acition.payload;
+    },
+    updateURL:(state,action:PayloadAction<string>)=>{
+state.URL=action.payload
     }
 
 
   },
 })
 
-export const { login, logOut, updateExportType, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams } = configurationSlide.actions
+export const { login, logOut, updateExportType, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams,updateURL } = configurationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
