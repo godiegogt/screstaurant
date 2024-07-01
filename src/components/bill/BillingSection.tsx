@@ -5,11 +5,13 @@ import { materialTheme } from '../../constants';
 import { RadioButtonList, Text } from '../common';
 import { methospayment } from '../../constants/variables';
 import OrderVariationModalCustomerContainer from '../order/OrderVariationModalCustomerContainer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import MixedPayment from './MixedPayment';
 import { updatePaymentType } from '../../features/reservation/reservationSlice';
 import { useReservation } from '../../hooks';
+import { ICustomer } from '../../interfaces';
+import { IRootState } from '../../app/store';
 const customers = [
   {
     title: 1,
@@ -56,10 +58,12 @@ const customers = [
   }
 ]
 const BillingSection = () => {
- const dispatch= useDispatch()
+// const dispatch= useDispatch()
+const [customers, setCustomers] = useState<ICustomer[]>([])
+const customerNumber = useSelector((state: IRootState) => state.reservations.selectors.table.NumeroPersonas);
  const {getReservationTotal,getOrderByClintId} = useReservation()
   const [paymentMethod, setpaymentMethod] = useState('');
-  const [isOpenMixedMethod, setIsOpenMixedMethod] = useState('');
+  //const [isOpenMixedMethod, setIsOpenMixedMethod] = useState('');
   const [total, setTotal] = useState('0');
 
   const [billingType, setBillingType] = useState(0);
@@ -82,12 +86,19 @@ total!=undefined&&total>0&&setTotal(total.toFixed(2))
       total!=undefined&&total>0&&setTotal(total.toFixed(2))
   }
 }
+
+const buildCustomers=()=>{
+  for (let index = 0; index < customerNumber; index++) {
+    setCustomers([...customers,{title:index}])
+    
+  }
+}
   
   return (
     <Card containerStyle={styles.BillingSectionContainer}>
       <Card.Title><Text h4 bold>Cuenta</Text></Card.Title>
       <Card.Divider />
-      <ButtonGroup
+      {/* <ButtonGroup
         buttons={['UNIFICADO', 'SEPARADO']}
         selectedIndex={billingType}
         onPress={(value) => {
@@ -97,7 +108,7 @@ total!=undefined&&total>0&&setTotal(total.toFixed(2))
 
         }}
         containerStyle={{ marginBottom: 20 }}
-      />
+      /> */}
       {
         billingType != 0 && <OrderVariationModalCustomerContainer customers={customers} changeCustomer={(id: string) => { setCustomerId(id) }} customerId={customerId} />
       }
@@ -111,7 +122,7 @@ total!=undefined&&total>0&&setTotal(total.toFixed(2))
       }
       <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
         <Text h3>Saldo: </Text>
-        <Text h3 styles={{ color: materialTheme.colors.primary }} bold>{'Q. '+total.toString()}</Text>
+        <Text h3 styles={{ color: materialTheme.colors.primary }} bold>{'Q. '+total}</Text>
       </View>
 
       <Button title={'Facturar'} onPress={() => { }} />
