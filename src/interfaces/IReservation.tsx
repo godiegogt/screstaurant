@@ -16,6 +16,10 @@ export default interface IReservation{
     CodigoError?: number,
     DescripcionError?: string,
     Total?: number,
+    SubTotal?:number,
+    Propina?:number,
+    Descuento?:number
+    
 
 }
 

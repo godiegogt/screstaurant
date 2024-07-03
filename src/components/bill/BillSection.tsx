@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Card } from '@rneui/themed'
 import { Text } from '../common'
 import OrderComponent from '../order/OrderComponent'
@@ -18,62 +18,38 @@ import { IRootState } from '../../app/store'
 import BillComponent from './BillComponent'
 import CustomersContainer from '../customers/CustomersContainer'
 import { updatePaymentType } from '../../features/reservation/reservationSlice'
+import usePrinter from '../../hooks/usePrinter'
+import useOrder from '../../hooks/useOrder'
 
 const BillSection = () => {
  const dispatch = useDispatch()
-  const POSBT = useSelector((state: IRootState) => state.configuration.POSBT)
   const [billingType, setBillingType] = useState(0);
-  const [currentPrinter, setCurrentPrinter] = React.useState<any>();
-  React.useEffect(() => {
-    BLEPrinter.init().then(() => {
-      BLEPrinter.connectPrinter(POSBT).then(
-        setCurrentPrinter,
-        error => console.warn(error))
-    });
-  }, []);
+  const {printPreBill}=usePrinter();
+  const Table = useSelector((state: IRootState) => state.reservations.selectors.table);
+  const { order, getOrderById,isLoading } = useOrder();
+  const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer );
 
 
-  const print = () => {
-    const BOLD_ON = COMMANDS.TEXT_FORMAT.TXT_BOLD_ON;
-    const BOLD_OFF = COMMANDS.TEXT_FORMAT.TXT_BOLD_OFF;
-    let orderList = [
-      ["1", "Camarones al ajillo con otras cosas raras", "Q 100"],
-      ["100", "Ceviche con un poco de pollo", "Q 95"],
-      [
-        "500",
-        "Bebida fria de orchata",
-        "Q 1000",
-      ],
-
-    ];
-    let columnAlignment = [
-      ColumnAlignment.LEFT,
-      ColumnAlignment.CENTER,
-      ColumnAlignment.RIGHT,
-    ];
-    let columnWidth = [5, 14, 10];
-    const header = ["Cant.", "Detalle", "Sub."];
-    BLEPrinter.printColumnsText(header, columnWidth, columnAlignment, [
-      `${BOLD_ON}`,
-      "",
-      "",
-    ]);
-    for (let i in orderList) {
-      BLEPrinter.printColumnsText(orderList[i], columnWidth, columnAlignment, [
-        `${BOLD_OFF}`,
-        "",
-        "",
-      ]);
+  //Effect to filter order by customerID
+  useEffect(() => {
+   if(Table.OrdenID){
+    if(billingType==1){
+      getOrderById(Table.OrdenID, customerSelected)
+    }else{
+      getOrderById(Table.OrdenID, 0)
     }
-    BLEPrinter.printBill(`${ColumnAlignment.CENTER}Thank you\n`);
-  }
+   }
+  }, [customerSelected,billingType])
 
+  const printPre=()=>{
+printPreBill(order)
+  }
 
   return (
     <Card containerStyle={styles.BillSectionContainer}>
       <Card.Title><Text h4 bold>Orden</Text></Card.Title>
       <Card.Divider />
-      <BillComponent billingType={billingType}/>
+      <BillComponent order={order}/>
       <Card.Divider />
       <ButtonGroup
         buttons={['UNIFICADO', 'SEPARADO']}
@@ -92,7 +68,7 @@ billingType==1&&<CustomersContainer />
       
         
       
-      <Button onPress={print}>Imprimir precuenta</Button>
+      <Button onPress={printPre}>Imprimir precuenta</Button>
     </Card>
   )
 }

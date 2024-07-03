@@ -6,7 +6,7 @@ import { Text } from '../common'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 
-import { IOrder } from '../../interfaces'
+import { IOrder, IReservation } from '../../interfaces'
 
 import { IModifiers } from '../../interfaces/IOrder'
 import useOrder from '../../hooks/useOrder'
@@ -14,45 +14,22 @@ import { calcularPrecioTotal } from '../../features/order/helpers/CalcTotal'
 import Theme from '../../constants/Theme'
 
 type PropsType={
-  billingType:number //0 unificado 1 separado
+  order:IReservation
 }
 
-const BillComponent:FC<PropsType> = ({billingType}) => {
+const BillComponent:FC<PropsType> = ({order}) => {
+
   const Table = useSelector((state: IRootState) => state.reservations.selectors.table);
-  const { order, getOrderById,isLoading } = useOrder();
-  const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer );
-  useEffect(() => {
-
-    if (Table.OrdenID) {
-      getOrderById(Table.OrdenID, 0)
-    }
-  }, [Table.OrdenID])
-
-  //Effect to filter order by customerID
-  useEffect(() => {
-   if(Table.OrdenID){
-    if(billingType==1){
-      getOrderById(Table.OrdenID, customerSelected)
-    }else{
-      getOrderById(Table.OrdenID, 0)
-    }
-   }
-  
-    
-  }, [customerSelected,billingType])
-  
 
 
 
   return (
     <View style={styles.container}>
-     {
-      !isLoading
-      ?
+   
       <>
        <>
         <View style={[styles.tr, styles.headerTr]}>
-          <Text bold>{Table?.Nombre ? Table.Nombre : 'Sin Asignar'}</Text>
+          <Text bold>{Table.Nombre ? Table.Nombre : 'Sin Asignar'}</Text>
           <Text bold>{Table?.OrdenID ? Table.OrdenID.toString() : "Sin Asignar"}</Text>
         </View>
         <View style={[styles.tr, styles.headerTr]}>
@@ -71,9 +48,7 @@ const BillComponent:FC<PropsType> = ({billingType}) => {
         <Text bold>Subtotal</Text>
         <Text bold>{'Q ' + calcularPrecioTotal(order).toFixed(2)}</Text>
       </View></>
-      :
-      <ActivityIndicator color={Theme.colors.primary}/>
-     }
+     
     </View>
   )
 }

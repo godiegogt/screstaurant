@@ -8,7 +8,7 @@ export const printerCongifs = [{
     name: "60 mm",
     spaces: 32,
     amountSize: 5,
-    detailSize: 14,
+    detailSize: 17,
     priceSize: 10
 },
 {
