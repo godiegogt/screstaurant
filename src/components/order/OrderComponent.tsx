@@ -6,7 +6,7 @@ import { Text } from '../common'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import { useReservation } from '../../hooks'
-import { IOrder } from '../../interfaces'
+import { IOrder, IReservation } from '../../interfaces'
 
 
 import ChangeCustomerModal from './ChangeCustomerModal'
@@ -15,10 +15,14 @@ import useOrder from '../../hooks/useOrder'
 import AddManualModifierModal from './AddManualModifierModal'
 import { IChangeCustomerReq } from '../../features/order/interfaces/IChangeCustomerReq'
 import { calcularPrecioTotal } from '../../features/order/helpers/CalcTotal'
+import { useFocusEffect } from '@react-navigation/native'
 
+type OrderComponentType={
+  order:IReservation
+}
 
-
-const OrderComponent = () => {
+const OrderComponent:FC<OrderComponentType> = ({order}) => {
+  const Table = useSelector((state: IRootState) => state.reservations.selectors.table);
   // const [ordrs, setOrdrs] = useState<IOrder[]>([]);
   // const { reservations } = useSelector((state: IRootState) => state.reservations);
   // const { getOrdersByReservation, getReservation } = useReservation();
@@ -33,15 +37,15 @@ const OrderComponent = () => {
   //   orders != undefined && setOrdrs(orders);
 
   // }
-  const Table = useSelector((state: IRootState) => state.reservations.selectors.table);
-  const { order, getOrderById } = useOrder();
-
-  useEffect(() => {
-
-    if (Table.OrdenID) {
-      getOrderById(Table.OrdenID,0)
-    }
-  }, [Table.OrdenID])
+ 
+  // const { order, getOrderById } = useOrder();
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     if (Table.OrdenID) {
+  //       getOrderById(Table.OrdenID,0)
+  //     }
+  //   }, [])
+  // );
 
 
 
