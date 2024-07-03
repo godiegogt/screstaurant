@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View,Alert } from 'react-native'
 import React from 'react'
 import { Container, FormInput, Text } from '../../components/common'
 import Theme from '../../constants/Theme'
@@ -13,9 +13,13 @@ const navigation  =  useNavigation();
     const URL = useSelector(state => state.configuration.URL)
    const dispatch= useDispatch();
     const changeUrl=()=>{
-dispatch(updateURL(url))
+if(url!="" && url!=undefined){
+  dispatch(updateURL(url))
 navigation.navigate("ConfigurationScreen");
 
+}else{
+  Alert.alert("Servidor inválido.")
+}
     }
   return (
     <Container>
