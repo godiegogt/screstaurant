@@ -31,6 +31,7 @@ export const orderSlide = createSlice({
     reducers: {
 
         updateOrder: (state, action: PayloadAction<IReservation>) => {
+            console.log('Updating Order...')
             state.currentOrder = action.payload;
         },
         addDetail: (state, action: PayloadAction<IOrder>) => {
@@ -61,7 +62,10 @@ export const orderSlide = createSlice({
         addToDeleteStore:(state, action: PayloadAction<IDeleteDetailReqItem>)=>{
             state.toDelete.push(action.payload)
         },
-        restart:() => initialState,
+        restart:(state) => {
+            console.log("Cleaning store...");
+            state.toDelete=[]
+        },
         changeCustomer: (state, action: PayloadAction<IChangeCustomerReq>) => {
       
             const order = state.currentOrder.DetalleOrden.find(item => item.DetalleID == action.payload.DetalleID);
