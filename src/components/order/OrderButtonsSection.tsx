@@ -4,7 +4,7 @@ import { BottomSheet, Button, ListItem } from '@rneui/themed'
 import { materialTheme } from '../../constants'
 import { useReservation } from '../../hooks'
 import { useNavigation } from '@react-navigation/native'
-import { Alert } from '../common'
+import { Alert, LoaderModal } from '../common'
 import useOrder from '../../hooks/useOrder'
 import { useDispatch } from 'react-redux'
 import { restart } from '../../features/order/orderSlice'
@@ -60,6 +60,10 @@ const returnToIndex=()=>{
 
   return (
     <View style={styles.OrderButtonsSection}>
+     { 
+      orderHook.isLoading
+      &&
+      <LoaderModal/>}
       <Alert message={errormessage} type='warning' setMessage={()=>{seterrormessage('')}}/>
       <View style={styles.buttonContainer}>
       <Button title="Enviar Orden" disabled={orderHook.isLoading} loading={orderHook.isLoading}  onPress={_sendReservation}/>
