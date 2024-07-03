@@ -43,7 +43,7 @@ export class BillingScreen extends Component {
             <BillSection />
           </View>
           <View style={styles.section}>
-            <BillingSection />
+            {/* <BillingSection /> */}
           </View>
         </View>
       </Container>

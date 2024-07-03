@@ -16,14 +16,14 @@ const OrderButtonsSection = () => {
   const [isVisible, setIsVisible] = useState(false);
  const orderHook= useOrder();
   const list = [
-    { title: 'Pre-cuenta' ,
-    onPress: () => setIsVisible(false),},
+    // { title: 'Pre-cuenta' ,
+    // onPress: () => setIsVisible(false),},
     // { title: 'Cambiar orden de comensal',
     // onPress: () => setIsVisible(false), },
     { title: 'Facturar' ,
     onPress: () => {billing()}},
-    { title: 'Descuentos' ,
-    onPress: () => setIsVisible(false),},
+    // { title: 'Descuentos' ,
+    // onPress: () => setIsVisible(false),},
     {
       title: 'Cancel',
       containerStyle: { backgroundColor: 'red' },

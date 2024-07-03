@@ -103,7 +103,7 @@ const ConfigHomeScreen = ({ navigation }) => {
         &&
         <TouchableOpacity onPress={() => navigation.navigate("ChangeServerScreen")}>
           <ListItem bottomDivider>
-            <Icon name={'user'} size={20} color={Theme.colors.icon} />
+            
             <ListItem.Content>
               <Text h2>Cambiar Servidor</Text>
             </ListItem.Content>
