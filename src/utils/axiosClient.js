@@ -14,7 +14,7 @@ axiosClient.interceptors.request.use(
     const URL = store.getState().configuration.URL; // Get url
 
     if (URL) {
-      config.baseURL = URL+"/Api";
+      config.baseURL = URL;
     }
     if (data) {
       config.headers.Authorization = `Bearer ${data}`;

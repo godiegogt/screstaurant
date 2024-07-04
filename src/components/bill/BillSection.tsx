@@ -34,13 +34,18 @@ const BillSection = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if(Table.OrdenID){
-        if(billingType==1){
-          getOrderById(Table.OrdenID, customerSelected)
-        }else{
-          getOrderById(Table.OrdenID, 0)
-        }
-       }
+
+setTimeout(() => {
+  if(Table.OrdenID){
+    if(billingType==1){
+      getOrderById(Table.OrdenID, customerSelected)
+    }else{
+      getOrderById(Table.OrdenID, 0)
+    }
+   }
+}, 2000);
+
+     
     }, [customerSelected,billingType])
   );
 

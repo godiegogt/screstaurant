@@ -62,10 +62,7 @@ export const orderSlide = createSlice({
         addToDeleteStore:(state, action: PayloadAction<IDeleteDetailReqItem>)=>{
             state.toDelete.push(action.payload)
         },
-        restart:(state) => {
-            console.log("Cleaning store...");
-            state.toDelete=[]
-        },
+        restart:() => initialState,
         changeCustomer: (state, action: PayloadAction<IChangeCustomerReq>) => {
       
             const order = state.currentOrder.DetalleOrden.find(item => item.DetalleID == action.payload.DetalleID);
