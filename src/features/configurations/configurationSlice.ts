@@ -39,7 +39,7 @@ export const configurationSlide = createSlice({
     stores: [],
     pricesNames: [],
     params: [] as IParam[],
-    URL:'https://apprest.solutioncenter.com.gt'
+    URL:'https://apprest.solutioncenter.com.gt/Api'
   },
   reducers: {
     login: (state, action: PayloadAction<{ name: string, roomDefaultId: number, userId: number }>) => {

@@ -7,18 +7,20 @@ import Box from '../../components/common/Box'
 import NumericKeyword from '../../components/common/NumericKeyword';
 import { materialTheme } from '../../constants';
 import { login as doLogin, updateBluetoothPermission, updateToken} from '../../features/configurations/configurationSlice'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from '../../components/common';
 import axios from 'axios'
 import { URL_API } from '../../constants/variables';
 import axiosClient from '../../utils/axiosClient';
+import { RootState } from '@reduxjs/toolkit/query';
+import { IRootState } from '../../app/store';
 
 const LoginScreen:FC = () => {
   const [valueText, setValueText] = React.useState("");
   const [errormessage, seterrormessage] = React.useState("")
   const [isLoading, setIsLoading] = React.useState(false)
   const dispatch = useDispatch();
-
+const url = useSelector((state:IRootState)=>state.configuration.URL)
   React.useEffect(() => {
     requestCameraPermission();
 }, [])
@@ -56,7 +58,7 @@ const requestCameraPermission = async () => {
 
 const login= async ()=>{
 
-
+console.log('url',url)
 try {
     const credentials = {
         username: 'Administrador',
@@ -66,7 +68,7 @@ try {
     setIsLoading(true);
     axios({
         method: 'post',
-        url: URL_API + '/GetToken',
+        url: url + '/GetToken',
         headers: { 'content-type': 'application/x-www-form-urlencoded' },
         data: credentials
     }).then(data=>{
