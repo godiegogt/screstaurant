@@ -28,7 +28,7 @@ const DishesSection =({articles}:DishesSectionProps)=> {
             <View>
                 <CustomersContainer/>
             </View>
-         <Box row flex style={styles.container}>
+         <Box row flex center style={styles.container}>
          {articles.map(item=><DishItem  key={item.ProductoID} item={item} />)  }
          </Box>
       
