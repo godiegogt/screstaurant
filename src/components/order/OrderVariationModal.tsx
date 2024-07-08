@@ -1,37 +1,48 @@
-import { ScrollView, StyleSheet, Alert } from 'react-native'
+import { ScrollView, StyleSheet, Alert, ActivityIndicator } from 'react-native'
 import React, { FC, useEffect, useState } from 'react'
 import { ButtonGroup, Dialog, Divider } from '@rneui/themed'
-import {  Text } from '../common'
+import { Text } from '../common'
 import { IDish, IModifiers } from '../../interfaces/IOrder'
 import { addOrder } from '../../features/reservation/reservationSlice'
 import { useReservation } from '../../hooks'
 import Formulario from './FormModifiers'
 import { generateuuid } from '../../utils/idgenerator'
+import Theme from '../../constants/Theme'
 
 
 interface IOrderVariationModal {
   isVisible: boolean,
   toggleModal: () => void
-  addOrder: (selecciones:any) => void,
+  addOrder: (selecciones: any) => void,
   ProductoID: number,
-  changeDish:(newDish:IDish)=>void
+  changeDish: (newDish: IDish) => void
 }
 
-const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal, addOrder, ProductoID,changeDish }) => {
+const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal, addOrder, ProductoID, changeDish }) => {
 
   const [modifiers, setModifiers] = useState<IModifiers[]>([]);
   const [selecciones, setSelecciones] = useState([]);
+  const [isLoading, setisLoading] = useState(false)
   const { getModifiersByProductoID } = useReservation();
   useEffect(() => {
-    getModifiers()
+    getModifiers();
+
   }, [])
 
 
   const getModifiers = async () => {
-    const responseModifiers = await getModifiersByProductoID(ProductoID);
-    if (responseModifiers != null && responseModifiers.length > 0) {
-   
-      setModifiers(responseModifiers);
+    try {
+      setisLoading(true)
+      const responseModifiers = await getModifiersByProductoID(ProductoID);
+      if (responseModifiers != null && responseModifiers.length > 0) {
+        setModifiers(responseModifiers);
+      } else if (responseModifiers.length == 0) {
+        handleSubmit()
+      }
+    } catch (error) {
+
+    } finally {
+      setisLoading(false)
     }
   }
 
@@ -48,17 +59,17 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
     // Transformar selecciones a un array con la estructura de salida deseada
     const resultado = Object.values(selecciones)
       .filter(seleccion => seleccion !== null)
-      .map((seleccion:IModifiers) => ({
+      .map((seleccion: IModifiers) => ({
         ModificadorID: seleccion.ModificadorID,
         Descripcion: seleccion.Nombre,
         Precio: seleccion.Precio,
         RespuestaModificadorID: seleccion.RespuestaModificadorID,
-        DetalleModificadorID:generateuuid(),
-        state:'new'
+        DetalleModificadorID: generateuuid(),
+        state: 'new'
       }));
 
-   
-   addOrder(resultado)
+
+    addOrder(resultado)
 
 
   };
@@ -68,18 +79,29 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
 
       <ScrollView><Text h4 bold>Seleccione preferencias:</Text>
         <Divider />
-       <Formulario modifiers={modifiers} selecciones={selecciones} changeSelecciones={setSelecciones}/>
-        <Dialog.Actions>
-          <Dialog.Button
-            type='solid'
-            title="AGREGAR"
-            onPress={() => {
+        {
+          !isLoading
+            ?
+            <Formulario modifiers={modifiers} selecciones={selecciones} changeSelecciones={setSelecciones} />
+            :
+            <ActivityIndicator color={Theme.colors.primary} />
+        }
+        {
+          !isLoading
+          &&
+          <Dialog.Actions>
+            <Dialog.Button
+              type='solid'
+              title="AGREGAR"
+              onPress={() => {
 
-              handleSubmit();
-            }}
-          />
-          <Dialog.Button title="CANCELAR" onPress={toggleModal} />
-        </Dialog.Actions></ScrollView>
+                handleSubmit();
+              }}
+            />
+            <Dialog.Button title="CANCELAR" onPress={toggleModal} />
+          </Dialog.Actions>
+        }
+      </ScrollView>
     </Dialog>
   )
 }
