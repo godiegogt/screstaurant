@@ -8,7 +8,7 @@ import {
   removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 
-import { Container } from '../../components/common'
+import { Container, CustomerSection } from '../../components/common'
 import CategorySection from '../../components/order/CategorySection'
 import DishesSection from '../../components/order/DishesSection'
 import OrderSection from '../../components/order/OrderSection'
@@ -97,6 +97,7 @@ constructor(props:propsOrder){
           <View style={styles.section}>
             <CategorySection categories={this.state.categories} changeCategory={this.changeCategory}/>
             <DishesSection articles={this.state.articles}/>
+            <CustomerSection/>
           </View>
           <View style={styles.section}>
             <OrderSection />

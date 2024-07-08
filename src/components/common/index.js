@@ -7,6 +7,7 @@ import RadioButtonList from './RadioButtonList'
 import FormInput from './FormInput'
 import PrinterPicker from './PrinterPicker'
 import LoaderModal from './LoaderModal'
+import CustomerSection from './CustomerSection'
 export {
 Box,
 Container,
@@ -16,5 +17,6 @@ Alert,
 RadioButtonList,
 FormInput,
 PrinterPicker,
-LoaderModal
+LoaderModal,
+CustomerSection
 }

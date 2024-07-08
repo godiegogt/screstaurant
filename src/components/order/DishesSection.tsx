@@ -25,9 +25,6 @@ const DishesSection =({articles}:DishesSectionProps)=> {
         <Card>
             <Card.Title><Text h4  bold>Platillos</Text></Card.Title>
             <Card.Divider/>
-            <View>
-                <CustomersContainer/>
-            </View>
          <Box row flex center style={styles.container}>
          {articles.map(item=><DishItem  key={item.ProductoID} item={item} />)  }
          </Box>
