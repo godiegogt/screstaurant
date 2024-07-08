@@ -5,6 +5,7 @@ import { materialTheme } from '../../constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectCustomer } from '../../features/reservation/reservationSlice'
 import { IRootState } from '../../app/store'
+import { useFocusEffect } from '@react-navigation/native'
 
 type CustomersContainerState = {
  
@@ -14,10 +15,16 @@ const CustomersContainer: FC<CustomersContainerState> = () => {
  
   const dispatch = useDispatch();
 const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer );
-//const [customerSelected, setCustomerSelected] = useState(1)
+const customersNumber = useSelector((state:IRootState) => state.reservations.selectors.table.NumeroPersonas )
 
-const customersNumber = useSelector((state:IRootState) => state.reservations.selectors.table ).NumeroPersonas
-  const pickCustomer = (customerid: number) => {
+useFocusEffect(
+  React.useCallback(() => {
+    pickCustomer(1);
+  }, [])
+);
+
+
+const pickCustomer = (customerid: number) => {
 dispatch(selectCustomer(customerid))
 //setCustomerSelected(customerid)
   }
