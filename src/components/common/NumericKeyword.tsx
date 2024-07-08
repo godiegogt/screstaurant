@@ -5,6 +5,7 @@ import NumberButton from './NumberButton'
 import { Button, Input } from '@rneui/themed'
 import { materialTheme } from '../../constants'
 import Text from './Text'
+import Theme from '../../constants/Theme'
 
 interface INumericKeyword{
     valueText:string,
@@ -23,7 +24,7 @@ setValueText(valueText+number);
 
 const InputTextComponent=()=>{
 return <Box style={styles.inputTextComponent}>
-    <Text h3 styles={{textAlign:'center'}}>{("*".repeat(valueText.length))}</Text>
+    <Text h3 styles={{textAlign:'center', color:Theme.colors.back_ground_color}}>{("*".repeat(valueText.length))}</Text>
 </Box>
 }
 
@@ -52,7 +53,10 @@ const deleteCharacter=(text:string)=>{
             <NumberButton onPress={changeValue} title='0'/>
             <NumberButton onPress={deleteCharacter} title='<'/>
             </Box>
-            <Button loading={isLoading} disabled={isLoading} size='lg' title={'Entrar'} onPress={login}/>
+            <View style={styles.loginButton}>
+
+            <Button  loading={isLoading} disabled={isLoading} size='lg' title={'Entrar'} onPress={login}/>
+            </View>
         </Box>
     )
 }
@@ -69,11 +73,14 @@ const styles = StyleSheet.create({
     inputTextComponent:{
         backgroundColor:'transparent',
         borderWidth:3,
-        borderColor:materialTheme.colors.muted,
+        borderColor:materialTheme.colors.back_ground_color,
         height:40,
-       
         justifyContent:'center',
         alignItems:'center',
-        flexDirection:'row'
+        flexDirection:'row',
+        borderRadius:10
+    },
+    loginButton:{
+        marginTop:Theme.sizes.BASE
     }
 })

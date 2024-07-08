@@ -8,10 +8,10 @@ export default {
     DEFAULT: '#DCDCDC',
     primary: '#FFAf00',
     primary_light: '#FFcf6e',
-    primary_dark: '#09988B',
-    secondary: '#3299FE',
-    secondary_light: '#315DB3',
-    secondary_dark: '#01153D',
+    primary_dark: '#cc8c00',
+    secondary: 'rgba(112,168,206,1)',
+    secondary_light: '#a9cbe2',
+    secondary_dark: '#43657c',
     LABEL: '#FE2472',
     info: '#00BCD4',
     error: '#e63946',
@@ -41,7 +41,7 @@ export default {
     //Backgrounds
     back_ground_screen: '#F1F1F1',
     rowShadowColorPrimary:'#fae6e6',
-    back_ground_color:'#f7dccb',
+    back_ground_color:'rgba(112,168,206,1)',
 
        //ORDER TABLE
       

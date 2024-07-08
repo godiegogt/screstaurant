@@ -1,8 +1,6 @@
 import { Image, PermissionsAndroid, Platform, StyleSheet, View} from 'react-native'
 import React, { FC } from 'react'
 
-import { Button} from '@rneui/themed';
-
 import Box from '../../components/common/Box'
 import NumericKeyword from '../../components/common/NumericKeyword';
 import { materialTheme } from '../../constants';
@@ -10,10 +8,9 @@ import { login as doLogin, updateBluetoothPermission, updateToken} from '../../f
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from '../../components/common';
 import axios from 'axios'
-import { URL_API } from '../../constants/variables';
 import axiosClient from '../../utils/axiosClient';
-import { RootState } from '@reduxjs/toolkit/query';
 import { IRootState } from '../../app/store';
+
 
 const LoginScreen:FC = () => {
   const [valueText, setValueText] = React.useState("");
@@ -100,10 +97,10 @@ try {
   return (
     <View style={styles.container}>
           <Alert setMessage={seterrormessage} type={'warning'}  message={errormessage} />
-       <Box flex style={styles.logo}><Image  source={require('../../assets/img/logo.png')} width={20} height={20}/></Box>
+       <View style={styles.logoContainer}><Image resizeMode='contain' style={styles.logo} source={require('../../assets/img/logo.png')}/></View>
     <Box center>
     <NumericKeyword isLoading={isLoading} login={login} valueText={valueText} setValueText={setValueText}/>
-       
+   
     </Box>
     </View>
   )
@@ -113,14 +110,20 @@ export default LoginScreen
 
 const styles = StyleSheet.create({
     container:{ flex:1,
-        flexDirection:'column',justifyContent:'center',alignItems:'center'},
+        flexDirection:'column',alignItems:'center',
+    backgroundColor:'#fff'},
         
-    logo:{
-       
+    logoContainer:{
         backgroundColor:materialTheme.colors.back_ground_color,
         width:'100%',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        height:226
        
+    },
+    logo:{
+       
+        height:210
     }
+
 })

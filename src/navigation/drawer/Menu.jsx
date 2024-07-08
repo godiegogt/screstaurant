@@ -65,7 +65,7 @@ const dispatch=useDispatch();
           <Image
                     resizeMode='contain'
                     style={styles.loginLogo}
-                    source={require('../../assets/img/logo.png')} />
+                    source={require('../../assets/img/logo3.png')} />
                     
           {screens.map((item, index) => {
             return (

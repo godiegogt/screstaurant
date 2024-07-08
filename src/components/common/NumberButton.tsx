@@ -16,7 +16,7 @@ const NumberButton: FC<INumberButton> = ({ title, onPress }) => {
 
     return (
 
-        <Button onPress={() => { onPress(title) }} type='outline' containerStyle={styles.buttonContainer} title={title} buttonStyle={styles.buttonStyle} titleStyle={{ color: materialTheme.colors.primary }} color={materialTheme.colors.primary} />
+        <Button onPress={() => { onPress(title) }} type='outline' containerStyle={styles.buttonContainer} title={title} buttonStyle={styles.buttonStyle} titleStyle={{ color: materialTheme.colors.back_ground_color }} color={materialTheme.colors.primary} />
 
     )
 }
@@ -25,7 +25,7 @@ export default NumberButton
 
 const styles = StyleSheet.create({
     buttonContainer: { borderWidth: 3, 
-        borderColor: materialTheme.colors.primary, 
+        borderColor: materialTheme.colors.back_ground_color, 
         borderRadius: 10 ,
         margin:materialTheme.sizes.BASE/4
     },

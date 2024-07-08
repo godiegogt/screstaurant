@@ -27,7 +27,7 @@ function HomeStack(props) {
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
         headerRight: () => <MenuButton navigation={navigation} />,
-      headerStyle:{backgroundColor:'#3299FE'},
+      headerStyle:{backgroundColor:Theme.colors.secondary},
       headerBackTitleStyle:'#fff',
       headerTitleStyle:{color:'#fff',textAlign:'center'},
         presentation: 'card',
@@ -66,7 +66,7 @@ function ConfigStack(props) {
     <Stack.Navigator
       screenOptions={({ navigation }) => ({
         headerRight: () => <MenuButton navigation={navigation} />,
-      headerStyle:{backgroundColor:'#3299FE'},
+      headerStyle:{backgroundColor:Theme.colors.secondary},
       headerBackTitleStyle:'#fff',
       headerTitleStyle:{color:'#fff',textAlign:'center'},
         presentation: 'card',
@@ -308,6 +308,7 @@ const confighook=useConfiguration()
 
 import { useSelector } from 'react-redux'
 import useConfiguration from '../../hooks/useConfiguration';
+import Theme from '../../constants/Theme';
 export default function Navigation(params) {
 //   const user = useSelector(state => state.user)
 const isAuth = useSelector(state => state.configuration.isAuth)
