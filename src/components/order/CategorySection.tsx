@@ -1,15 +1,17 @@
-import { FlatList, StyleSheet,  View, Text as RNText } from 'react-native'
+import { FlatList, StyleSheet,  View, Text as RNText, ActivityIndicator } from 'react-native'
 import { Card } from '@rneui/themed'
 import Text from '../common/Text'
 import CategoryItem from './CategoryItem'
 import { FC, useEffect, useState } from 'react'
 import {ICategory} from '../../interfaces/services'
+import Theme from '../../constants/Theme'
 
 interface ICategorySection{
 categories:ICategory[],
-changeCategory:(id:number)=>void
+changeCategory:(id:number)=>void,
+isLoading:boolean
 }
-const CategorySection:FC<ICategorySection> = ({categories,changeCategory}) => {
+const CategorySection:FC<ICategorySection> = ({categories,changeCategory,isLoading}) => {
 
 
 
@@ -18,8 +20,11 @@ const CategorySection:FC<ICategorySection> = ({categories,changeCategory}) => {
     <Card>
       <Card.Title><Text h4  bold>Categorias</Text></Card.Title>
       <Card.Divider/>
-     
-      <FlatList
+
+      {
+        !isLoading
+        ?
+        <FlatList
         data={categories.sort((a,b)=>{
           if ( a.Orden < b.Orden ){
             return -1;
@@ -34,10 +39,24 @@ const CategorySection:FC<ICategorySection> = ({categories,changeCategory}) => {
         keyExtractor={item => item.CategoriaID.toString()}
         horizontal
       />
+      :
+<View style={styles.loadingSection}>
+        <ActivityIndicator color={Theme.colors.primary}/>
+      </View>
+      }
+
+      
+     
+
     </Card>
   )
 }
 
 export default CategorySection
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  loadingSection:{
+    justifyContent:'center',
+    alignItems:'center'
+  }
+})

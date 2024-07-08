@@ -8,7 +8,7 @@ import {
   removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 
-import { Container, CustomerSection } from '../../components/common'
+import { Container, CustomerSection, LoaderModal } from '../../components/common'
 import CategorySection from '../../components/order/CategorySection'
 import DishesSection from '../../components/order/DishesSection'
 import OrderSection from '../../components/order/OrderSection'
@@ -18,23 +18,28 @@ import { IDish } from '../../interfaces/IOrder';
 import WithScreenFocus from '../../components/order/OrderScreenWrapper';
 
 type propsOrder={
- 
+ Isloading:boolean
 }
 
 type stateOrder={
   categories:ICategory[],
   articles:IDish[]
-categoryId:number
+categoryId:number,
+isLoadingCategories:boolean,
+isLoadingDishes:boolean
 }
 
 class OrderScreen extends Component<propsOrder,stateOrder> {
+
 constructor(props:propsOrder){
   super(props);
   this.changeCategory = this.changeCategory.bind(this)
   this.state={
     categories:[],
     articles:[],
-    categoryId:0
+    categoryId:0,
+    isLoadingCategories:false,
+    isLoadingDishes:false
   }
 }
 
@@ -52,19 +57,25 @@ constructor(props:propsOrder){
   }
 
   loadCategories(){
+    this.setState({isLoadingCategories:true});
     axiosClient.post('/ObtenerCategorias').then(res=>{
       this.setState({categories:(res.data as unknown) as ICategory[]});
-    
      this.changeCategory(this.state.categories[0].CategoriaID);
+     this.setState({isLoadingCategories:false});
      
+     }).catch(err=>{
+      this.setState({isLoadingCategories:false});
      })
   }
 
   loadArticles(id:number){
+    this.setState({isLoadingDishes:true});
     axiosClient.post('/ObtenerProductos',{CategoriaID:id}).then(res=>{
       this.setState({articles:(res.data as unknown) as IDish[]});
+      this.setState({isLoadingDishes:false});
      
-     
+     }).catch(err=>{
+      this.setState({isLoadingDishes:false});
      })
   }
 
@@ -93,10 +104,15 @@ constructor(props:propsOrder){
 
     return (
       <Container>
+      {
+        this.props.Isloading
+        &&
+        <LoaderModal/>
+      }
         <View style={styles.container}>
           <View style={styles.section}>
-            <CategorySection categories={this.state.categories} changeCategory={this.changeCategory}/>
-            <DishesSection articles={this.state.articles}/>
+            <CategorySection categories={this.state.categories} changeCategory={this.changeCategory} isLoading={this.state.isLoadingCategories}/>
+            <DishesSection articles={this.state.articles} isLoading={this.state.isLoadingDishes}/>
             <CustomerSection/>
           </View>
           <View style={styles.section}>

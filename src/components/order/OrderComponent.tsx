@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC, useEffect, useState } from 'react'
 import { materialTheme } from '../../constants'
 import { BottomSheet, ListItem } from '@rneui/themed'
-import { Text } from '../common'
+import { LoaderModal, Text } from '../common'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import { useReservation } from '../../hooks'
@@ -23,35 +23,12 @@ type OrderComponentType={
 
 const OrderComponent:FC<OrderComponentType> = ({order}) => {
   const Table = useSelector((state: IRootState) => state.reservations.selectors.table);
-  // const [ordrs, setOrdrs] = useState<IOrder[]>([]);
-  // const { reservations } = useSelector((state: IRootState) => state.reservations);
-  // const { getOrdersByReservation, getReservation } = useReservation();
-  // const [reservation, setReservation] = useState<IReservation>();
-  // useEffect(() => {
-  //   loadOrders()
-  //   setReservation(getReservation())
-  // }, [reservations])
-
-  // const loadOrders = () => {
-  //   const orders = getOrdersByReservation();
-  //   orders != undefined && setOrdrs(orders);
-
-  // }
- 
-  // const { order, getOrderById } = useOrder();
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     if (Table.OrdenID) {
-  //       getOrderById(Table.OrdenID,0)
-  //     }
-  //   }, [])
-  // );
-
-
-
+const [isLoading, setisLoading] = useState(false)
   return (
     <View style={styles.container}>
-
+{
+  isLoading && <LoaderModal/>
+}
       <>
         <View style={[styles.tr, styles.headerTr]}>
           <Text bold>{Table?.Nombre ? Table.Nombre : 'Sin Asignar'}</Text>
@@ -67,7 +44,7 @@ const OrderComponent:FC<OrderComponentType> = ({order}) => {
 
 
       {
-        order?.DetalleOrden.map((item, key) => <OrderItem key={key} item={item} />)
+        order?.DetalleOrden.map((item, key) => <OrderItem key={key} item={item} isLoading={isLoading} changeLoading={setisLoading}/>)
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Total</Text>
@@ -78,10 +55,12 @@ const OrderComponent:FC<OrderComponentType> = ({order}) => {
 }
 
 interface IOrderItem {
-  item: IOrder
+  item: IOrder,
+  isLoading:boolean,
+  changeLoading:(value:boolean)=>void
 }
 
-const OrderItem: FC<IOrderItem> = ({ item }) => {
+const OrderItem: FC<IOrderItem> = ({ item,isLoading,changeLoading }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
   const [isVisibleChangeCustomerModal, setIsVisibleChangeCustomerModal] = useState(false);
@@ -106,9 +85,15 @@ const OrderItem: FC<IOrderItem> = ({ item }) => {
 addModifier(item.DetalleID,modifier)
   }
 
-  const changeCustomer = (CustomerId: string) => {
+  const changeCustomer = async (CustomerId: string) => {
+    changeLoading(true)
+   try {
     setIsVisibleChangeCustomerModal(!isVisibleChangeCustomerModal);
-    changeOfCustomer(item.DetalleID,parseInt(CustomerId));
+   await changeOfCustomer(item.DetalleID,parseInt(CustomerId));
+   changeLoading(false)
+   } catch (error) {
+    changeLoading(false)
+   }
   }
 
   const list = [

@@ -159,11 +159,11 @@ const useOrder = () => {
             const response = await changeOfCustomer(changeCustomerData);
             if (response == null) {
                 Alert.alert('No fue posible cambiar comensal.');
-                return
+                return response
             }
             dispatch(changeCustomer(changeCustomerData))
         } catch (error) {
-
+return null
         } finally {
             setisLoading(false)
         }

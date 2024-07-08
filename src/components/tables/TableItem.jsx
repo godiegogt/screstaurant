@@ -5,18 +5,16 @@ import { materialTheme } from '../../constants'
 import { Text } from '../common'
 import { useDispatch } from 'react-redux'
 import { selectTable } from '../../features/reservation/reservationSlice'
+import Theme from '../../constants/Theme'
 
 const TableItem = ({item}) => {
   const navigation=  useNavigation();
  const dispatch= useDispatch();
   return (
-    <TouchableOpacity style={styles.container} onPress={()=>{dispatch(selectTable(item));navigation.navigate('OrderScreen',{table:item})}}>
-        <Text style={[styles.title,item.OrdenID>0&&{color:materialTheme.colors.muted}]} >{item.Nombre}</Text>
-   {
-    !item.OrdenID>0?<Image  source={require('../../assets/img/mesa-de-cena.png')} width={20} height={20}/>
-  :
-  <Image  source={require('../../assets/img/mesa-de-cena-disabled.png')} width={20} height={20}/> 
-  }  
+    <TouchableOpacity style={[styles.container,item.OrdenID>0&&styles.tableReserved]} onPress={()=>{dispatch(selectTable(item));navigation.navigate('OrderScreen',{table:item})}}>
+   
+  <Image  source={require('../../assets/img/mesa-de-cena.png')}style={styles.img}/>
+  <Text center style={[styles.title]} >{item.Nombre}</Text>
     </TouchableOpacity>
   )
 }
@@ -27,14 +25,26 @@ const styles = StyleSheet.create({
     container:{
       width:50,
       height:50,
-      margin:materialTheme.sizes.BASE
+      margin:materialTheme.sizes.BASE,
+
     },
+    tableReserved:{
+      backgroundColor:'rgba(255, 223, 153,0.4);'
+    }
+    ,
     title:{
-        position:'absolute',
-        marginLeft:25,
-        marginTop:20,
+       
         color:materialTheme.colors.primary,
         fontWeight:'bold',
-        fontSize:10
+        fontSize:10,
+        zIndex:1000,
+        alignSelf:'center'
+    },
+    textWhite:{
+color:'#fff'
+    },
+    img:{
+      width:'100%',
+      height:'80%'
     }
   })

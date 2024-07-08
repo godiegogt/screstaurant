@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { Text } from '../common'
 import TableItem from './TableItem'
 import { Card } from '@rneui/themed'
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import { useFocusEffect } from '@react-navigation/native';
 import { restart } from '../../features/order/orderSlice'
+import Theme from '../../constants/Theme'
 export type TableType = {
   MesaID: number,
   Nombre: string,
@@ -25,6 +26,7 @@ const TablesComponent = () => {
   const [rooms, setRooms] = useState<RoomType[]>([]);
   const [tables, setTables] = useState<TableType[]>([]);
   const roomDefault = useSelector((state: IRootState) => state.configuration.userData.roomDefaultId);
+  const [isLoading, setisLoading] = useState(false)
   const [roomSelected, setRoomSelected] = useState(roomDefault);
 const dispatch=useDispatch()
   useEffect(() => {
@@ -38,6 +40,8 @@ const dispatch=useDispatch()
     }, [])
   );
   const getRooms = () => {
+   try {
+    setisLoading(true);
     axiosClient.post('/ObtenerSalones').then(data => {
       setRooms((data.data as unknown) as RoomType[]);
       axiosClient.post('/ObtenerMesas', { SalonID: roomSelected }).then(data2 => {
@@ -60,16 +64,25 @@ const dispatch=useDispatch()
             
               return oldStatus
             });
-            setTables(tablesWithStatus)
+            setTables(tablesWithStatus);
+            setisLoading(false)
           } else {
             //DOnt do anything because there arent new orders
           }
         }).catch(e=>{
           console.log(e)
+          setisLoading(false)
         });
 
+      }).catch(err=>{
+        setisLoading(false)
       })
+    }).catch(err=>{
+      setisLoading(false)
     })
+   } catch (error) {
+    
+   }
   }
 
 
@@ -81,11 +94,17 @@ const dispatch=useDispatch()
       <Card.Title><Text h4 bold>Mesas</Text></Card.Title>
       <Card.Divider />
       {rooms != undefined && rooms.length > 0 && <PageNavigator rooms={rooms} roomSelected={roomSelected} setRoomSelected={setRoomSelected} />}
-      <View style={styles.container}>
+      {
+        !isLoading
+        ?
+        <View style={styles.container}>
         {
           tables != undefined && tables.map(table => <TableItem key={table.MesaID} item={table} />)
         }
       </View>
+      :
+      <ActivityIndicator color={Theme.colors.primary}/>
+      }
 
     </Card>
   )

@@ -14,6 +14,7 @@ const OrderButtonsSection = () => {
  const dispatch= useDispatch()
   const [errormessage, seterrormessage] = useState('')
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setisLoading] = useState(false)
  const orderHook= useOrder();
   const list = [
     // { title: 'Pre-cuenta' ,
@@ -47,10 +48,14 @@ const OrderButtonsSection = () => {
   }
 
 const _sendReservation=async ()=>{
-  
-await  orderHook.sendOrder();
+setisLoading(true)
+  try {
+    await  orderHook.sendOrder();
+    setisLoading(false)
 navigation.navigate("RoomsScreen");
-
+  } catch (error) {
+    setisLoading(false)
+  }
 
 }
 
@@ -60,6 +65,9 @@ const returnToIndex=()=>{
 
   return (
     <View style={styles.OrderButtonsSection}>
+      {
+isLoading && <LoaderModal/>
+      }
      { 
       orderHook.isLoading
       &&

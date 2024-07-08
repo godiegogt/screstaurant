@@ -10,14 +10,21 @@ interface WithScreenFocusProps {
 const WithScreenFocus = (WrappedComponent: React.ComponentType<any>) => {
   return (props: WithScreenFocusProps) => {
     const { sendOrder } = useOrder();
-
+const [isLoading, setisLoading] = React.useState(false)
     useEffect(() => {
     //   const unsubscribeFocus = props.navigation.addListener('focus', () => {
     //     console.log('Screen is focused');
     //   });
     const sendAndRestart = async () => {
       console.log('Screen is blurred');
+     try {
+      setisLoading(true);
       await sendOrder(); // Call the async enviarSolicitud method
+     } catch (error) {
+      
+     }finally{
+      setisLoading(false);
+     }
     };
 
       const unsubscribeBlur = props.navigation.addListener('blur', () => {sendAndRestart()});
@@ -32,7 +39,7 @@ const WithScreenFocus = (WrappedComponent: React.ComponentType<any>) => {
       };
     }, [props.navigation, sendOrder]);
 
-    return <WrappedComponent {...props} />;
+    return <WrappedComponent {...props} isLoading={isLoading} setLoading={setisLoading}/>;
   };
 };
 
