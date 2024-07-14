@@ -1,9 +1,8 @@
 import { Modal, StyleSheet,  View } from 'react-native'
 import React, { FC } from 'react'
-import { Button } from '@rneui/themed'
+import { Button, Text } from '@rneui/themed'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { materialTheme } from '../../constants'
-import {Text} from './'
 
 interface IAlert{
     message:string,
@@ -35,7 +34,7 @@ setMessage('')
             color={type=='warning'?materialTheme.colors.warning:type=='error'?materialTheme.colors.error:materialTheme.colors.success}
             style={{marginBottom:materialTheme.sizes.BASE}}
             />
-            <Text bold styles={styles.modalText}>{message}</Text>
+            <Text style={styles.modalText}>{message}</Text>
            <Button onPress={closeModal}>Aceptar</Button>
           </View>
         </View>

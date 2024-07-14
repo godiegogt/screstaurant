@@ -11,6 +11,7 @@ import axios from 'axios'
 import axiosClient from '../../utils/axiosClient';
 import { IRootState } from '../../app/store';
 import { Text } from '@rneui/themed';
+import { appVersion } from '../../constants/variables';
 
 
 const LoginScreen: FC = () => {
@@ -57,44 +58,55 @@ const LoginScreen: FC = () => {
 
     const login = async () => {
 
-        console.log('url', url)
-        try {
-            const credentials = {
-                username: 'Administrador',
-                password: 'Admin2024$',
-                grant_type: 'password'
-            }
-            setIsLoading(true);
+       try {
+        console.log('url', "'" + url + "'")
+       
+        const credentials = {
+            username: 'Administrador',
+            password: 'Admin2024$',
+            grant_type: 'password'
+        }
+        setIsLoading(true);
+        axios({
+            method: 'post',
+            url: url + '/GetToken',
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            timeout: 10000,
+            data: credentials
+        }).then(data => {
+            console.log('paso su primer get')
+            dispatch(updateToken({ data: data.data.access_token, expiration_date: data.data.expiration_date }))
+
             axios({
                 method: 'post',
-                url: url + '/GetToken',
-                headers: { 'content-type': 'application/x-www-form-urlencoded' },
-                data: credentials
-            }).then(data => {
-                dispatch(updateToken({ data: data.data.access_token, expiration_date: data.data.expiration_date }))
-
-                axios({
-                    method: 'post',
-                    url: url + '/ObtenerUsuarioPorCodigo',
-                    headers: { 'content-type': 'application/x-www-form-urlencoded', 'Authorization': `Bearer ${data.data.access_token}` },
-                    data: { Codigo: valueText }
-                }).then(data2 => {
-                    dispatch(doLogin({ name: data2.data.Nombre, roomDefaultId: data2.data.SalonDefaultID, userId: data2.data.UsuarioID }))
-                    setIsLoading(false);
-
-                }).catch(err => {
-                    setIsLoading(false);
-                    seterrormessage('Hubo un error. Intentelo más tarde por favor.')
-                })
-
-            }).catch(error => {
+                url: url + '/ObtenerUsuarioPorCodigo',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${data.data.access_token}`
+                },
+                timeout: 10000,
+                data: { Codigo: valueText }
+            }).then(data2 => {
+                dispatch(doLogin({ name: data2.data.Nombre, roomDefaultId: data2.data.SalonDefaultID, userId: data2.data.UsuarioID }))
                 setIsLoading(false);
-                seterrormessage('Hubo un error en la conexión. Revise su conexión a internet.')
+
+            }).catch(err => {
+                console.log(err)
+                setIsLoading(false);
+                seterrormessage('Hubo un error. Intentelo más tarde por favor.')
             })
-        } catch (error) {
+
+        }).catch(error => {
             setIsLoading(false);
-            seterrormessage('Error inesperado, pruebas más tarde.')
-        }
+            console.log(error)
+           
+            seterrormessage('Hubo un error en la conexión. Revise su conexión a internet.')
+        })
+       } catch (error) {
+        setIsLoading(false)
+        seterrormessage('Error inesperado.')
+       }
+        
 
         // dispatch(doLogin())
     }
@@ -107,7 +119,7 @@ const LoginScreen: FC = () => {
             <View style={styles.logoContainer}><Image resizeMode='contain' style={styles.logo} source={require('../../assets/img/logo.png')} /></View>
             <Box center>
                 <NumericKeyword isLoading={isLoading} login={login} valueText={valueText} setValueText={setValueText} />
-                <Text>{url}</Text>
+                <Text>{appVersion}</Text>
             </Box>
         </View>
     )
