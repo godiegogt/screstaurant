@@ -93,7 +93,7 @@ const LoginScreen: FC = () => {
             }).catch(err => {
                 console.log(err)
                 setIsLoading(false);
-                seterrormessage('Hubo un error. Intentelo más tarde por favor.')
+                seterrormessage('Código inválido. Asegúrate de haber escrito bien tu código.')
             })
 
         }).catch(error => {
