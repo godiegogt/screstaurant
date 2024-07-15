@@ -112,8 +112,8 @@ constructor(props:propsOrder){
         <View style={styles.container}>
           <View style={styles.section}>
             <CategorySection categories={this.state.categories} changeCategory={this.changeCategory} isLoading={this.state.isLoadingCategories}/>
-            <DishesSection articles={this.state.articles} isLoading={this.state.isLoadingDishes}/>
             <CustomerSection/>
+            <DishesSection articles={this.state.articles} isLoading={this.state.isLoadingDishes}/>
           </View>
           <View style={styles.section}>
             <OrderSection />
