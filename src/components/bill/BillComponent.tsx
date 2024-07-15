@@ -9,9 +9,7 @@ import { IRootState } from '../../app/store'
 import { IOrder, IReservation } from '../../interfaces'
 
 import { IModifiers } from '../../interfaces/IOrder'
-import useOrder from '../../hooks/useOrder'
-import { calcularPrecioTotal } from '../../features/order/helpers/CalcTotal'
-import Theme from '../../constants/Theme'
+
 
 type PropsType={
   order:IReservation
@@ -52,10 +50,14 @@ const BillComponent:FC<PropsType> = ({order}) => {
         <Text bold>Propina</Text>
         <Text bold>{'Q ' + order.Propina?.toFixed(2)}</Text>
       </View>
-      <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
-        <Text bold>Descuento</Text>
-        <Text bold>{'Q ' + order.Descuento?.toFixed(2)}</Text>
-      </View>
+{
+  order.Descuento!=null && order.Descuento>0
+  &&
+  <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
+  <Text bold>Descuento</Text>
+  <Text bold>{'Q ' + order.Descuento?.toFixed(2)}</Text>
+</View>
+}
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Total</Text>
         <Text bold>{'Q ' + order.Total?.toFixed(2)}</Text>
