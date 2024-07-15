@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">190.148.213.130</domain>
-        <domain includeSubdomains="true">*.*.*.*</domain> <!-- For any IP address -->
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">192.168.0.0</domain> <!-- Replace with your specific domain or IP -->
+        <domain includeSubdomains="true">190.148.213.130</domain> <!-- Replace with your specific domain or IP -->
+        <domain includeSubdomains="true">127.0.0.1</domain>
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.0.0</domain>
+    </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">172.16.0.0</domain>
+    </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">0.0.0.0/0</domain> <!-- Allow all IP addresses -->
+    </domain-config>
+    <base-config cleartextTrafficPermitted="true" />
 </network-security-config>
