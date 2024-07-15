@@ -37,12 +37,12 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
 
     <TouchableOpacity style={styles.container} onPress={toggleModal}>
       <Text style={styles.text}>{newDish.Nombre}</Text>
-      <Image
+      {/* <Image
         source={{ uri: 'https://i.pinimg.com/736x/c6/dc/94/c6dc940457e1a8e6fc55082fd10dd04c.jpg' }}
         containerStyle={styles.image}
         PlaceholderContent={<ActivityIndicator />}
 
-      />
+      /> */}
       {
         isVisible&&<OrderVariationModal ProductoID={newDish.ProductoID} isVisible={isVisible} toggleModal={toggleModal} addOrder={_addOrder} changeDish={setNewDish}/>
       }
@@ -76,14 +76,13 @@ const styles = StyleSheet.create({
   text: {
     position: 'absolute',
     zIndex: 1000,
-
-
     fontWeight: 'bold',
     alignSelf: 'center',
     flex: 1,
     textAlign: 'center',
     paddingBottom: 10,
-    fontSize: 12
+    fontSize: 12,
+    color:'#fff'
 
   }
 })
