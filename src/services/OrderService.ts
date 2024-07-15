@@ -58,3 +58,18 @@ export const changeOfCustomer = async (customerData: IChangeCustomerReq) => {
 
 
 }
+
+export const printPreOrderService = async (OrdenID:number,ComensalNo:number) => {
+    const { data, status } = await axiosClient.post('/ImprimirPreCuenta',  {
+        OrdenID,
+        ComensalNo
+    } );
+
+    if (status == 200 && data.CodigoError==0) {
+        return data
+    } else {
+        return null
+    }
+
+
+}

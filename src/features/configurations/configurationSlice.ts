@@ -14,8 +14,8 @@ export const configurationSlide = createSlice({
     POSBT: '',
     canChangePrice: "Si",
     calcIDP: 0,
-    exporttypes: {
-      name: "Ticket",
+    havePrinter: {
+      name: "Si",
       index: 0
     },
     printerConfig: {
@@ -58,12 +58,12 @@ export const configurationSlide = createSlice({
       state.isAuth = false,
         state.token.data = ''
     },
-    updateExportType: (state, action: PayloadAction<{ name: string, index: number }>) => {
+    updateHavePrinter: (state, action: PayloadAction<{ name: string, index: number }>) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.exporttypes = action.payload
+      state.havePrinter = action.payload
 
     },
     updatePrinterConfig: (state, acition: PayloadAction<{ id: number, name: string, spaces: number, amountSize: number, detailSize: number, priceSize: number }>) => {
@@ -89,7 +89,7 @@ state.URL=action.payload
   },
 })
 
-export const { login, logOut, updateExportType, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams,updateURL } = configurationSlide.actions
+export const { login, logOut, updateHavePrinter, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams,updateURL } = configurationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

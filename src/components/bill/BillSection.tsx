@@ -1,18 +1,10 @@
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Card } from '@rneui/themed'
 import { Text } from '../common'
-import OrderComponent from '../order/OrderComponent'
+
 import { materialTheme } from '../../constants'
-import OrderVariationModalCustomerContainer from '../order/OrderVariationModalCustomerContainer'
 
-import {
-  BLEPrinter,
-  ColumnAlignment,
-  PrinterOptions,
-  COMMANDS
-
-} from "react-native-thermal-receipt-printer-image-qrv2";
 import { useDispatch, useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
 import BillComponent from './BillComponent'
@@ -22,6 +14,7 @@ import usePrinter from '../../hooks/usePrinter'
 import useOrder from '../../hooks/useOrder'
 import Theme from '../../constants/Theme'
 import { useFocusEffect } from '@react-navigation/native'
+import { printPreOrderService } from '../../services/OrderService'
 
 const BillSection = () => {
  const dispatch = useDispatch()
@@ -29,9 +22,10 @@ const BillSection = () => {
   const {printPreBill}=usePrinter();
   const Table = useSelector((state: IRootState) => state.reservations.selectors.table);
   const BTPOS = useSelector((state: IRootState) => state.configuration.POSBT);
+  const havePrinter = useSelector((state: IRootState) => state.configuration.havePrinter);
   const { order, getOrderById,isLoading } = useOrder();
   const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer );
-
+const [isLoading2, setisLoading2] = useState(false)
   useFocusEffect(
     React.useCallback(() => {
 
@@ -51,8 +45,31 @@ setTimeout(() => {
 
 
 
-  const printPre=()=>{
-printPreBill(order)
+  const printPre=async ()=>{
+
+    if (BTPOS){
+      printPreBill(order)
+    }else{
+      if(Table.OrdenID!=undefined){
+       try {
+        setisLoading2(true)
+        const response = await printPreOrderService(Table.OrdenID,customerSelected);
+        setisLoading2(false)
+       if(response!=null){
+        Alert.alert("Pre-orden enviada.")
+       }
+       } catch (error) {
+        setisLoading2(false)
+       }
+      }
+
+
+    }
+
+
+
+
+
   }
 
   return (
@@ -82,12 +99,14 @@ printPreBill(order)
 {
 billingType==1&&<CustomersContainer />
 }
+    {
+      BTPOS!='' || havePrinter.index==0 && <Button loading={isLoading2} onPress={printPre} disabled={isLoading2}>Imprimir precuenta</Button>
+    }
+        
       
-        {
-          BTPOS!=""
-          &&
-          <Button onPress={printPre}>Imprimir precuenta</Button>
-        }
+       
+          
+     
       
      
     </Card>

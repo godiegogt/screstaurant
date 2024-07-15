@@ -8,25 +8,33 @@ import { useDispatch, useSelector } from 'react-redux';
 
 //Const
 import { printerCongifs } from '../../constants/variables';
-import { updateExportType, updatePrinterConfig } from '../../features/configurations/configurationSlice';
+import { updateHavePrinter, updatePrinterConfig } from '../../features/configurations/configurationSlice';
 import { ListItem } from '@rneui/themed';
 import Theme from '../../constants/Theme';
 
 
-
-
+const havePrinterList=[
+  {
+    name: "Si",
+    index: 0
+  },
+  {
+    name: "No",
+    index: 1
+  }
+]
 
 const ConfigHomeScreen = ({ navigation }) => {
   // const [isSinmi, setisSinmi] = React.useState("");
   const dispatch = useDispatch();
   const configurations = useSelector(state => state.configuration);
-  const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(configurations.exporttypes.index);
+  const [selectedButtonIndex, setSelectedButtonIndex] = React.useState(configurations.havePrinter.index);
   const [sizeSelected, setsizeSelected] = React.useState(configurations.printerConfig.id)
-  const changeExportType = (index) => {
+  const changehavePrinter = (index) => {
     setSelectedButtonIndex(index);
 
 
-    dispatch(updateExportType(exporttypes[index]));
+    dispatch(updateHavePrinter(havePrinterList[index]));
 
 
 
@@ -41,16 +49,7 @@ const ConfigHomeScreen = ({ navigation }) => {
 
   }
 
-  const exporttypes = [
-    {
-      name: "Ticket",
-      index: 0
-    },
-    {
-      name: "PDF",
-      index: 1
-    }
-  ]
+  
 
   return (
     <View style={styles.container}>
@@ -67,12 +66,12 @@ const ConfigHomeScreen = ({ navigation }) => {
 
       <ListItem bottomDivider>
         <ListItem.Content>
-          <ListItem.Title>Generar factura como</ListItem.Title>
+          <ListItem.Title>Uso con impresora</ListItem.Title>
         </ListItem.Content>
         <ListItem.ButtonGroup
-          buttons={exporttypes.map((item) => { return item.name })}
+          buttons={havePrinterList.map((item) => { return item.name })}
           selectedIndex={selectedButtonIndex}
-          onPress={changeExportType}
+          onPress={changehavePrinter}
         />
       </ListItem>
       {configurations.printerConfig != null && <ListItem bottomDivider>
