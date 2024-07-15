@@ -46,8 +46,21 @@ const BillComponent:FC<PropsType> = ({order}) => {
       }
       <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
         <Text bold>Subtotal</Text>
-        <Text bold>{'Q ' + calcularPrecioTotal(order).toFixed(2)}</Text>
-      </View></>
+        <Text bold>{'Q ' + order.SubTotal?.toFixed(2)}</Text>
+      </View>
+      <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
+        <Text bold>Propina</Text>
+        <Text bold>{'Q ' + order.Propina?.toFixed(2)}</Text>
+      </View>
+      <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
+        <Text bold>Descuento</Text>
+        <Text bold>{'Q ' + order.Descuento?.toFixed(2)}</Text>
+      </View>
+      <View style={[styles.tr, styles.headerTr, { backgroundColor: '#fff' }]}>
+        <Text bold>Total</Text>
+        <Text bold>{'Q ' + order.Total?.toFixed(2)}</Text>
+      </View>
+      </>
      
     </View>
   )
