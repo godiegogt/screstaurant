@@ -21,7 +21,7 @@ const OrderButtonsSection = () => {
     // onPress: () => setIsVisible(false),},
     // { title: 'Cambiar orden de comensal',
     // onPress: () => setIsVisible(false), },
-    { title: 'Facturar' ,
+    { title: 'Pre-cuenta' ,
     onPress: () => {billing()}},
     // { title: 'Descuentos' ,
     // onPress: () => setIsVisible(false),},
