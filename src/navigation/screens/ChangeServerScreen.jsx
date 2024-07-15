@@ -1,6 +1,6 @@
 import { StyleSheet, View, Alert } from 'react-native'
 import React, { useState } from 'react'
-import { Container, FormInput, Text } from '../../components/common'
+import { Container, FormInput, RadioButtonList, Text } from '../../components/common'
 import Theme from '../../constants/Theme'
 import { Button } from '@rneui/themed'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,6 +8,7 @@ import { logOut, updateURL } from '../../features/configurations/configurationSl
 import { useNavigation } from '@react-navigation/native'
 
 const ChangeServerScreen = () => {
+  const [method, setMethod] = useState('http')
   const [isLoading, setisLoading] = useState(false)
   const navigation = useNavigation();
   const [url, seturl] = React.useState("");
@@ -16,7 +17,7 @@ const ChangeServerScreen = () => {
   const changeUrl = () => {
     setisLoading(true)
     if (url != "" && url != undefined) {
-      dispatch(updateURL(`${url}/Api`))
+      dispatch(updateURL(`${method}://${url}/Api`))
       setTimeout(() => {
         setisLoading(false)
         dispatch(logOut())
@@ -29,7 +30,8 @@ const ChangeServerScreen = () => {
   }
   return (
     <Container>
-      <FormInput onBlur={() => { }} onFocus={() => { }} color={Theme.colors.primary} title={'URL: '} type='text' placeholder={'https://example.com'} val={url} onChange={seturl} />
+      <FormInput onBlur={() => { }} onFocus={() => { }} color={Theme.colors.primary} title={'IP:'} type='text' placeholder={'example: 192.168.1.1:80'} val={url} onChange={seturl} />
+      <RadioButtonList items={[{name:'http'},{name:'https'}]} onChange={setMethod} title={'Tipo de conexión:'} value={method}/>
       <Text>{URL}</Text>
       <Button loading={isLoading} onPress={changeUrl} title={'Guardar'} />
     </Container>

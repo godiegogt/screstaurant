@@ -19,7 +19,7 @@ export default Container
 const styles = StyleSheet.create({
     container:{
       flex:1,
-      backgroundColor:materialTheme.colors.back_ground_screen,
+      backgroundColor:'#fff',
       padding:materialTheme.sizes.padding_screen/2,
     }
 })
