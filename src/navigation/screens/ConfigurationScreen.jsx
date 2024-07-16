@@ -85,7 +85,7 @@ const ConfigHomeScreen = ({ navigation }) => {
         />
       </ListItem>}
       {
-        configurations.exporttypes.name == 'Ticket'
+        configurations.havePrinter.name == 'Si'
         &&
         <TouchableOpacity onPress={() => navigation.navigate("EditPrinterScreen")}>
           <ListItem bottomDivider>
