@@ -10,6 +10,7 @@ import { IDish, IModifiers } from '../../interfaces/IOrder'
 import { IReservation } from '../../interfaces'
 import { useReservation } from '../../hooks'
 import useOrder from '../../hooks/useOrder'
+import AmountModal from './AmountModal'
 
 interface IDishItemProps {
   item: IDish
@@ -19,7 +20,9 @@ interface IDishItemProps {
 const DishItem: FC<IDishItemProps> = ({ item }) => {
   const [isVisible, setIsVisible] = useState(false);
   const { addDetail } = useOrder();
-  const [newDish, setNewDish] = useState(item)
+  const [newDish, setNewDish] = useState(item);
+  const [amount, setAmount] = useState(0);
+  const [isAmountModalVisible, setIsAmountModalVisible] = useState(false)
 
   const toggleModal = () => {
     setIsVisible(!isVisible)
@@ -32,17 +35,16 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
     toggleModal();
   }
 
+  const toggleAmountModal = () => {
+    setIsAmountModalVisible(!toggleAmountModal)
+  }
+
 
   return (
 
-    <TouchableOpacity style={styles.container} onPress={toggleModal}>
+    <TouchableOpacity style={styles.container} onPress={toggleModal} onLongPress={toggleAmountModal}>
+      <AmountModal amount={amount} changeAmount={setAmount} isVisible={isAmountModalVisible} toggle={()=>{}}/>
       <Text style={styles.text}>{newDish.Nombre}</Text>
-      {/* <Image
-        source={{ uri: 'https://i.pinimg.com/736x/c6/dc/94/c6dc940457e1a8e6fc55082fd10dd04c.jpg' }}
-        containerStyle={styles.image}
-        PlaceholderContent={<ActivityIndicator />}
-
-      /> */}
       {
         isVisible&&<OrderVariationModal ProductoID={newDish.ProductoID} isVisible={isVisible} toggleModal={toggleModal} addOrder={_addOrder} changeDish={setNewDish}/>
       }
