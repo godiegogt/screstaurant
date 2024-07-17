@@ -6,10 +6,12 @@ import {
     heightPercentageToDP as hp,
 
 } from 'react-native-responsive-screen';
+import Theme from '../../constants/Theme';
 
 const stylesSS = StyleSheet.create({
     textComponent: {
-        fontFamily: 'Segoe'
+        fontFamily: 'Segoe',
+        color:Theme.colors.text
     },
     h1: {
         fontSize: hp('5%')

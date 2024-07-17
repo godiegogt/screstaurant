@@ -91,7 +91,7 @@ const ConfigHomeScreen = ({ navigation }) => {
           <ListItem bottomDivider>
             <Icon name={'print'} size={20} color={Theme.colors.icon} />
             <ListItem.Content>
-              <Text h2>Configurar impresora</Text>
+            <ListItem.Title>Configurar impresora</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
@@ -104,7 +104,7 @@ const ConfigHomeScreen = ({ navigation }) => {
           <ListItem bottomDivider>
             
             <ListItem.Content>
-              <Text h2>Cambiar Servidor</Text>
+            <ListItem.Title>Cambiar servidor</ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron />
           </ListItem>
