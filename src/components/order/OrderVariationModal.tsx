@@ -68,7 +68,7 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
         state: 'new'
       }));
 
-
+setSelecciones([]);
     addOrder(resultado)
 
 
@@ -85,6 +85,10 @@ const OrderVariationModal: FC<IOrderVariationModal> = ({ isVisible, toggleModal,
             <Formulario modifiers={modifiers} selecciones={selecciones} changeSelecciones={setSelecciones} />
             :
             <ActivityIndicator color={Theme.colors.primary} />
+        }
+        {
+          !isLoading && modifiers.length==0
+          && <Text h4>No tiene modificadores</Text>
         }
         {
           !isLoading

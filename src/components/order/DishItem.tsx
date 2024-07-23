@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { FC, useState } from 'react'
 import { Image, Tile } from '@rneui/themed'
 
@@ -21,29 +21,55 @@ const DishItem: FC<IDishItemProps> = ({ item }) => {
   const [isVisible, setIsVisible] = useState(false);
   const { addDetail } = useOrder();
   const [newDish, setNewDish] = useState(item);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<string>('0');
   const [isAmountModalVisible, setIsAmountModalVisible] = useState(false)
+  const [amountMode, setAmountMode] = useState(false)
 
   const toggleModal = () => {
-    setIsVisible(!isVisible)
+  try {
+    if(!amountMode){
+      setIsVisible(!isVisible)
+     }else{
+      if(parseInt(amount)>0){
+        setIsVisible(true);
+        setAmount((parseInt(amount)-1).toString())
+      }else{
+        setIsVisible(!isVisible);
+        setAmountMode(false);
+      }
+     }
+  } catch (error) {
+    setIsVisible(!false);
+    setAmount('0');
+    Alert.alert('No se se ha podido completar la operación.')
+  }
   }
 
   const _addOrder = (selecciones:any) => {
-
-
+    const extraMessage=parseInt(amount)>0?`Faltan ${amount}`:"";
+    Alert.alert(`Agregado a la orden. ${extraMessage}`)
     addDetail(newDish,selecciones)
     toggleModal();
   }
 
   const toggleAmountModal = () => {
-    setIsAmountModalVisible(!toggleAmountModal)
+    setAmountMode(true);
+    setIsAmountModalVisible(!isAmountModalVisible)
+   
+  }
+
+  const addOrderWithAmount=()=>{
+    setIsAmountModalVisible(false)
+    toggleModal();
+   
+
   }
 
 
   return (
 
     <TouchableOpacity style={styles.container} onPress={toggleModal} onLongPress={toggleAmountModal}>
-      <AmountModal amount={amount} changeAmount={setAmount} isVisible={isAmountModalVisible} toggle={()=>{}}/>
+      <AmountModal addOrder={addOrderWithAmount} amount={amount} changeAmount={setAmount} isVisible={isAmountModalVisible} toggle={toggleAmountModal}/>
       <Text style={styles.text}>{newDish.Nombre}</Text>
       {
         isVisible&&<OrderVariationModal ProductoID={newDish.ProductoID} isVisible={isVisible} toggleModal={toggleModal} addOrder={_addOrder} changeDish={setNewDish}/>

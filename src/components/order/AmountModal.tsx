@@ -1,17 +1,30 @@
-import { Modal, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { FC } from 'react'
+import { Modal, StyleSheet, TextInput, View } from 'react-native'
+import React, { FC, useState } from 'react'
 import { Button } from '@rneui/themed';
-import { FormInput } from '../common';
+import { Text } from '../common';
 import Theme from '../../constants/Theme';
 
 
 type AmountModalProps = {
-    amount: number;
-    changeAmount: (amount: number) => void;
+    amount: string;
+    changeAmount: React.Dispatch<React.SetStateAction<string>>;
     isVisible: boolean;
-    toggle: () => void
+    toggle: () => void,
+    addOrder:()=>void
 }
-const AmountModal: FC<AmountModalProps> = ({ amount, changeAmount, isVisible, toggle }) => {
+const AmountModal: FC<AmountModalProps> = ({ amount, changeAmount, isVisible, toggle,addOrder }) => {
+
+    const [errormessage, seterrormessage] = useState('')
+    // const _changeAmount = () => {
+      
+    //     console.log(amount)
+    //     if (amount != undefined && parseInt(amount) > 0) {
+    //         seterrormessage('')
+    
+    //     } else {
+    //         seterrormessage('No puedes dejar cantidad vacía.')
+    //     }
+    // }
     return (
         <Modal
             animationType="slide"
@@ -24,10 +37,17 @@ const AmountModal: FC<AmountModalProps> = ({ amount, changeAmount, isVisible, to
         >
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                <Text style={styles.modalTitle}>Cantidad:</Text>
-                    <TextInput value={amount.toString()} onChangeText={(amount2: string) => { changeAmount(parseInt(amount2)) }} keyboardType='numeric' />
-                    <Button onPress={toggle}>Aceptar</Button>
+                    <Text styles={styles.modalTitle}>Cantidad:</Text>
+                    <TextInput placeholder='1' value={amount.toString()} onChangeText={(value) => {
+                        changeAmount(value)
+                    }}
+                        keyboardType='numeric' />
+                    <Button containerStyle={{marginBottom:Theme.sizes.BASE}} onPress={addOrder}>Aceptar</Button>
+                   {
+                    !(parseInt(amount)>0)&& <Text h4 styles={{color:Theme.colors.error}}>{errormessage}</Text>
+                   }
                 </View>
+                
             </View>
         </Modal>
     )
@@ -60,7 +80,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         width: 300
     },
-    modalTitle:{
-        marginBottom:Theme.sizes.BASE
+    modalTitle: {
+        marginBottom: Theme.sizes.BASE
     }
 })

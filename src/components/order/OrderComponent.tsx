@@ -5,7 +5,6 @@ import { BottomSheet, ListItem } from '@rneui/themed'
 import { LoaderModal, Text } from '../common'
 import { useSelector } from 'react-redux'
 import { IRootState } from '../../app/store'
-import { useReservation } from '../../hooks'
 import { IOrder, IReservation } from '../../interfaces'
 
 
@@ -13,9 +12,9 @@ import ChangeCustomerModal from './ChangeCustomerModal'
 import { IModifiers } from '../../interfaces/IOrder'
 import useOrder from '../../hooks/useOrder'
 import AddManualModifierModal from './AddManualModifierModal'
-import { IChangeCustomerReq } from '../../features/order/interfaces/IChangeCustomerReq'
 import { calcularPrecioTotal } from '../../features/order/helpers/CalcTotal'
-import { useFocusEffect } from '@react-navigation/native'
+import { generateuuid } from '../../utils/idgenerator'
+
 
 type OrderComponentType={
   order:IReservation
@@ -172,7 +171,7 @@ addModifier(item.DetalleID,modifier)
   return <>
     <OrderItemChildren />
     {
-      item.DetalleModificadores.map((modifier: IModifiers) => <OrderItemChildren_1 key={modifier.RespuestaModificadorID} modifier={modifier} />)
+      item.DetalleModificadores.map((modifier: IModifiers,key) => <OrderItemChildren_1 key={item.DetalleID+key} modifier={modifier} />)
     }
     <BottomSheet modalProps={{}} isVisible={isVisible2}>
         {list2.map((l, i) => (
@@ -192,7 +191,7 @@ addModifier(item.DetalleID,modifier)
 
 export default OrderComponent
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({  
   container: {
     borderWidth: materialTheme.sizes.ORDER_BORDER_WIDTH,
     borderColor: materialTheme.colors.ORDER_BORDER_COLOR,
