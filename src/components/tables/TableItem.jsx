@@ -10,8 +10,14 @@ import Theme from '../../constants/Theme'
 const TableItem = ({item}) => {
   const navigation=  useNavigation();
  const dispatch= useDispatch();
+
+ const handleSelect=()=>{
+  dispatch(selectTable(item));
+  navigation.navigate('OrderScreen',{table:item})
+ }
+
   return (
-    <TouchableOpacity style={[styles.container,item.OrdenID>0&&styles.tableReserved]} onPress={()=>{dispatch(selectTable(item));navigation.navigate('OrderScreen',{table:item})}}>
+    <TouchableOpacity style={[styles.container,item.OrdenID>0&&styles.tableReserved]} onPress={handleSelect}>
    
   <Image  source={require('../../assets/img/mesa-de-cena.png')}style={styles.img}/>
   <Text center style={[styles.title]} >{item.Nombre}</Text>

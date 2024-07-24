@@ -13,11 +13,6 @@ const PageNavigator = ({ rooms, roomSelected, setRoomSelected }) => {
   const [room, setRoom] = useState(rooms.find(item => item.SalonID == roomSelected));
   const ROOMS_NUMBER = rooms.length;
 
-useEffect(() => {
-  //console.log(rooms)
-  //console.log(room,roomSelected)
-  
-}, [room])
 
   const navigateToRoom = (symbol) => {
 

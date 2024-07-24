@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { IOrder, IReservation, ISelectors } from '../../interfaces'
 import { IOrderR } from './interfaces'
-import moduleName from '../../hooks/useReservation'
 import { TableType } from '../../components/tables/TablesComponent'
 export const reservationSlide = createSlice({
   name: 'reservations',
@@ -94,12 +93,6 @@ export const reservationSlide = createSlice({
       }
 
     },
-    addDish: (state, action: PayloadAction<IOrderR>) => {
-
-      const reservation = state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0];
-      reservation.DetalleOrden.filter(item => item.DetalleID == action.payload.order_UUID)[0] = action.payload
-      state.reservations = [...state.reservations, reservation]
-    },
     deleteDish: (state, action: PayloadAction<IOrderR>) => {
 
       // const dishes = state.reservations.filter(item => item.UUID == action.payload.reservation_UUID)[0].DetalleOrden.filter(item => item.UUID == action.payload.order_UUID)[0].dish.filter(item => item.UUID != action.payload.dish.UUID);
@@ -113,7 +106,7 @@ export const reservationSlide = createSlice({
   },
 })
 
-export const { addReservation,updateReservation, deleteReservation, addOrder, deleteOrder, addDish, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer, updateOrder, updatePaymentType, updatePaymentMethod } = reservationSlide.actions
+export const { addReservation,updateReservation, deleteReservation, addOrder, deleteOrder, deleteDish, selectRoom, selectTable, selectCustomer, changeCustomer, updateOrder, updatePaymentType, updatePaymentMethod } = reservationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
