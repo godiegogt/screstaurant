@@ -8,7 +8,6 @@ const useConfiguration = () => {
 
     const _updateParams = async () => {
         const response = await getParams();
-        console.log('response: ', response)
         if (response != null) {
             dispatch(updateParams(response));
         }

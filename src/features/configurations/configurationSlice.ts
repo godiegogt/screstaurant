@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { IParam } from './interfaces/IParam'
+import { IRoom } from './interfaces/IRoom'
+import { TableType } from '../../components/tables/TablesComponent'
+import { ICategory } from '../../interfaces/services'
 
 export const configurationSlide = createSlice({
   name: 'configuration',
@@ -39,7 +42,9 @@ export const configurationSlide = createSlice({
     stores: [],
     pricesNames: [],
     params: [] as IParam[],
-    URL:'https://apprest.solutioncenter.com.gt/Api'
+    URL:'https://apprest.solutioncenter.com.gt/Api',
+    rooms:[] as IRoom[],
+    categories:[] as ICategory[]
   },
   reducers: {
     login: (state, action: PayloadAction<{ name: string, roomDefaultId: number, userId: number }>) => {
@@ -83,13 +88,26 @@ export const configurationSlide = createSlice({
     },
     updateURL:(state,action:PayloadAction<string>)=>{
 state.URL=action.payload
+    },
+    updateRooms:(state,action:PayloadAction<IRoom[]>)=>{
+state.rooms=action.payload
+    },
+    updateTableStatus:(state,action:PayloadAction<{SalondID:number,tables:TableType[]}>)=>{
+let room=state.rooms.find(room=>room.SalonID==action.payload.SalondID)
+        if(room){
+            room.tables=action.payload.tables
+
+            }
+    },
+    updateCategories:(state,action:PayloadAction<ICategory[]>)=>{
+state.categories=action.payload;
     }
 
 
   },
 })
 
-export const { login, logOut, updateHavePrinter, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams,updateURL } = configurationSlide.actions
+export const { updateCategories,updateTableStatus,updateRooms,login, logOut, updateHavePrinter, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams,updateURL } = configurationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

@@ -13,7 +13,15 @@ isLoading:boolean
 }
 const CategorySection:FC<ICategorySection> = ({categories,changeCategory,isLoading}) => {
 
-
+  const sortedCategories = [...categories].sort((a, b) => {
+    if (a.Orden < b.Orden) {
+      return -1;
+    }
+    if (a.Orden > b.Orden) {
+      return 1;
+    }
+    return 0;
+  });
 
 
   return (
@@ -25,15 +33,7 @@ const CategorySection:FC<ICategorySection> = ({categories,changeCategory,isLoadi
         !isLoading
         ?
         <FlatList
-        data={categories.sort((a,b)=>{
-          if ( a.Orden < b.Orden ){
-            return -1;
-          }
-          if ( a.Orden > b.Orden ){
-            return 1;
-          }
-          return 0;
-        })}
+        data={sortedCategories}
         // renderItem={({item}) => <CategoryItem pickRoom={setRoomSelected} roomSelected={roomSelected} key={item.title} title={item.title} />}
         renderItem={({item}) => <CategoryItem item={item} changeCategory={changeCategory} />}
         keyExtractor={item => item.CategoriaID.toString()}
