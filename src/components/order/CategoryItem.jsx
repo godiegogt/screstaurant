@@ -56,7 +56,8 @@ container:{
     flex:1,
     borderRadius:materialTheme.sizes.BASE/2,
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    paddingBottom:20
     
 },
 image: {
