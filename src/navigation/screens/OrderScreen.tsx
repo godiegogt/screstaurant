@@ -12,16 +12,23 @@ import CategorySection from '../../components/order/CategorySection';
 import DishesSection from '../../components/order/DishesSection';
 import OrderSection from '../../components/order/OrderSection';
 import axiosClient from '../../utils/axiosClient';
-import { ICategory, IArticles } from '../../interfaces/services';
+import { ICategory } from '../../interfaces/services';
 import { IDish } from '../../interfaces/IOrder';
 import WithScreenFocus from '../../components/order/OrderScreenWrapper';
 import { AppDispatch, IRootState } from '../../app/store';
-import { updateCategories } from '../../features/configurations/configurationSlice';
+import { updateCategories, updateCustomerNumberDefinition } from '../../features/configurations/configurationSlice';
+import SelectNumberCustomersModal from '../../components/order/SelectNumerCustomersModal';
 
 type Props = {
   Isloading: boolean;
   categories: ICategory[];
   updateCategories: (categories: ICategory[]) => void;
+  numCustomers: number,
+  updateCustomer:(value:number) => void;
+  haveNumCustDeninition:number;
+  OrderID:string 
+  
+
 };
 
 type State = {
@@ -35,6 +42,7 @@ class OrderScreen extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.changeCategory = this.changeCategory.bind(this);
+    this.updateCustomerNumber = this.updateCustomerNumber.bind(this); // Bind the method
     this.state = {
       articles: [],
       categoryId: 0,
@@ -58,9 +66,6 @@ class OrderScreen extends Component<Props, State> {
     }
   }
 
-  componentWillUnmount() {
-    rol();
-  }
 
   loadCategories() {
     this.setState({ isLoadingCategories: true });
@@ -90,6 +95,13 @@ class OrderScreen extends Component<Props, State> {
     this.setState({ categoryId: id });
   }
 
+  updateCustomerNumber(customersNumer:number){
+   if(customersNumer>0){
+    console.log(`oldValue: ${this.props.haveNumCustDeninition} newValue: ${customersNumer}`)
+    this.props.updateCustomer(customersNumer);
+   }
+  }
+
   render() {
     const styles = StyleSheet.create({
       container: {
@@ -102,8 +114,10 @@ class OrderScreen extends Component<Props, State> {
       myText: { fontSize: hp('5%') },
     });
 
+
     return (
       <Container>
+        <SelectNumberCustomersModal changeCustomersNumbers={this.updateCustomerNumber} isVisible={this.props.OrderID=="" && this.props.numCustomers==0 && this.props.haveNumCustDeninition==0} />
         {this.props.Isloading && <LoaderModal />}
         <View style={styles.container}>
           <View style={styles.section}>
@@ -122,10 +136,15 @@ class OrderScreen extends Component<Props, State> {
 
 const mapStateToProps = (state: IRootState) => ({
   categories: state.configuration.categories,
+  numCustomers: state.reservations.selectors.table.NumeroPersonas,
+  haveNumCustDeninition:state.configuration.customerNumberDefinided,
+  OrderID:state.order.currentOrder.OrdenID
+
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   updateCategories: (categories: ICategory[]) => dispatch(updateCategories(categories)),
+  updateCustomer:(value:number) => dispatch(updateCustomerNumberDefinition(value))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WithScreenFocus(OrderScreen));

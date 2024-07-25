@@ -44,7 +44,8 @@ export const configurationSlide = createSlice({
     params: [] as IParam[],
     URL:'https://apprest.solutioncenter.com.gt/Api',
     rooms:[] as IRoom[],
-    categories:[] as ICategory[]
+    categories:[] as ICategory[],
+    customerNumberDefinided:0
   },
   reducers: {
     login: (state, action: PayloadAction<{ name: string, roomDefaultId: number, userId: number }>) => {
@@ -101,13 +102,16 @@ let room=state.rooms.find(room=>room.SalonID==action.payload.SalondID)
     },
     updateCategories:(state,action:PayloadAction<ICategory[]>)=>{
 state.categories=action.payload;
+    },
+    updateCustomerNumberDefinition:(state,action:PayloadAction<number>)=>{
+      state.customerNumberDefinided=action.payload;
     }
 
 
   },
 })
 
-export const { updateCategories,updateTableStatus,updateRooms,login, logOut, updateHavePrinter, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams,updateURL } = configurationSlide.actions
+export const { updateCustomerNumberDefinition,updateCategories,updateTableStatus,updateRooms,login, logOut, updateHavePrinter, updatePrinterConfig, updateBluetoothPermission, updatePOSID, updateToken,updateParams,updateURL } = configurationSlide.actions
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

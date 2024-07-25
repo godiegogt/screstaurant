@@ -8,37 +8,34 @@ import { IRootState } from '../../app/store'
 import { useFocusEffect } from '@react-navigation/native'
 
 type CustomersContainerState = {
- 
+
 }
 
 const CustomersContainer: FC<CustomersContainerState> = () => {
- 
+
   const dispatch = useDispatch();
-const customerSelected = useSelector((state:IRootState) => state.reservations.selectors.customer );
-const customersNumber = useSelector((state:IRootState) => state.reservations.selectors.table.NumeroPersonas )
+  const customerSelected = useSelector((state: IRootState) => state.reservations.selectors.customer);
+  const customersNumber = useSelector((state: IRootState) => state.reservations.selectors.table.NumeroPersonas)
+  const customersNumberDefinited = useSelector((state: IRootState) => state.configuration.customerNumberDefinided)
 
-useFocusEffect(
-  React.useCallback(() => {
-    pickCustomer(1);
-  }, [])
-);
+  useFocusEffect(
+    React.useCallback(() => {
+      pickCustomer(1);
+    }, [])
+  );
 
 
-const pickCustomer = (customerid: number) => {
-dispatch(selectCustomer(customerid))
-//setCustomerSelected(customerid)
+  const pickCustomer = (customerid: number) => {
+    console.log('customer num: ' + customerid)
+    dispatch(selectCustomer(customerid))
+    //setCustomerSelected(customerid)
   }
 
-  const PrintCustomers=()=>{
-    let customers:Array<any>=[];
-
-
-
-    for (let index = 0; index < customersNumber; index++) {
-      
-     //customers+=<CustomerItem key={index+1} item={index+1} pickCustomer={pickCustomer} customerSelected={customerSelected} />
-    customers.push(<CustomerItem key={index+1} item={index+1} pickCustomer={pickCustomer} customerSelected={customerSelected} />)
-    
+  const PrintCustomers = () => {
+    let customers: Array<any> = [];
+    const customersNumberTemp = customersNumber == 0 ? customersNumberDefinited : customersNumber
+    for (let index = 0; index < customersNumberTemp; index++) {
+      customers.push(<CustomerItem key={index + 1} item={index + 1} pickCustomer={pickCustomer} customerSelected={customerSelected} />)
     }
 
     return customers
@@ -46,13 +43,7 @@ dispatch(selectCustomer(customerid))
 
   return (
     <View style={styles.container}>
-
-      
-        
-         <PrintCustomers/>
-        
-    
-
+      <PrintCustomers />
     </View>
   )
 
