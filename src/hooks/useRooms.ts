@@ -55,7 +55,7 @@ const useRooms = () => {
 
     const getTablesStatus = async (SalondID: number) => {
         try {
-
+setisLoading(true);
             const tableStatusData = await roomsService.getTablesStatus(SalondID);
 
             if (tableStatusData.length > 0) {

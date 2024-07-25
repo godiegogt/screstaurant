@@ -5,12 +5,12 @@ import { materialTheme } from '../../constants'
 
 const Container = ({children}) => {
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
     
      {
       children
      }
-    </ScrollView>
+    </View>
   )
 }
 

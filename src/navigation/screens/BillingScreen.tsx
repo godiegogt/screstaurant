@@ -10,7 +10,7 @@ import {
   removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 export class BillingScreen extends Component {
 
@@ -38,14 +38,14 @@ export class BillingScreen extends Component {
     });
     return (
       <Container>
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           <View style={styles.section}>
             <BillSection />
           </View>
           <View style={styles.section}>
             {/* <BillingSection /> */}
           </View>
-        </View>
+        </ScrollView>
       </Container>
     )
   }

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React, { Component } from 'react';
 import {
   widthPercentageToDP as wp,
@@ -117,7 +117,8 @@ class OrderScreen extends Component<Props, State> {
 
     return (
       <Container>
-        <SelectNumberCustomersModal changeCustomersNumbers={this.updateCustomerNumber} isVisible={this.props.OrderID=="" && this.props.numCustomers==0 && this.props.haveNumCustDeninition==0} />
+      <ScrollView>
+      <SelectNumberCustomersModal changeCustomersNumbers={this.updateCustomerNumber} isVisible={this.props.OrderID=="" && this.props.numCustomers==0 && this.props.haveNumCustDeninition==0} />
         {this.props.Isloading && <LoaderModal />}
         <View style={styles.container}>
           <View style={styles.section}>
@@ -129,6 +130,7 @@ class OrderScreen extends Component<Props, State> {
             <OrderSection />
           </View>
         </View>
+      </ScrollView>
       </Container>
     );
   }
