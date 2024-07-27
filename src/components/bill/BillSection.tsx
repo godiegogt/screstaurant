@@ -1,7 +1,7 @@
 import { ActivityIndicator, Alert, StyleSheet, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Card } from '@rneui/themed'
-import { Text } from '../common'
+import { Text, TextComponent } from '../common'
 
 import { materialTheme } from '../../constants'
 
@@ -42,8 +42,7 @@ setTimeout(() => {
      
     }, [customerSelected,billingType])
   );
-
-
+console.log(order)
 
   const printPre=async ()=>{
 
@@ -73,7 +72,11 @@ setTimeout(() => {
   }
 
   return (
-    <Card containerStyle={styles.BillSectionContainer}>
+    <>
+    {
+      order.OrdenID!=""
+      ?
+      <Card containerStyle={styles.BillSectionContainer}>
       <Card.Title><Text h4 bold>Orden</Text></Card.Title>
       <Card.Divider />
     {
@@ -110,6 +113,12 @@ billingType==1&&<CustomersContainer />
       
      
     </Card>
+    :
+    <View>
+      <TextComponent center>No tiene una orden.</TextComponent>
+    </View>
+    }
+    </>
   )
 }
 
