@@ -12,9 +12,10 @@ const useRooms = () => {
     const [error, setError] = useState("");
 
     const getRooms = async () => {
+        let roomsData = null;
         try {
             setisLoading(true);
-            let roomsData = await roomsService.getRooms();
+            roomsData = await roomsService.getRooms();
 
             //Fill out rooms and tables
             for (let index = 0; index < roomsData.length; index++) {
@@ -30,6 +31,7 @@ const useRooms = () => {
             }
         } finally {
             setisLoading(false);
+            return roomsData;
         }
 
 

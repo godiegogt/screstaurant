@@ -110,7 +110,15 @@ const ConfigHomeScreen = ({ navigation }) => {
           </ListItem>
         </TouchableOpacity>
       }
-      
+       <TouchableOpacity onPress={() => navigation.navigate("UpdateCatalogsScreen")}>
+          <ListItem bottomDivider>
+            {/* <Icon name={'print'} size={20} color={Theme.colors.icon} /> */}
+            <ListItem.Content>
+            <ListItem.Title>Parametros</ListItem.Title>
+            </ListItem.Content>
+            <ListItem.Chevron />
+          </ListItem>
+        </TouchableOpacity>
     </View>
   );
 };
