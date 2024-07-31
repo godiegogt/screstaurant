@@ -20,6 +20,8 @@ const useOrder = () => {
     const { userData } = useSelector((state: IRootState) => state.configuration);
     const { selectors } = useSelector((state: IRootState) => state.reservations);
     const [isLoading, setisLoading] = useState(false);
+    const customersNumberDefinited = useSelector((state: IRootState) => state.configuration.customerNumberDefinided)
+
     const dispatch = useDispatch()
 
     const changeOrder = (order: IReservation) => {
@@ -75,7 +77,9 @@ const useOrder = () => {
             //Verify if the order already exists
             //Otherwise just add new orders and use other service
             if (!selectors.table.OrdenID&&currentOrder.DetalleOrden.length>0) {
-                const reservation = buildCreateOrder(selectors.table, userData.userId, 'Terminal 1', currentOrder.DetalleOrden.map((item) => { return { ...item, DetalleID: 0, } }));
+                //Get customer number
+                const customerNumber=selectors.table.NumeroPersonas>0?selectors.table.NumeroPersonas:customersNumberDefinited;
+                const reservation = buildCreateOrder(selectors.table, userData.userId, 'Terminal 1', currentOrder.DetalleOrden.map((item) => { return { ...item, DetalleID: 0, } }),customerNumber);
                 response1 = await createOrder(reservation);
             } else {
                 //Filter by state new and edited (it has new modifiers)
