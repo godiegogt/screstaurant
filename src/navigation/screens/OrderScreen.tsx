@@ -1,12 +1,7 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import React, { Component } from 'react';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-  listenOrientationChange as lor,
-  removeOrientationListener as rol
-} from 'react-native-responsive-screen';
-import { connect } from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Container, CustomerSection, LoaderModal } from '../../components/common';
 import CategorySection from '../../components/order/CategorySection';
 import DishesSection from '../../components/order/DishesSection';
@@ -19,134 +14,129 @@ import { AppDispatch, IRootState } from '../../app/store';
 import { updateCategories, updateCustomerNumberDefinition } from '../../features/configurations/configurationSlice';
 import SelectNumberCustomersModal from '../../components/order/SelectNumerCustomersModal';
 
-type Props = {
-  Isloading: boolean;
-  categories: ICategory[];
-  updateCategories: (categories: ICategory[]) => void;
-  numCustomers: number,
-  updateCustomer:(value:number) => void;
-  haveNumCustDeninition:number;
-  OrderID:string 
+
+const OrderScreen = () => {
+  const dispatch=useDispatch();
+  const [articles, setArticles] = useState<IDish[]>([]);
+  const [categoryId, setCategoryId] = useState<number>(0);
+  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(false);
+  const [isLoadingDishes, setIsLoadingDishes] = useState<boolean>(false);
+const categories  = useSelector((state:IRootState)=>state.configuration.categories)
+const numCustomers  = useSelector((state:IRootState)=>state.reservations.selectors.table.NumeroPersonas)
+const haveNumCustDeninition  = useSelector((state:IRootState)=>state.configuration.customerNumberDefinided)
+const OrderID  = useSelector((state:IRootState)=>state.order.currentOrder.OrdenID)
   
 
-};
 
-type State = {
-  articles: IDish[];
-  categoryId: number;
-  isLoadingCategories: boolean;
-  isLoadingDishes: boolean;
-};
 
-class OrderScreen extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.changeCategory = this.changeCategory.bind(this);
-    this.updateCustomerNumber = this.updateCustomerNumber.bind(this); // Bind the method
-    this.state = {
-      articles: [],
-      categoryId: 0,
-      isLoadingCategories: false,
-      isLoadingDishes: false,
+  useEffect(() => {
+   
+    return () => {
+      // rol();
     };
-  }
+  }, []);
 
-  componentDidMount() {
-    lor(this);
-    if (this.props.categories.length === 0) {
-      this.loadCategories();
+  useEffect(() => {
+    if (categories.length === 0) {
+      loadCategories();
     } else {
-      this.changeCategory(this.props.categories[0].CategoriaID);
+      changeCategory(categories[0].CategoriaID);
     }
-  }
+  }, [categories]);
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (prevState.categoryId !== this.state.categoryId) {
-      this.loadArticles(this.state.categoryId);
+  useEffect(() => {
+    if (categoryId !== 0) {
+      loadArticles(categoryId);
     }
-  }
+  }, [categoryId]);
 
+  const _updateCategories=(Newcategories: ICategory[]) =>{
+    dispatch(updateCategories(Newcategories))
 
-  loadCategories() {
-    this.setState({ isLoadingCategories: true });
-    axiosClient.post('/ObtenerCategorias').then(res => {
-      const categories = res.data as ICategory[];
-      this.props.updateCategories(categories);
-      if (categories.length > 0) {
-        this.changeCategory(categories[0].CategoriaID);
-      }
-      this.setState({ isLoadingCategories: false });
-    }).catch(err => {
-      this.setState({ isLoadingCategories: false });
-    });
-  }
+   };
+  const updateCustomer=(value:number) => dispatch(updateCustomerNumberDefinition(value))
 
-  loadArticles(id: number) {
-    this.setState({ isLoadingDishes: true });
-    axiosClient.post('/ObtenerProductos', { CategoriaID: id }).then(res => {
-      this.setState({ articles: res.data as IDish[] });
-      this.setState({ isLoadingDishes: false });
-    }).catch(err => {
-      this.setState({ isLoadingDishes: false });
-    });
-  }
+  const loadCategories = () => {
+    setIsLoadingCategories(true);
+    axiosClient
+      .post('/ObtenerCategorias')
+      .then((res) => {
+        const categoriesData = res.data as ICategory[];
+        _updateCategories(categoriesData);
+        if (categoriesData.length > 0) {
+          changeCategory(categoriesData[0].CategoriaID);
+        }
+        setIsLoadingCategories(false);
+      })
+      .catch((err) => {
+        setIsLoadingCategories(false);
+      });
+  };
 
-  changeCategory(id: number) {
-    this.setState({ categoryId: id });
-  }
+  const loadArticles = (id: number) => {
+    setIsLoadingDishes(true);
+    axiosClient
+      .post('/ObtenerProductos', { CategoriaID: id })
+      .then((res) => {
+        setArticles(res.data as IDish[]);
+        setIsLoadingDishes(false);
+      })
+      .catch((err) => {
+        setIsLoadingDishes(false);
+      });
+  };
 
-  updateCustomerNumber(customersNumer:number){
-   if(customersNumer>0){
-    console.log(`oldValue: ${this.props.haveNumCustDeninition} newValue: ${customersNumer}`)
-    this.props.updateCustomer(customersNumer);
-   }
-  }
+  const changeCategory = (id: number) => {
+    setCategoryId(id);
+  };
 
-  render() {
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        flexDirection: wp('100%') > 700 ? 'row' : 'column',
-      },
-      section: {
-        flex: 1,
-      },
-      myText: { fontSize: hp('5%') },
-    });
+  const updateCustomerNumber = useCallback((customersNumer: number) => {
+    if (customersNumer > 0) {
+      console.log(`oldValue: ${haveNumCustDeninition} newValue: ${customersNumer}`);
+      updateCustomer(customersNumer);
+    }
+  }, [haveNumCustDeninition, updateCustomer]);
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      flexDirection: wp('100%') > 700 ? 'row' : 'column',
+    },
+    section: {
+      flex: 1,
+    },
+    myText: { fontSize: hp('5%') },
+  });
 
-    return (
-      <Container>
+  return (
+    <Container>
       <ScrollView>
-      <SelectNumberCustomersModal changeCustomersNumbers={this.updateCustomerNumber} isVisible={this.props.OrderID=="" && this.props.numCustomers==0 && this.props.haveNumCustDeninition==0} />
-        {this.props.Isloading && <LoaderModal />}
+        <SelectNumberCustomersModal
+          changeCustomersNumbers={updateCustomerNumber}
+          isVisible={OrderID === '' && numCustomers === 0 && haveNumCustDeninition === 0}
+        />
+     
         <View style={styles.container}>
           <View style={styles.section}>
-            <CategorySection categories={this.props.categories} changeCategory={this.changeCategory} isLoading={this.state.isLoadingCategories} />
+            <CategorySection categories={categories} changeCategory={changeCategory} isLoading={isLoadingCategories} />
             <CustomerSection />
-            <DishesSection articles={this.state.articles} isLoading={this.state.isLoadingDishes} />
+            <DishesSection articles={articles} isLoading={isLoadingDishes} />
           </View>
           <View style={styles.section}>
             <OrderSection />
           </View>
         </View>
       </ScrollView>
-      </Container>
-    );
-  }
-}
+    </Container>
+  );
+};
 
-const mapStateToProps = (state: IRootState) => ({
-  categories: state.configuration.categories,
-  numCustomers: state.reservations.selectors.table.NumeroPersonas,
-  haveNumCustDeninition:state.configuration.customerNumberDefinided,
-  OrderID:state.order.currentOrder.OrdenID
+// const mapStateToProps = (state: IRootState) => ({
+//   categories: state.configuration.categories,
+//   numCustomers: state.reservations.selectors.table.NumeroPersonas,
+//   haveNumCustDeninition: state.configuration.customerNumberDefinided,
+//   OrderID: state.order.currentOrder.OrdenID,
+// });
 
-});
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  updateCategories: (categories: ICategory[]) => dispatch(updateCategories(categories)),
-  updateCustomer:(value:number) => dispatch(updateCustomerNumberDefinition(value))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(WithScreenFocus(OrderScreen));
+export default WithScreenFocus(OrderScreen);
