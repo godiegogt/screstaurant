@@ -43,7 +43,7 @@ class MainApplication : Application(), ReactApplication {
       load()
     }
       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-        //ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
+        ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
       }
   }
 }
