@@ -1,23 +1,17 @@
-import  { Component } from 'react'
+import React from 'react';
 import Container from '../../components/common/Container';
-
 import TablesComponent from '../../components/tables/TablesComponent';
 
+const RoomsScreen = () => {
+  return (
+    <Container>
+      <TablesComponent />
+      {/* <CustomersContainer/> */}
+    </Container>
+  );
+};
 
-export default class RoomsScreen extends Component {
-
-
-  render() {
-    return (
-    
-       <Container >
-        <TablesComponent/>
-        {/* <CustomersContainer/> */}
-      </Container>
-     
-    )
-  }
-}
+export default RoomsScreen;
 
 
 
