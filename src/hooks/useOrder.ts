@@ -28,18 +28,18 @@ const useOrder = () => {
         dispatch(updateOrder(order))
     }
 
-    const getOrderById = async (OrderID: number,CustomerID:number) => {
-       try {
-        setisLoading(true)
-        const response = await getOrderByOrdenId(OrderID,CustomerID);
-        if (response != null && response?.CodigoError == 0 && response.DetalleOrden.length > 0) {
-            changeOrder(response)
+    const getOrderById = async (OrderID: number, CustomerID: number) => {
+        try {
+            setisLoading(true)
+            const response = await getOrderByOrdenId(OrderID, CustomerID);
+            if (response != null && response?.CodigoError == 0 && response.DetalleOrden.length > 0) {
+                changeOrder(response)
+            }
+        } catch (error) {
+
+        } finally {
+            setisLoading(false)
         }
-       } catch (error) {
-        
-       }finally{
-        setisLoading(false)
-       }
 
 
     }
@@ -76,28 +76,40 @@ const useOrder = () => {
             //Step 1 Create new order/s
             //Verify if the order already exists
             //Otherwise just add new orders and use other service
-            if (!selectors.table.OrdenID&&currentOrder.DetalleOrden.length>0) {
+            if (!selectors.table.OrdenID && currentOrder.DetalleOrden.length > 0) {
                 //Get customer number
-                const customerNumber=selectors.table.NumeroPersonas>0?selectors.table.NumeroPersonas:customersNumberDefinited;
-                const reservation = buildCreateOrder(selectors.table, userData.userId, 'Terminal 1', currentOrder.DetalleOrden.map((item) => { return { ...item, DetalleID: 0, } }),customerNumber);
+                const customerNumber = selectors.table.NumeroPersonas > 0 ? selectors.table.NumeroPersonas : customersNumberDefinited;
+                const reservation = buildCreateOrder(selectors.table, userData.userId, 'Terminal 1', currentOrder.DetalleOrden.map((item) => { return { ...item, DetalleID: 0, } }), customerNumber);
                 response1 = await createOrder(reservation);
+                if (response1.CodigoError != 0) {
+                    return response1.DescripcionError;
+                }
             } else {
                 //Filter by state new and edited (it has new modifiers)
                 //Then filter modifiers by state new
                 const orders = currentOrder.DetalleOrden.filter(item => item.state == 'new' || item.state == 'edited').map((item2) => { return { ...item2, DetalleID: item2.state == 'new' ? 0 : item2.DetalleID, DetalleModificadores: item2.DetalleModificadores.filter(item3 => item3.state == 'new') } });
                 const reservation = buildAddOrder(selectors.table, userData.userId, 'Terminal 1', orders);
                 response2 = await addArticles(reservation);
+                if (response2.CodigoError != 0) {
+                    return response2.DescripcionError;
+                }
             }
 
             //Step 2 Delete orders
+            console.log('todelete',toDelete)
             if (toDelete.length > 0) {
                 //Build data request
                 let details: IDeleteDetailReq = buildDetailDelete(selectors.table.OrdenID as number, userData.userId, 'Temrinal 1', toDelete);
                 response3 = await deleteDetails(details);
 
+                if (response3.CodigoError != 0) {
+                    return response3.DescripcionError;
+                }
+
+
             }
 
-
+            return null
 
         } catch (error) {
 
@@ -167,7 +179,7 @@ const useOrder = () => {
             }
             dispatch(changeCustomer(changeCustomerData))
         } catch (error) {
-return null
+            return null
         } finally {
             setisLoading(false)
         }

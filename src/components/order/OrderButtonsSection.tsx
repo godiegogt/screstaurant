@@ -10,19 +10,20 @@ import { useDispatch } from 'react-redux'
 import { restart } from '../../features/order/orderSlice'
 
 const OrderButtonsSection = () => {
-  const navigation=  useNavigation();
- const dispatch= useDispatch()
+  const navigation = useNavigation();
   const [errormessage, seterrormessage] = useState('')
   const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setisLoading] = useState(false)
- const orderHook= useOrder();
+  const [isLoading, setisLoading] = useState(false);
+  const orderHook = useOrder();
   const list = [
     // { title: 'Pre-cuenta' ,
     // onPress: () => setIsVisible(false),},
     // { title: 'Cambiar orden de comensal',
     // onPress: () => setIsVisible(false), },
-    { title: 'Pre-cuenta' ,
-    onPress: () => {billing()}},
+    {
+      title: 'Pre-cuenta',
+      onPress: () => { billing() }
+    },
     // { title: 'Descuentos' ,
     // onPress: () => setIsVisible(false),},
     {
@@ -33,8 +34,8 @@ const OrderButtonsSection = () => {
     },
   ];
 
-  const billing=()=>{
-  
+  const billing = () => {
+
     // reservationhook.sendReservation().then(()=>{
     //   //console.log('Ir a facturacion')
     //   setIsVisible(false);
@@ -47,53 +48,60 @@ const OrderButtonsSection = () => {
 
   }
 
-const _sendReservation=async ()=>{
-setisLoading(true)
-  try {
-    await  orderHook.sendOrder();
-    setisLoading(false)
-navigation.navigate("RoomsScreen");
-  } catch (error) {
-    setisLoading(false)
+  const _sendReservation = async () => {
+    setisLoading(true)
+    try {
+      const response = await orderHook.sendOrder();
+      if (response == null) {
+        navigation.navigate("RoomsScreen");
+      } else {
+        seterrormessage(response);
+      }
+
+
+    } catch (error) {
+      
+    }finally{
+      setisLoading(false)
+    }
+
   }
 
-}
-
-const returnToIndex=()=>{
-  navigation.navigate("RoomsScreen");
-}
+  const returnToIndex = () => {
+    navigation.navigate("RoomsScreen");
+  }
 
   return (
     <View style={styles.OrderButtonsSection}>
       {
-isLoading && <LoaderModal/>
+        isLoading && <LoaderModal />
       }
-     { 
-      orderHook.isLoading
-      &&
-      <LoaderModal/>}
-      <Alert message={errormessage} type='warning' setMessage={()=>{seterrormessage('')}}/>
+      {
+        orderHook.isLoading
+        &&
+        <LoaderModal />}
+      <Alert message={errormessage} type='warning' setMessage={() => { seterrormessage('') }} />
       <View style={styles.buttonContainer}>
-      <Button title="Enviar Orden" disabled={orderHook.isLoading} loading={orderHook.isLoading}  onPress={_sendReservation}/>
+        <Button title="Enviar Orden" disabled={orderHook.isLoading} loading={orderHook.isLoading} onPress={_sendReservation} />
       </View>
       <View style={styles.buttonContainer}>
-      <Button title="Otras opciones"  onPress={()=>{setIsVisible(true)}}/>
+        <Button title="Otras opciones" onPress={() => { setIsVisible(true) }} />
       </View>
-      <Button title="Salir"  onPress={returnToIndex}/>
+      <Button title="Salir" onPress={_sendReservation} />
 
       <BottomSheet modalProps={{}} isVisible={isVisible}>
-      {list.map((l, i) => (
-        <ListItem
-          key={i}
-          containerStyle={l.containerStyle}
-          onPress={l.onPress}
-        >
-          <ListItem.Content>
-            <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
-          </ListItem.Content>
-        </ListItem>
-      ))}
-    </BottomSheet>
+        {list.map((l, i) => (
+          <ListItem
+            key={i}
+            containerStyle={l.containerStyle}
+            onPress={l.onPress}
+          >
+            <ListItem.Content>
+              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </BottomSheet>
     </View>
   )
 }
@@ -101,11 +109,11 @@ isLoading && <LoaderModal/>
 export default OrderButtonsSection
 
 const styles = StyleSheet.create({
-    OrderButtonsSection:{
-        
-    },
-    buttonContainer:{
-        marginBottom:materialTheme.sizes.BASE/2,
-       
-    }
+  OrderButtonsSection: {
+
+  },
+  buttonContainer: {
+    marginBottom: materialTheme.sizes.BASE / 2,
+
+  }
 })

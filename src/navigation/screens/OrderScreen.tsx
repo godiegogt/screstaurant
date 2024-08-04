@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, FC } from 'react';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from 'react-native-responsive-screen';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Container, CustomerSection, LoaderModal } from '../../components/common';
@@ -13,9 +13,14 @@ import WithScreenFocus from '../../components/order/OrderScreenWrapper';
 import { AppDispatch, IRootState } from '../../app/store';
 import { updateCategories, updateCustomerNumberDefinition } from '../../features/configurations/configurationSlice';
 import SelectNumberCustomersModal from '../../components/order/SelectNumerCustomersModal';
+import useOrder from '../../hooks/useOrder';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
+type orderScreenProps={
+  navigation: NavigationProp<ParamListBase>;
+}
 
-const OrderScreen = () => {
+const OrderScreen:FC<orderScreenProps> = ({navigation}) => {
   const dispatch=useDispatch();
   const [articles, setArticles] = useState<IDish[]>([]);
   const [categoryId, setCategoryId] = useState<number>(0);
@@ -24,17 +29,19 @@ const OrderScreen = () => {
 const categories  = useSelector((state:IRootState)=>state.configuration.categories)
 const numCustomers  = useSelector((state:IRootState)=>state.reservations.selectors.table.NumeroPersonas)
 const haveNumCustDeninition  = useSelector((state:IRootState)=>state.configuration.customerNumberDefinided)
-const OrderID  = useSelector((state:IRootState)=>state.order.currentOrder.OrdenID)
+const OrderID  = useSelector((state:IRootState)=>state.order.currentOrder.OrdenID);
+const [isLoading, setisLoading] = useState(false);
+const {sendOrder} = useOrder()
   
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
    
-    return () => {
-      // rol();
-    };
-  }, []);
+  //   return () => {
+  //     // rol();
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (categories.length === 0) {
@@ -97,6 +104,35 @@ const OrderID  = useSelector((state:IRootState)=>state.order.currentOrder.OrdenI
     }
   }, [haveNumCustDeninition, updateCustomer]);
 
+
+  // useEffect(() => {
+  //   //   const unsubscribeFocus = props.navigation.addListener('focus', () => {
+  //   //     console.log('Screen is focused');
+  //   //   });
+  //   const sendAndRestart = async () => {
+  //     console.log('Screen is blurred');
+  //    try {
+  //     setisLoading(true);
+  //     await sendOrder(); // Call the async enviarSolicitud method
+  //    } catch (error) {
+      
+  //    }finally{
+  //     setisLoading(false);
+  //    }
+  //   };
+
+  //     const unsubscribeBlur = navigation.addListener('blur', () => {sendAndRestart()});
+
+  //     return () => {
+  //       // if (unsubscribeFocus) {
+  //       //   unsubscribeFocus();
+  //       // }
+  //       if (unsubscribeBlur) {
+  //         unsubscribeBlur();
+  //       }
+  //     };
+  //   }, [navigation, sendOrder]);
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -110,6 +146,7 @@ const OrderID  = useSelector((state:IRootState)=>state.order.currentOrder.OrdenI
 
   return (
     <Container>
+     {isLoading&& <LoaderModal />}
       <ScrollView>
         <SelectNumberCustomersModal
           changeCustomersNumbers={updateCustomerNumber}
@@ -139,4 +176,4 @@ const OrderID  = useSelector((state:IRootState)=>state.order.currentOrder.OrdenI
 // });
 
 
-export default WithScreenFocus(OrderScreen);
+export default OrderScreen;

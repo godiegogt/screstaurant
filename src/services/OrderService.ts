@@ -19,7 +19,7 @@ export const createOrder=async (order:ICreateOrder)=>{
     const { data, status } = await axiosClient.post('/CrearOrden',  order );
 
     if (status == 200) {
-        return data as IReservation
+        return data;
     } else {
         return null
     }
@@ -29,7 +29,7 @@ export const addArticles=async (order:IAddOrder)=>{
     const { data, status } = await axiosClient.post('/OrdenAgregarDetalle',  order );
 
     if (status == 200) {
-        return data as IReservation
+        return data
     } else {
         return null
     }
@@ -39,7 +39,7 @@ export const deleteDetails = async (details: IDeleteDetailReq) => {
     const { data, status } = await axiosClient.post('/OrdenEliminarDetalle',  details );
 
     if (status == 200) {
-        return data as IReservation
+        return data
     } else {
         return null
     }
