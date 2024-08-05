@@ -58,9 +58,9 @@ const _updateTables=async()=>{
       <View style={styles.updateParamsItem}>
       <Button loading={configHook.isLoading} disabled={configHook.isLoading} title={'Actualizar Parámetros'} onPress={_updateParams}/>
       </View>
-    <View  style={styles.updateParamsItem}>
+    {/* <View  style={styles.updateParamsItem}>
     <Button loading={roomsHook.isLoading} disabled={roomsHook.isLoading} title={'Actualizar Mesas'} onPress={_updateTables}/>
-    </View>
+    </View> */}
     <View  style={styles.updateParamsItem}>
     <Button loading={articlesHook.isLoading} disabled={articlesHook.isLoading} title={'Actualizar Categorías'} onPress={_updateCategories}/>
     </View>
